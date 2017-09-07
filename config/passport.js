@@ -29,6 +29,10 @@ module.exports = function(passport){
             return done(err);
           }
 
+          if(user){
+            return done(null,user);
+          }
+
           else{
             var newUser = new User();
             newUser.google_id = profile.id;
