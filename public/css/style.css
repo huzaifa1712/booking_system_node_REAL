@@ -1,0 +1,29 @@
+/*
+Blue - #49748A
+Red - #B6282D
+Yellow - #FFBE3F
+Grey - #6F7C7D
+*/
+.jumbotron{
+  background-color: #49748A;
+  color: white;
+  font-size: 175%;
+  text-align: center;
+}
+
+.btn-primary{
+  padding:20px;
+  font-size:125%;
+  background-color: #FFBE3F;
+}
+
+a.btn:hover{
+  background-color: rgb(196,182,25);
+}
+
+#account_body{
+  display:block;
+  overflow:auto;
+  white-space: nowrap;
+  margin:0px auto;
+}

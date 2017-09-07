@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  div#account_body.container-fluid
+    - var names = user.name.split(" ");
+    - var firstName = names[0];
+    h3 Welcome, #{firstName}!
+    div.clearfix
+    a(href = "/logout" style = "float:right;").btn Logout
+    
+    

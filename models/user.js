@@ -4,7 +4,8 @@ var userSchema = mongoose.Schema({
   name:String,
   email:String,
   token:String,
-  google_id:String
+  google_id:String,
+  isAdmin: Boolean
 
 });
 

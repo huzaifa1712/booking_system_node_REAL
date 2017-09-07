@@ -57,19 +57,24 @@ app.set('view engine','pug');
   //This is a callback that executes after login is done.
   app.get('/auth/google/callback',passport.authenticate('google',{
     //redirect to 'profile' if succeeded in logging in, if not go to index
-    successRedirect: '/profile',
+    successRedirect: '/account_page',
     failureRedirect: '/',
     failureFlash:true
   }))
 
-  app.get('/profile',isLoggedIn, (req,res)=>{
-  res.render('profile',{user:req.user});
+//normal routes
+app.get('/',(req,res)=>{
+  res.render('index');
 });
 
-  app.get('/logout',(req,res)=>{
-    req.logout();     //logout is a function Passport adds to Express somehow
-    res.redirect('/');
-  });
+app.get('/account_page',isLoggedIn, (req,res)=>{
+res.render('account_page',{user:req.user});
+});
+
+app.get('/logout',(req,res)=>{
+  req.logout();     //logout is a function Passport adds to Express somehow
+  res.redirect('/');
+});
 
 //Checks if user has logged in before giving access to profile
 function isLoggedIn(req,res,next){
@@ -84,3 +89,5 @@ function isLoggedIn(req,res,next){
     res.redirect('/');
   }
 }
+
+app.listen(3000);
