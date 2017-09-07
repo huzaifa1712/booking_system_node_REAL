@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 let user = require('./user.js');
-
+let space = require('./space.js');
 /* Referencing another Schema: https://stackoverflow.com/questions/18001478/referencing-another-schema-in-mongoose*/
 
 var bookingSchema = mongoose.Schema({
@@ -9,7 +9,10 @@ var bookingSchema = mongoose.Schema({
     ref:'User'
   },
   date:Date,
-  space:String,
+  space:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'Space'
+  },
   hoursBefore:Number
 
 });
