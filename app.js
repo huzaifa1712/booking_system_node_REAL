@@ -82,7 +82,7 @@ app.get('/bookings_table',(req,res)=>{
     {
       name:'Carl',
       time: '1:15-1:45',
-      day:'Monday'
+      day:'Tuesday'
     }
   ];
   res.render('bookings_table',{
@@ -103,7 +103,7 @@ app.get('/bookings',(req,res)=>{
     {
       name:'Carl',
       time: '1:15-1:45',
-      day:'Monday'
+      day:'Wednesday'
     }
   ];
 //if we are sending it as JSON string, we will have to parse it on the

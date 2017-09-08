@@ -12,6 +12,7 @@ $(document).ready(function(){
       If yes, we will print their name in the corresponding cell.
 
       day and time of the booking object
+
       search through tds
         search through booking objects
           if its header corresponds to the day
@@ -19,76 +20,49 @@ $(document).ready(function(){
               print the name
       */
 
-
-      //getting the array of response
-      var array = [];
+      //getting the array of response, the bookings array
+      //FOR THE BELOW TO WORK THE BOOKINGS ARRAY NEEDS TO LOOK LIKE THIS:
+      /* var bookings = [
+        {
+          name:'Jeff',
+          time: '12:45-1:15',
+          day:'Wednesday'
+        },
+        {
+          name:'Carl',
+          time: '2:15-2:45',
+          day:'Tuesday'
+        }
+      ];
+*/
       var responseArr = JSON.parse(response);
 
-
+      //Loop through all the table cells(td)
       $('td').each(function(){
-        var thText = $(this).closest('table').find('th').eq(this.cellIndex).text();
-        if(thText == 'Tuesday'){
-          $(this).text(responseArr[0].name);
-        }
-      });
+        var dayFromTable = $(this).closest('table').find('th').eq(this.cellIndex).text(); //finds the td's header(day)
+        dayFromTable = dayFromTable.replace(/\s+/g, ''); //takes out any spaces
 
+        var timeFromTable = $(this).parent().find("td").first().text(); //finds the td's time(first td of its row)
+        timeFromTable = timeFromTable.replace(/\s+/g, ''); //takes out any spaces
 
-
-
-/*
-      //search through tds
-      $('td').each((i,obj)=>{
-        var $td = $(this);
-        //find its corresponding table header and get the text
-        var $thText = $td.closest('table').find('th').eq(this.cellIndex).text();
-        console.log('This is thText' + $thText.toString());
-
-        //search through booking objects
+        //loop through the bookings array sent as response
         for(var i = 0; i < responseArr.length; i++){
-          console.log('Day we are trying to match: ',responseArr[i].day);
+          var dayFromBooking = responseArr[i].day;
+          dayFromBooking = dayFromBooking.replace(/\s+/g, '');
 
-          if($thText == responseArr[i].day){
-            var $time = $td.closest('tr').find('td:first').text();
-            console.log('Day match passed, time from table: ', $time);
+          var timeFromBooking = responseArr[i].time;
+          timeFromBooking = timeFromBooking.replace(/\s+/g, '');
 
-            if($time == responseArr[i].time){
-              $td.innerHTML = responseArr[i].name;
-              console.log('Time match passed, name passed in:', responseArr[i].name);
-            }
+          var name = responseArr[i].name;
+          name = name.replace(/\s+/g, '');
+
+          //if day and time of the object match day and time of the cell, print the name in the cell
+          if(dayFromTable == dayFromBooking && timeFromBooking == timeFromTable){
+            $(this).text(name);
+            $(this).css({'background-color':'red'});
           }
         }
-      });*/
+      });
     }
   });
 });
-
-
-/*$(document).ready(function(){
-  var array = [];
-  $('td').each((i,obj)=>{
-    var $td = $('td');
-    var $th = $td.closest('table').find('th').text();
-    array.push($th + ' ');
-
-  });
-});*/
-/*
-$(document).ready(function(){
-  $.ajax({
-    type:'GET',
-    url:'/bookings',
-    success:function(response){
-      $('td').each((i,obj)=>{
-        var $td = $('td');
-        var $th = $td.closest('table').find('th').text();
-
-        for(var key in response){
-          if(response.hasOwnProperty(key)){
-            console.log(response[key].name);
-          }
-        }
-        });
-      });
-
-    }
-  });*/
