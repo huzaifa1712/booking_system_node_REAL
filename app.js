@@ -69,11 +69,14 @@ app.get('/',(req,res)=>{
 });
 
 app.get('/account_page',isLoggedIn, (req,res)=>{
-res.render('account_page',{user:req.user});
+  res.render('account_page',{user:req.user});
 });
 
 app.get('/bookings_table',(req,res)=>{
-  res.render('bookings_table',{days:settings.settings.days});
+  res.render('bookings_table',{
+    days:settings.days,
+    times:settings.times
+  });
 });
 
 app.get('/logout',(req,res)=>{
