@@ -22,11 +22,24 @@ function returnTimes(array){
 
 
 var settings = {
-  timesString:["12:45","1:15","1:45","2:15","2:45"],
+  times:["12:45","1:15","1:45","2:15","2:45"],
   days:[days.MONDAY,days.TUESDAY,days.WEDNESDAY,days.THURSDAY,days.FRIDAY],
   weeksAhead:4,
   //not working
-  times: returnTimes(this.timesString)
+  returnTimes: function(array){
+    var returnArray = [];
+    if(array.length < 2){
+      console.log("Please put in an array bigger than length 2");
+    }
+
+    else{
+      for(var i = 0; i < array.length-1; i++){
+        returnArray.push(array[i] + " - " + array[i+1]);
+      }
+    }
+
+    return returnArray;
+  }
 }
 
 module.exports = settings;

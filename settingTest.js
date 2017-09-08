@@ -1,2 +1,2 @@
 var settings = require('./setting.js');
-console.log(settings.weeksAhead);
+console.log(settings.returnTimes(settings.times));
