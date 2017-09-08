@@ -73,10 +73,41 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
 });
 
 app.get('/bookings_table',(req,res)=>{
+  var bookings = [
+    {
+      name:'Jeff',
+      time: '12:45-1:15',
+      day:'Monday'
+    },
+    {
+      name:'Ashis',
+      time: '1:15-1:45',
+      day:'Monday'
+    }
+  ];
   res.render('bookings_table',{
     days:settings.days,
-    times:settings.returnTimes(settings.times)
+    times:settings.returnTimes(settings.times),
+    bookings:bookings
   });
+});
+
+//test for populate bookings
+app.get('/bookings',(req,res)=>{
+  var bookings = [
+    {
+      name:'Jeff',
+      time: '12:45-1:15',
+      day:'Monday'
+    },
+    {
+      name:'Ashis',
+      time: '1:15-1:45',
+      day:'Monday'
+    }
+  ];
+
+  res.json(JSON.stringify(bookings));
 });
 
 app.get('/logout',(req,res)=>{

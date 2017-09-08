@@ -2,7 +2,7 @@ extends layout
 
 block content
   .container-fluid
-    table.table.table-bordered
+    table.table.table-bordered.table-hover.table-responsive
       thead
         tr
           th Times
@@ -12,5 +12,9 @@ block content
           each time in times
             tr
               td=time
-              
+  
+  script(src = "/bower_components/jquery/dist/jquery.js")
+  script(src = "/bower_components/bootstrap/dist/js/bootstrap.js")
+  script(src = "/scripts/populate_bookings.js")
+    
           
