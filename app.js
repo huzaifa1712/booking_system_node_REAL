@@ -80,7 +80,7 @@ app.get('/bookings_table',(req,res)=>{
       day:'Monday'
     },
     {
-      name:'Ashis',
+      name:'Carl',
       time: '1:15-1:45',
       day:'Monday'
     }
@@ -101,12 +101,13 @@ app.get('/bookings',(req,res)=>{
       day:'Monday'
     },
     {
-      name:'Ashis',
+      name:'Carl',
       time: '1:15-1:45',
       day:'Monday'
     }
   ];
-
+//if we are sending it as JSON string, we will have to parse it on the
+//jQuery side before being able to access anything.
   res.json(JSON.stringify(bookings));
 });
 
