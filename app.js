@@ -8,6 +8,7 @@ let session = require('express-session');
 let config = require('./config/database');
 var passport = require('passport');
 require('./config/passport.js')(passport)
+var settings = require('./setting.js');
 
 var app = express();
 
@@ -69,6 +70,10 @@ app.get('/',(req,res)=>{
 
 app.get('/account_page',isLoggedIn, (req,res)=>{
 res.render('account_page',{user:req.user});
+});
+
+app.get('/bookings_table',(req,res)=>{
+  res.render('bookings_table',{days:settings.settings.days});
 });
 
 app.get('/logout',(req,res)=>{

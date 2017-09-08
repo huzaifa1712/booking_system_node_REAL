@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  .container-fluid
+    table.table.table-bordered
+      thead
+        tr
+          th Times
+          each day in days
+            th=day
+        tbody
+          tr
+            td 12:45 - 1:15
+            td Jeff
+            td Zaal
+            td Carl 
+            td Charlie
+            td Potter
+          
