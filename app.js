@@ -75,7 +75,7 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
 app.get('/bookings_table',(req,res)=>{
   res.render('bookings_table',{
     days:settings.days,
-    times:settings.times
+    times:settings.returnTimes(settings.times)
   });
 });
 
