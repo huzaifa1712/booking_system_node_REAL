@@ -1,8 +1,12 @@
-extends layout
-
-block content
+doctype
+html
+  head
+    title IDEAS Hub Booking System
+    link(href = '/css/style.css' rel = 'stylesheet')
+    link(rel="stylesheet", href="/bower_components/bootstrap/dist/css/bootstrap.css")
+    link(rel="stylesheet", href="/css/style.css")
   .container-fluid
-    table.table.table-bordered.table-hover.table-responsive
+    table.table.table-bordered.table-hover.table-responsive.table-striped(style = "border: 2px solid #6F7C7D;font-size:150%;")
       thead
         tr
           th Times
@@ -14,8 +18,8 @@ block content
               td=time
               each day in days
                 td
-          
-  
+        
+        
   script(src = "/bower_components/jquery/dist/jquery.js")
   script(src = "/bower_components/bootstrap/dist/js/bootstrap.js")
   script(src = "/scripts/populate_bookings.js")

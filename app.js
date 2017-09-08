@@ -65,11 +65,31 @@ app.set('view engine','pug');
 
 //normal routes
 app.get('/',(req,res)=>{
-  res.render('index');
+  var bookings = [
+    {
+      name:'Jeff',
+      time: '12:45-1:15',
+      day:'Monday'
+    },
+    {
+      name:'Carl',
+      time: '1:15-1:45',
+      day:'Tuesday'
+    }
+  ];
+  res.render('index',{
+    days:settings.days,
+    times:settings.returnTimes(settings.times)
+
+  });
 });
 
 app.get('/account_page',isLoggedIn, (req,res)=>{
-  res.render('account_page',{user:req.user});
+  res.render('account_page',{
+    user:req.user,
+    days:settings.days,
+    times:settings.returnTimes(settings.times)
+  });
 });
 
 app.get('/bookings_table',(req,res)=>{

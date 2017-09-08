@@ -1,3 +1,31 @@
+/* We are trying to look through our bookings, and see if
+their day and time correspond to any of the values in the table.
+If yes, we will print their name in the corresponding cell.
+
+day and time of the booking object
+
+search through tds
+  search through booking objects
+    if its header corresponds to the day
+      if the first td of its row corresponds to the time
+        print the name
+*/
+
+//getting the array of response, the bookings array
+//FOR THE BELOW TO WORK THE BOOKINGS ARRAY NEEDS TO LOOK LIKE THIS:
+/* var bookings = [
+  {
+    name:'Jeff',
+    time: '12:45-1:15',
+    day:'Wednesday'
+  },
+  {
+    name:'Carl',
+    time: '2:15-2:45',
+    day:'Tuesday'
+  }
+];
+*/
 $(document).ready(function(){
 
   $.ajax({
@@ -7,34 +35,6 @@ $(document).ready(function(){
     //of booking objects. We will have to convert the JSOn string into
     //valid JSON first
     success:function(response){
-      /* We are trying to look through our bookings, and see if
-      their day and time correspond to any of the values in the table.
-      If yes, we will print their name in the corresponding cell.
-
-      day and time of the booking object
-
-      search through tds
-        search through booking objects
-          if its header corresponds to the day
-            if the first td of its row corresponds to the time
-              print the name
-      */
-
-      //getting the array of response, the bookings array
-      //FOR THE BELOW TO WORK THE BOOKINGS ARRAY NEEDS TO LOOK LIKE THIS:
-      /* var bookings = [
-        {
-          name:'Jeff',
-          time: '12:45-1:15',
-          day:'Wednesday'
-        },
-        {
-          name:'Carl',
-          time: '2:15-2:45',
-          day:'Tuesday'
-        }
-      ];
-*/
       var responseArr = JSON.parse(response);
 
       //Loop through all the table cells(td)
@@ -59,10 +59,11 @@ $(document).ready(function(){
           //if day and time of the object match day and time of the cell, print the name in the cell
           if(dayFromTable == dayFromBooking && timeFromBooking == timeFromTable){
             $(this).text(name);
-            $(this).css({'background-color':'red'});
+            $(this).css({'background-color':'#B6282D', 'color':'white'});
           }
         }
       });
     }
   });
+  
 });
