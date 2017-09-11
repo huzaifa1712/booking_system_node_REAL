@@ -39,3 +39,12 @@ thead{
   text-align:center;
 
 }
+
+.booked{
+  background-color:#B6282D;
+  color:white;
+}
+
+.booked:hover{
+  background-color:#692a2a;
+}

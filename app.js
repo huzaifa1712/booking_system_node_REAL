@@ -65,18 +65,6 @@ app.set('view engine','pug');
 
 //normal routes
 app.get('/',(req,res)=>{
-  var bookings = [
-    {
-      name:'Jeff',
-      time: '12:45-1:15',
-      day:'Monday'
-    },
-    {
-      name:'Carl',
-      time: '1:15-1:45',
-      day:'Tuesday'
-    }
-  ];
   res.render('index',{
     days:settings.days,
     times:settings.returnTimes(settings.times)
@@ -93,23 +81,7 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
 });
 
 app.get('/bookings_table',(req,res)=>{
-  var bookings = [
-    {
-      name:'Jeff',
-      time: '12:45-1:15',
-      day:'Monday'
-    },
-    {
-      name:'Carl',
-      time: '1:15-1:45',
-      day:'Tuesday'
-    }
-  ];
-  res.render('bookings_table',{
-    days:settings.days,
-    times:settings.returnTimes(settings.times),
-    bookings:bookings
-  });
+
 });
 
 //test for populate bookings
@@ -124,11 +96,22 @@ app.get('/bookings',(req,res)=>{
       name:'Carl',
       time: '1:15-1:45',
       day:'Wednesday'
+    },
+
+    {
+      name:'John',
+      time: '1:15-1:45',
+      day:'Thursday'
     }
+
   ];
 //if we are sending it as JSON string, we will have to parse it on the
 //jQuery side before being able to access anything.
   res.json(JSON.stringify(bookings));
+});
+
+app.post('/make_booking', urlencodedParser, (req,res)=>{
+  console.log(req.body);
 });
 
 app.get('/logout',(req,res)=>{

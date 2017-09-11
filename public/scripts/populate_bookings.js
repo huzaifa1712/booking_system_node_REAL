@@ -30,6 +30,7 @@ $(document).ready(function(){
 
   $.ajax({
     type:'GET',
+    async:false,
     url:'/bookings',
     //success function : receives a response string consisting of an array
     //of booking objects. We will have to convert the JSOn string into
@@ -59,11 +60,13 @@ $(document).ready(function(){
           //if day and time of the object match day and time of the cell, print the name in the cell
           if(dayFromTable == dayFromBooking && timeFromBooking == timeFromTable){
             $(this).text(name);
-            $(this).css({'background-color':'#B6282D', 'color':'white'});
+            //$(this).css({'background-color':'#B6282D', 'color':'white'});
+            //fills the html with an attribute we can look at later to determine if its booked
+            $(this).addClass('booked');
           }
         }
       });
     }
   });
-  
+
 });
