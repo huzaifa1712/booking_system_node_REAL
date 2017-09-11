@@ -25,6 +25,7 @@ module.exports = function(passport){
         User.findOne({
           'google_id':profile.id
         }, (err,user)=>{
+          //
           if(err){
             return done(err);
           }
