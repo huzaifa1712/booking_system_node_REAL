@@ -45,6 +45,7 @@ thead{
   color:white;
 }
 
-.booked:hover{
-  background-color:#692a2a;
+td:not(.booked):hover{
+  background-color:#6F7C7D;
+
 }
