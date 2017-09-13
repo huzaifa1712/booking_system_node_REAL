@@ -10,6 +10,27 @@ $(document).ready(function(){
         var time =  $(this).parent().find("td").first().text().replace(/\s+/g, '');
         var name = $(this).text().replace(/\s+/g, '');
 
+        //getting the user object so we can make a booking
+        $.ajax({
+          type:'GET',
+          url:'/get_user',
+          success:function(response){
+            //response object is the user object
+            $.ajax({
+              type: 'POST',
+              url:'/make_booking',
+              data: {
+                day: day,
+                time:time,
+                user:response
+              },
+              success:function(response){
+                //do nothing
+              }
+            });
+          }
+        });
+/*
         $.ajax({
           type:'POST',
           url:'/make_booking',
@@ -22,7 +43,7 @@ $(document).ready(function(){
           success:function(response){
             //do nothing
           }
-        })
+        })*/
 
       });
     }
