@@ -1,6 +1,5 @@
 $(document).ready(function(){
   //$(this).data('attr') == 'filled') - to identify elements with bookings
-  var num = 0;
   $('td').each(function(){
     if($(this).hasClass("booked") == false){
       //add a click event if it is NOT filled
