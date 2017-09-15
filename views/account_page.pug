@@ -1,6 +1,7 @@
 extends layout
 
 block content
+  link(href = '/css/booked.css' rel = 'stylesheet')
   div#account_body.container-fluid
     - var names = user.name.split(" ");
     - var firstName = names[0];

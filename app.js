@@ -73,7 +73,6 @@ app.get('/',(req,res)=>{
 });
 
 app.get('/account_page',isLoggedIn, (req,res)=>{
-  console.log(req.user);
   res.render('account_page',{
     user:req.user,
     days:settings.days,
@@ -113,9 +112,10 @@ app.get('/bookings',(req,res)=>{
 });
 
 app.post('/make_booking', urlencodedParser, (req,res)=>{
+  console.log('lol');
   console.log(req.body);
-  req.flash('success','Booking made!');
-  res.redirect('/account_page');
+  //req.flash('success','Booking made!');
+  //res.redirect('/account_page');
 });
 
 //a route that sends back a user JSON object which can be used when making bookings
