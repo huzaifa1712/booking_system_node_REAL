@@ -22,7 +22,7 @@ var app = express();
 
   //check for errors in DB
   db.on('error',(err)=>{
-    throw err
+    throw err;
   });
 
 app.set('views', path.join(__dirname,'views'));
@@ -112,7 +112,7 @@ app.get('/bookings',(req,res)=>{
 });
 
 app.post('/make_booking', urlencodedParser, (req,res)=>{
-  console.log('lol');
+  //console.log('lol');
   console.log(req.body);
   //req.flash('success','Booking made!');
   //res.redirect('/account_page');
