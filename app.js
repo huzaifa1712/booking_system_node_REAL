@@ -124,9 +124,23 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
   //res.redirect('/account_page');
 
   //check if req object empty
-  if(Object.keys(req.body).length){
-    
-  }
+    var newBooking = new Booking();
+    newBooking.name = req.body.name;
+    newBooking.email = req.body.email;
+    newBooking.day = req.body.day;
+    newBooking.time = req.body.time;
+
+    newBooking.save((err)=>{
+      if(err){
+        throw err;
+      }
+
+      else{
+        console.log("Booking saved");
+      }
+    });
+
+
 });
 
 //a route that sends back a user JSON object which can be used when making bookings

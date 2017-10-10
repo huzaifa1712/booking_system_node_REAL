@@ -21,9 +21,9 @@ $(document).ready(function(){
               data: {
                 day: day,
                 time:time,
-                userName:response.name,
-                userEmail:response.email
-                
+                name:response.name,
+                email:response.email
+
               },
               success:function(response){
                 //do nothing
