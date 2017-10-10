@@ -10,6 +10,8 @@ var passport = require('passport');
 require('./config/passport.js')(passport)
 var settings = require('./setting.js');
 
+var Booking = require('./models/bookingSimple');
+
 var app = express();
 
   mongoose.connect(config.url);
@@ -66,6 +68,7 @@ app.set('view engine','pug');
 //normal routes
 app.get('/',(req,res)=>{
   res.render('index',{
+    //TODO:replace with call to db for settings
     days:settings.days,
     times:settings.returnTimes(settings.times)
 
@@ -114,13 +117,27 @@ app.get('/bookings',(req,res)=>{
 app.post('/make_booking', urlencodedParser, (req,res)=>{
   //console.log('lol');
   console.log(req.body);
+  console.log(req.body.day);
+  console.log(req.body.time);
+  //console.log(req.body.user.email);
   //req.flash('success','Booking made!');
   //res.redirect('/account_page');
+
+  //check if req object empty
+  if(Object.keys(req.body).length){
+    
+  }
 });
 
 //a route that sends back a user JSON object which can be used when making bookings
 app.get('/get_user', isLoggedIn,(req,res)=>{
-  res.json(JSON.stringify(req.user));
+  console.log("User body: ");
+  var user =  {
+    name: req.user.name,
+    email: req.user.email
+  }
+  console.log(user);
+  res.json(user);
 });
 
 app.get('/logout',(req,res)=>{
