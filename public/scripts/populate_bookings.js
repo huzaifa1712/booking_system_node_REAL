@@ -54,7 +54,7 @@ $(document).ready(function(){
           var timeFromBooking = responseArr[i].time;
           timeFromBooking = timeFromBooking.replace(/\s+/g, '');
 
-          var name = responseArr[i].name;
+          var name = responseArr[i].name.split(" ")[0];
           name = name.replace(/\s+/g, '');
 
           //if day and time of the object match day and time of the cell, print the name in the cell

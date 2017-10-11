@@ -9,6 +9,7 @@ let config = require('./config/database');
 var passport = require('passport');
 require('./config/passport.js')(passport)
 var settings = require('./setting.js');
+var fs = require('fs');
 
 var Booking = require('./models/bookingSimple');
 
@@ -88,9 +89,38 @@ app.get('/bookings_table',(req,res)=>{
 
 });
 
+//test for getting bookings from the database
+app.get('/test_bookings_get',(req,res)=>{
+  Booking.find(function(err,bookings){
+    if(err){
+      throw err;
+    }
+
+    else{
+      console.log(bookings);
+    }
+  });
+
+
+  });
+
 //test for populate bookings
 app.get('/bookings',(req,res)=>{
-  var bookings = [
+//call to db for bookings
+var bookingsArray = [];
+Booking.find(function(err,bookings){
+  if(err){
+    throw err;
+  }
+
+  else{
+    console.log("Booking variable");
+    res.json(JSON.stringify(bookings));
+  }
+});
+
+
+  /*var bookings = [
     {
       name:'Jeff',
       time: '12:45-1:15',
@@ -111,7 +141,7 @@ app.get('/bookings',(req,res)=>{
   ];
 //if we are sending it as JSON string, we will have to parse it on the
 //jQuery side before being able to access anything.
-  res.json(JSON.stringify(bookings));
+  res.json(JSON.stringify(bookings));*/
 });
 
 app.post('/make_booking', urlencodedParser, (req,res)=>{

@@ -9,6 +9,8 @@ block content
       h3.col-lg-2.col-md-2.col-sm-2.col-xs-2 Welcome, #{firstName}!
       a.col-lg-2.col-md-2.col-sm-2.col-xs-2(href = "/logout" style = "float:right;font-size:120%;").btn Logout
     br
+    div.col-lg-2.col-md-2.col-sm-2.col-xs-2.text-center  
+      h3(style = "color:#FFBE3F; margin-left:150%; padding-bottom:20px;") To make a booking, please select one of the free times below.
     
     include bookings_table.pug
     script(src = "/scripts/make_bookings.js")

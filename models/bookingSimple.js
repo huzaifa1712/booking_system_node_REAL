@@ -7,7 +7,7 @@ var bookingSchema = mongoose.Schema({
   email:String,
   day:String,
   time:String,
-  
+
 });
 /*
 var bookingSchema = mongoose.Schema({
