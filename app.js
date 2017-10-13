@@ -167,6 +167,7 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
 
       else{
         console.log("Booking saved");
+        //res.redirect('/');
       }
     });
 
