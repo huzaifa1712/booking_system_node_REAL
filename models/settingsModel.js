@@ -36,8 +36,9 @@ settingsSchema.virtual('startAndEndOfWeek').get(function(){
 module.exports = mongoose.model('Setting',settingsSchema);
 
 
-//Code to test the above
 var Setting = mongoose.model('Setting', settingsSchema);
+
+/*
 var s = new Setting({
   times:["12:45","1:15","1:45","2:15","2:45"],
   days:[days.MONDAY,days.TUESDAY,days.WEDNESDAY,days.THURSDAY,days.FRIDAY],
@@ -50,7 +51,7 @@ s.save((err)=>{
   if(err){
     throw err;
   }
-})
+})*/
 
 
 

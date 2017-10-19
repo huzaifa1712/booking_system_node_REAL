@@ -8,7 +8,7 @@ let session = require('express-session');
 let config = require('./config/database');
 var passport = require('passport');
 require('./config/passport.js')(passport)
-var settings = require('./setting.js');
+//var settings = require('./setting.js');
 var fs = require('fs');
 
 var Booking = require('./models/bookingSimple');
@@ -69,24 +69,49 @@ app.set('view engine','pug');
 
 //normal routes
 app.get('/',(req,res)=>{
-  res.render('index',{
-    //TODO:replace with call to db for settings
-    //EVERY PAGE WITH A BOOKINGS TABLE NEEDS TO LOAD SETTINGS
-    days:settings.days,
-    times:settings.returnTimes(settings.times)
+  Setting.find(function(err,settings){
+    if(err){
+      throw err;
+    }
 
+    else{
+      console.log(settings);
+      //console.log(settings[0].days);
+      //console.log(settings[0].returnTimes);
+      var startAndEnd = settings[0].startAndEndOfWeek;
+
+      res.render('index',{
+        //TODO:replace with call to db for settings
+        //EVERY PAGE WITH A BOOKINGS TABLE NEEDS TO LOAD SETTINGS
+        days:settings[0].days,
+        times:settings[0].returnTimes,
+        startAndEnd:startAndEnd
+      });
+
+    }
   });
 });
 
 app.get('/account_page',isLoggedIn, (req,res)=>{
-  res.render('account_page',{
-    //TODO:replace with call to db for settings
-    //EVERY PAGE WITH A BOOKINGS TABLE NEEDS TO LOAD SETTINGS
-    user:req.user,
-    days:settings.days,
-    times:settings.returnTimes(settings.times)
-  });
+  Setting.find(function(err,settings){
 
+    if(err){
+      throw err;
+    }
+
+    else{
+      var startAndEnd = settings[0].startAndEndOfWeek;
+      res.render('account_page',{
+        //TODO:replace with call to db for settings
+        //EVERY PAGE WITH A BOOKINGS TABLE NEEDS TO LOAD SETTINGS
+        user:req.user,
+        days:settings[0].days,
+        times:settings[0].returnTimes,
+        startAndEnd:startAndEnd
+
+      });
+    }
+  });
 });
 
 //Unnecessary - remove it later

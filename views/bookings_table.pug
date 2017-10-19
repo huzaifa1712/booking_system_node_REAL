@@ -6,7 +6,7 @@ html
     link(rel="stylesheet", href="/bower_components/bootstrap/dist/css/bootstrap.css")
     link(rel="stylesheet", href="/css/style.css")
   .container-fluid
-    h3#schedule.text-center Schedule: June 12 to June 16
+    h3#schedule.text-center Schedule: #{startAndEnd.startOfWeek} to #{startAndEnd.endOfWeek}
     table#bookings-table.table.table-bordered.table-responsive.table-striped(style = "border: 2px solid #6F7C7D;font-size:150%;")
       thead
         tr
