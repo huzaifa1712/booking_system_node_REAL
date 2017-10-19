@@ -1,10 +1,8 @@
 var days = require('../days.js');
 var mongoose = require('mongoose');
-
 /*
 Number of rows: corresponds to length of timesArray from function
 Number of heads: corresponds to length of days array
-
 */
 var settingsSchema = mongoose.Schema({
   times: [String],
@@ -32,7 +30,6 @@ var s = new Settings({
   weeksAhead:4
 });
 
-console.log(s.returnTimes[0]);
 
 //console.log(settings.days);
 

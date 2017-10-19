@@ -70,6 +70,7 @@ app.set('view engine','pug');
 app.get('/',(req,res)=>{
   res.render('index',{
     //TODO:replace with call to db for settings
+    //EVERY PAGE WITH A BOOKINGS TABLE NEEDS TO LOAD SETTINGS
     days:settings.days,
     times:settings.returnTimes(settings.times)
 
@@ -79,6 +80,7 @@ app.get('/',(req,res)=>{
 app.get('/account_page',isLoggedIn, (req,res)=>{
   res.render('account_page',{
     //TODO:replace with call to db for settings
+    //EVERY PAGE WITH A BOOKINGS TABLE NEEDS TO LOAD SETTINGS
     user:req.user,
     days:settings.days,
     times:settings.returnTimes(settings.times)

@@ -28,6 +28,8 @@ search through tds
 */
 $(document).ready(function(){
 
+  //$('<div id = "schedule" class = "text-center">Schedule: June 12 to June 16</div>').insertBefore("#bookings-table");
+
   $.ajax({
     type:'GET',
     async:false,
