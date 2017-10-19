@@ -79,6 +79,7 @@ app.get('/',(req,res)=>{
       //console.log(settings[0].days);
       //console.log(settings[0].returnTimes);
       var startAndEnd = settings[0].startAndEndOfWeek;
+      //console.log(settings[0].returnTimes);
 
       res.render('index',{
         //TODO:replace with call to db for settings
@@ -101,6 +102,7 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
 
     else{
       var startAndEnd = settings[0].startAndEndOfWeek;
+      //console.log(settings[0].returnTimes);
       res.render('account_page',{
         //TODO:replace with call to db for settings
         //EVERY PAGE WITH A BOOKINGS TABLE NEEDS TO LOAD SETTINGS
@@ -179,13 +181,14 @@ Booking.find(function(err,bookings){
 app.post('/make_booking', urlencodedParser, (req,res)=>{
   //console.log('lol');
   console.log(req.body);
-  console.log(req.body.day);
-  console.log(req.body.time);
+  //console.log(req.body.day);
+  //console.log(req.body.time);
   //console.log(req.body.user.email);
   //req.flash('success','Booking made!');
   //res.redirect('/account_page');
 
   //check if req object empty
+  /*
     var newBooking = new Booking();
     newBooking.name = req.body.name;
     newBooking.email = req.body.email;
@@ -201,7 +204,7 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
         console.log("Booking saved");
         //res.redirect('/');
       }
-    });
+    });*/
 
 
 });

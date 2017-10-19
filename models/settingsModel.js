@@ -40,7 +40,7 @@ var Setting = mongoose.model('Setting', settingsSchema);
 
 /*
 var s = new Setting({
-  times:["12:45","1:15","1:45","2:15","2:45"],
+  times:["12:45pm","1:15pm","1:45pm","2:15pm","2:45pm"],
   days:[days.MONDAY,days.TUESDAY,days.WEDNESDAY,days.THURSDAY,days.FRIDAY],
   isoWeekNumber: moment().isoWeek(),
   weeksAhead:4
@@ -51,7 +51,9 @@ s.save((err)=>{
   if(err){
     throw err;
   }
-})*/
+
+
+});*/
 
 
 

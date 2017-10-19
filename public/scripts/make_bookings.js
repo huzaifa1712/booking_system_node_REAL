@@ -9,7 +9,15 @@ $(document).ready(function(){
         //sends booking through AJAX
         var day =  $(this).closest('table').find('th').eq(this.cellIndex).text().replace(/\s+/g, '');
         var time =  $(this).parent().find("td").first().text().replace(/\s+/g, '');
+
+        var times = time.split("-");
+        var isoWeek = $("#bookings-table").data("weekNumber");
+        var year = $("#bookings-table").data("year");
         //var name = $(this).text().replace(/\s+/g, '');
+        var startTime = moment(day + "-" + times[0] + "-" + isoWeek + "-" + year, "dddd-hh:mma-WW-YYYY").toDate();
+        var endTime = moment(day + "-" + times[1] + "-" + isoWeek + "-" + year, "dddd-hh:mma-WW-YYYY").toDate();
+
+        console.log("Created time variables");
 
         //getting the user object so we can make a booking
         $.ajax({
@@ -22,10 +30,12 @@ $(document).ready(function(){
               type: 'POST',
               url:'/make_booking',
               data: {
-                day: day,
-                time:time,
                 name:response.name,
-                email:response.email
+                email:response.email,
+                date:{
+                  startTime: startTime,
+                  endTime: endTime
+                }
 
               },
               success:function(response){

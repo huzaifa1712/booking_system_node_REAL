@@ -32,8 +32,6 @@ $(document).ready(function(){
   $("#bookings-table").data("weekNumber", moment().isoWeek());
   $("#bookings-table").data("year", moment().year());
 
-
-
   //$('<div id = "schedule" class = "text-center">Schedule: June 12 to June 16</div>').insertBefore("#bookings-table");
 
   $.ajax({
