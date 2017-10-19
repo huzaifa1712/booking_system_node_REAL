@@ -32,6 +32,8 @@ $(document).ready(function(){
               data: {
                 name:response.name,
                 email:response.email,
+                day:day,
+                timeString:time,
                 date:{
                   startTime: startTime,
                   endTime: endTime

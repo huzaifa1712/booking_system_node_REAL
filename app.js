@@ -188,12 +188,15 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
   //res.redirect('/account_page');
 
   //check if req object empty
-  /*
+
     var newBooking = new Booking();
     newBooking.name = req.body.name;
     newBooking.email = req.body.email;
     newBooking.day = req.body.day;
-    newBooking.time = req.body.time;
+    newBooking.time = req.body.timeString;
+    newBooking.date.startTime = req.body.date.startTime;
+    newBooking.date.endTime = req.body.date.endTime;
+
 
     newBooking.save((err)=>{
       if(err){
@@ -204,7 +207,7 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
         console.log("Booking saved");
         //res.redirect('/');
       }
-    });*/
+    });
 
 
 });
