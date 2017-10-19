@@ -27,6 +27,12 @@ search through tds
 ];
 */
 $(document).ready(function(){
+  //storing weekNumber and year in the bookingsTable thing so we can use it
+  //later to make bookings
+  $("#bookings-table").data("weekNumber", moment().isoWeek());
+  $("#bookings-table").data("year", moment().year());
+
+
 
   //$('<div id = "schedule" class = "text-center">Schedule: June 12 to June 16</div>').insertBefore("#bookings-table");
 

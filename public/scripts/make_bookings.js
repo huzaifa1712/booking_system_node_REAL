@@ -1,4 +1,6 @@
 $(document).ready(function(){
+  console.log($("#bookings-table").data("weekNumber"))
+  console.log($("#bookings-table").data("year"))
   //$(this).data('attr') == 'filled') - to identify elements with bookings
   $('td').each(function(){
     if($(this).hasClass("booked") == false){
@@ -15,6 +17,7 @@ $(document).ready(function(){
           url:'/get_user',
           success:function(response){
             //response object is the user object
+            //Use moment to construct the date.
             $.ajax({
               type: 'POST',
               url:'/make_booking',
