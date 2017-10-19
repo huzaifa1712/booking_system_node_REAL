@@ -1,5 +1,6 @@
 var days = require('../days.js');
 var mongoose = require('mongoose');
+var moment = require('moment');
 /*
 Number of rows: corresponds to length of timesArray from function
 Number of heads: corresponds to length of days array
@@ -7,7 +8,9 @@ Number of heads: corresponds to length of days array
 var settingsSchema = mongoose.Schema({
   times: [String],
   days: [String],
-  weeksAhead:Number,
+  //current Week Number - can use it to get the date given a day and year
+  isoWeekNumber:Number,
+  weeksAhead:Number
 
 });
 
@@ -23,12 +26,34 @@ settingsSchema.virtual('returnTimes').get(function(){
   return returnArray;
 });
 
-var Settings = mongoose.model('Settings', settingsSchema);
-var s = new Settings({
+settingsSchema.virtual('startAndEndOfWeek').get(function(){
+  return{
+    startOfWeek:moment().isoWeek(this.isoWeekNumber).weekday(1).format("MMMM DD"),
+    endOfWeek:moment().isoWeek(this.isoWeekNumber).weekday(5).format("MMMM DD")
+  }
+});
+
+module.exports = mongoose.model('Setting',settingsSchema);
+
+
+//Code to test the above
+var Setting = mongoose.model('Setting', settingsSchema);
+var s = new Setting({
   times:["12:45","1:15","1:45","2:15","2:45"],
   days:[days.MONDAY,days.TUESDAY,days.WEDNESDAY,days.THURSDAY,days.FRIDAY],
+  isoWeekNumber: moment().isoWeek(),
   weeksAhead:4
 });
+
+mongoose.connect('mongodb://localhost/bookings');
+s.save((err)=>{
+  if(err){
+    throw err;
+  }
+})
+
+
+
 
 
 //console.log(settings.days);

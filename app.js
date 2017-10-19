@@ -12,6 +12,7 @@ var settings = require('./setting.js');
 var fs = require('fs');
 
 var Booking = require('./models/bookingSimple');
+var Setting = require('./models/settingsModel')
 
 var app = express();
 
@@ -112,14 +113,14 @@ app.get('/test_bookings_get',(req,res)=>{
 //populate bookings uses this route to get the bookings and populate the table
 app.get('/bookings',(req,res)=>{
 //call to db for bookings
-var bookingsArray = [];
+//var bookingsArray = [];
 Booking.find(function(err,bookings){
   if(err){
     throw err;
   }
 
   else{
-    console.log("Booking variable");
+    //console.log("Booking variable");
     res.json(JSON.stringify(bookings));
   }
 });
