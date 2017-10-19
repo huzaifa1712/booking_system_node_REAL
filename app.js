@@ -78,6 +78,7 @@ app.get('/',(req,res)=>{
 
 app.get('/account_page',isLoggedIn, (req,res)=>{
   res.render('account_page',{
+    //TODO:replace with call to db for settings
     user:req.user,
     days:settings.days,
     times:settings.returnTimes(settings.times)
@@ -85,11 +86,13 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
 
 });
 
+//Unnecessary - remove it later
 app.get('/bookings_table',(req,res)=>{
 
 });
 
 //test for getting bookings from the database
+//Unnecessary - remove it later
 app.get('/test_bookings_get',(req,res)=>{
   Booking.find(function(err,bookings){
     if(err){
@@ -104,7 +107,7 @@ app.get('/test_bookings_get',(req,res)=>{
 
   });
 
-//test for populate bookings
+//populate bookings uses this route to get the bookings and populate the table
 app.get('/bookings',(req,res)=>{
 //call to db for bookings
 var bookingsArray = [];
@@ -144,6 +147,7 @@ Booking.find(function(err,bookings){
   res.json(JSON.stringify(bookings));*/
 });
 
+//this route takes the Booking information and saves it
 app.post('/make_booking', urlencodedParser, (req,res)=>{
   //console.log('lol');
   console.log(req.body);
