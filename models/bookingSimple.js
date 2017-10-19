@@ -5,8 +5,7 @@ var mongoose = require('mongoose');
 var bookingSchema = mongoose.Schema({
   name:String,
   email:String,
-  day:String,
-  time:String,
+  date:Date
 
 });
 /*

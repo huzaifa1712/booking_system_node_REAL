@@ -9,4 +9,20 @@ var userSchema = mongoose.Schema({
 
 });
 
+class User{
+  get firstName(){
+    return this.name.split(" ")[0];
+  }
+
+  get lastName(){
+    return this.name.split(" ")[1];
+
+  }
+
+  //if it's just a normal getter method with nothing else it won't let you do it
+  //cause that's already possible by just doing .email, etc
+}
+
+userSchema.loadClass(User);
+
 module.exports = mongoose.model('User',userSchema);

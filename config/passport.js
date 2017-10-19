@@ -40,8 +40,9 @@ module.exports = function(passport){
             newUser.token = accessToken;
             newUser.name = profile.displayName;
             newUser.email = profile.emails[0].value;
-            newUser.isADmin = false;
+            newUser.isAdmin = false;
 
+            console.log(newUser.firstName);
             newUser.save((err)=>{
               if(err){
                 throw err;
