@@ -52,3 +52,17 @@ thead{
   border-width:3px;
   border-color:#B6282D;
 }
+
+#booking-modal{
+  color:white;
+  font-size:1.5em;
+
+}
+
+.submit{
+  background-color:#49748A;
+  color:white;
+}
+.btn-danger{
+  background-color:#B6282D;
+}

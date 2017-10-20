@@ -14,13 +14,37 @@ var bookingSchema = mongoose.Schema({
   date:{
     startTime:Date,
     endTime:Date
-  }
+  },
+  reminder:String
 });
 
 class Booking{
   //returns bookings with that week number
   get isoWeekNum(){
     return moment(this.date.startTime).isoWeek();
+  }
+
+  get reminderInMinutes(){
+    switch(this.reminder){
+      case 'none':
+        return 0;
+        break;
+      case '4h':
+        return 4*60;
+        break;
+      case '12h':
+        return 12*60;
+        break;
+      case '1d':
+        return 24*60;
+        break;
+      case '1w':
+        return 24*60*7;
+        break;
+      default:
+        0;
+
+    }
   }
 
   //returns bookings with certain isoWeekNumber

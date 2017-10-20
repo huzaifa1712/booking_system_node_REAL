@@ -70,6 +70,11 @@ app.set('view engine','pug');
 
 //normal routes
 app.get('/',(req,res)=>{
+  Booking.find({},function(err,bookings){
+    for(var i = 0; i < bookings.length; i++){
+      console.log(bookings[i].reminderInMinutes);
+    }
+  });
   Setting.find(function(err,settings){
     if(err){
       throw err;
@@ -204,6 +209,7 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
     newBooking.time = req.body.timeString;
     newBooking.date.startTime = req.body.startTime;
     newBooking.date.endTime = req.body.endTime;
+    newBooking.reminder = req.body.reminder;
     console.log(newBooking);
     //console.log("Booking isoWeekNum: " + newBooking.isoWeekNum);
 

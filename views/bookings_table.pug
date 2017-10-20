@@ -19,10 +19,30 @@ html
               td=time
               each day in days
                 td(title = "Make a booking")
-    div#myModal
-  
-        
-        
+    div#booking-modal.modal.fade(role = "dialog")
+      div.modal-dialog
+        div.modal-header
+          button(type = "button" data-dismiss="modal").close &times;
+          h4.modal-title How long before the booking do you want to be reminded?
+        div.modal-body 
+          div.radio
+            input(type = "radio" name = "reminder" value = "none") 
+            label None
+          div.radio
+            input(type = "radio" name = "reminder" value = "4h") 
+            label 4 hours
+          div.radio
+            input(type = "radio" name = "reminder" value = "12h")
+            label 12 hours
+          div.radio
+            input(type = "radio" name = "reminder" value = "1d")
+            label 1 day
+          div.radio
+            input(type = "radio" name = "reminder" value = "1w")
+            label 1 week
+        div.modal-footer 
+          button(type = "button")#submitBtn.btn.btn-default.btn-info Submit
+          button(type = "button" data-dismiss = "modal").btn.btn-default.btn-danger Close
   script(src = "/bower_components/jquery/dist/jquery.js")
   script(src = "/bower_components/bootstrap/dist/js/bootstrap.js")
   script(src= "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.js")
