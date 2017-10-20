@@ -181,6 +181,9 @@ Booking.find(function(err,bookings){
 app.post('/make_booking', urlencodedParser, (req,res)=>{
   //console.log('lol');
   console.log(req.body);
+  console.log(req.body.timeString);
+  console.log(req.body.startTime);
+  console.log(req.body.endTime);
   //console.log(req.body.day);
   //console.log(req.body.time);
   //console.log(req.body.user.email);
@@ -194,9 +197,8 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
     newBooking.email = req.body.email;
     newBooking.day = req.body.day;
     newBooking.time = req.body.timeString;
-    newBooking.date.startTime = req.body.date.startTime;
-    newBooking.date.endTime = req.body.date.endTime;
-
+    newBooking.date.startTime = req.body.startTime;
+    newBooking.date.endTime = req.body.endTime;
 
     newBooking.save((err)=>{
       if(err){
