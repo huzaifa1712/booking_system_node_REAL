@@ -66,3 +66,21 @@ thead{
 .btn-danger{
   background-color:#B6282D;
 }
+
+#next-week{
+  margin:auto;
+  float:right;
+  background-color: #49748A;
+  color:white;
+  padding:10px;
+  font-size:110%;
+}
+
+#prev-week{
+  margin:auto;
+  float:right;
+  background-color: #B6282D;
+  color:white;
+  padding:10px;
+  font-size:110%;
+}

@@ -7,6 +7,9 @@ html
     link(rel="stylesheet", href="/css/style.css")
   .container-fluid
     h3#schedule.text-center Schedule: #{startAndEnd.startOfWeek} to #{startAndEnd.endOfWeek}
+    div
+      button(type = "button")#next-week.btn.btn-default See next week
+      button(type = "button")#prev-week.btn.btn-default See previous week
     table#bookings-table.table.table-bordered.table-responsive.table-striped(style = "border: 2px solid #6F7C7D;font-size:150%;")
       thead
         tr

@@ -70,11 +70,6 @@ app.set('view engine','pug');
 
 //normal routes
 app.get('/',(req,res)=>{
-  Booking.find({},function(err,bookings){
-    for(var i = 0; i < bookings.length; i++){
-      console.log(bookings[i].reminderInMinutes);
-    }
-  });
   Setting.find(function(err,settings){
     if(err){
       throw err;
