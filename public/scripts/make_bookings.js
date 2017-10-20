@@ -1,6 +1,7 @@
+
 $(document).ready(function(){
   console.log($("#bookings-table").data("weekNumber"))
-  console.log($("#bookings-table").data("year"))
+  console.log($("#bookings-table").data("year"));
   //$(this).data('attr') == 'filled') - to identify elements with bookings
   $('td').each(function(){
     if($(this).hasClass("booked") == false){
@@ -21,12 +22,13 @@ $(document).ready(function(){
         var year = $("#bookings-table").data("year");
         console.log("Year: " + year);
         console.log("is year an int: " + Number.isInteger(year));
+        console.log('startTime: ' + Time.startAndEndTimes(day,times,isoWeek,year).startDate);
+        console.log('endTime: ' + Time.startAndEndTimes(day,times,isoWeek,year).endDate);
 
         //var name = $(this).text().replace(/\s+/g, '');
         console.log("Date string to format: " + day + "-" + times[0] + "-" + isoWeek + "-" + year);
-        var startTime = moment(day + "-" + times[0] + "-" + isoWeek + "-" + year, "dddd-hh:mma-WW-YYYY").toDate();
-        var endTime = moment(day + "-" + times[1] + "-" + isoWeek + "-" + year, "dddd-hh:mma-WW-YYYY").toDate();
-
+        var startTime = Time.startAndEndTimes(day,times,isoWeek,year).startDate;
+        var endTime = Time.startAndEndTimes(day,times,isoWeek,year).endDate;
         console.log("Created time variables");
         console.log(startTime);
         console.log(endTime);

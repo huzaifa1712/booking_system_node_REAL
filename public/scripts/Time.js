@@ -1,5 +1,4 @@
-let moment = require('moment');
-module.exports = class Time{
+ class Time{
     static startAndEndTimes(day,times,isoWeekNum,year){
     var isoWeekDay = moment(day,"dddd").isoWeekday();
     var startTimeString = isoWeekDay + "-" + times[0] + "-" + isoWeekNum + "-" + year;

@@ -37,7 +37,7 @@ $(document).ready(function(){
   $.ajax({
     type:'GET',
     async:false,
-    url:'/bookings',
+    url:'/bookings/' + $("#bookings-table").data("weekNumber"),
     //success function : receives a response string consisting of an array
     //of booking objects. We will have to convert the JSOn string into
     //valid JSON first
@@ -54,7 +54,7 @@ $(document).ready(function(){
 
         //loop through the bookings array sent as response
         for(var i = 0; i < responseArr.length; i++){
-          var dayFromBooking = responseArr[i].day;
+          var dayFromBooking = moment(responseArr[i].date.startTime).format("dddd");
           dayFromBooking = dayFromBooking.replace(/\s+/g, '');
 
           var timeFromBooking = responseArr[i].time;

@@ -13,6 +13,7 @@ var fs = require('fs');
 
 var Booking = require('./models/bookingSimple');
 var Setting = require('./models/settingsModel')
+var moment = require('moment');
 
 var app = express();
 
@@ -75,7 +76,7 @@ app.get('/',(req,res)=>{
     }
 
     else{
-      console.log(settings);
+      //console.log(settings);
       //console.log(settings[0].days);
       //console.log(settings[0].returnTimes);
       var startAndEnd = settings[0].startAndEndOfWeek;
@@ -138,9 +139,10 @@ app.get('/test_bookings_get',(req,res)=>{
   });
 
 //populate bookings uses this route to get the bookings and populate the table
-app.get('/bookings',(req,res)=>{
+app.get('/bookings/:isoWeekNum',(req,res)=>{
 //call to db for bookings
 //var bookingsArray = [];
+
 Booking.find(function(err,bookings){
   if(err){
     throw err;
@@ -148,7 +150,10 @@ Booking.find(function(err,bookings){
 
   else{
     //console.log("Booking variable");
-    res.json(JSON.stringify(bookings));
+    var bookingsArr = bookings.filter(function(booking){
+      return moment(booking.date.startTime).isoWeek() == req.params.isoWeekNum;
+    });
+    res.json(JSON.stringify(bookingsArr));
   }
 });
 
@@ -199,6 +204,8 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
     newBooking.time = req.body.timeString;
     newBooking.date.startTime = req.body.startTime;
     newBooking.date.endTime = req.body.endTime;
+    console.log(newBooking.isoWeekNum);
+    //console.log("Booking isoWeekNum: " + newBooking.isoWeekNum);
 
     newBooking.save((err)=>{
       if(err){
@@ -217,6 +224,7 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
 //a route that sends back a user JSON object which can be used when making bookings
 app.get('/get_user', isLoggedIn,(req,res)=>{
   console.log("User body: ");
+  console.log(req.user);
   var user =  {
     name: req.user.name,
     email: req.user.email
