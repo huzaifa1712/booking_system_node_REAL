@@ -40,13 +40,15 @@ $(document).ready(function(){
           success:function(response){
             //response object is the user object
             //Use moment to construct the date.
+            console.log("user: ");
+            console.log(response);
             $.ajax({
               type: 'POST',
               url:'/make_booking',
               data: {
+                id:response._id,
                 name:response.name,
                 email:response.email,
-                day:day,
                 timeString:time,
                 startTime: startTime,
                 endTime: endTime

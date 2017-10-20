@@ -198,13 +198,13 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
   //check if req object empty
 
     var newBooking = new Booking();
-    newBooking.name = req.body.name;
-    newBooking.email = req.body.email;
-    newBooking.day = req.body.day;
+    newBooking.user.id = req.body.id;
+    newBooking.user.name = req.body.name;
+    newBooking.user.email = req.body.email;
     newBooking.time = req.body.timeString;
     newBooking.date.startTime = req.body.startTime;
     newBooking.date.endTime = req.body.endTime;
-    console.log(newBooking.isoWeekNum);
+    console.log(newBooking);
     //console.log("Booking isoWeekNum: " + newBooking.isoWeekNum);
 
     newBooking.save((err)=>{
@@ -225,12 +225,8 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
 app.get('/get_user', isLoggedIn,(req,res)=>{
   console.log("User body: ");
   console.log(req.user);
-  var user =  {
-    name: req.user.name,
-    email: req.user.email
-  }
-  console.log(user);
-  res.json(user);
+
+  res.json(req.user);
 });
 
 app.get('/logout',(req,res)=>{

@@ -3,14 +3,18 @@ var moment = require('moment');
 /* Referencing another Schema: https://stackoverflow.com/questions/18001478/referencing-another-schema-in-mongoose*/
 
 var bookingSchema = mongoose.Schema({
-  name:String,
-  email:String,
+  /*name:String,
+  email:String,*/
+  user: {
+    id:String,
+    name:String,
+    email:String
+  },
   time:String,
   date:{
     startTime:Date,
     endTime:Date
   }
-
 });
 
 class Booking{

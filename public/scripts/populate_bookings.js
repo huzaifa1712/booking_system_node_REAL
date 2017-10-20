@@ -43,6 +43,7 @@ $(document).ready(function(){
     //valid JSON first
     success:function(response){
       var responseArr = JSON.parse(response);
+      console.log(responseArr);
 
       //Loop through all the table cells(td)
       $('td').each(function(){
@@ -55,12 +56,13 @@ $(document).ready(function(){
         //loop through the bookings array sent as response
         for(var i = 0; i < responseArr.length; i++){
           var dayFromBooking = moment(responseArr[i].date.startTime).format("dddd");
+          console.log(dayFromBooking);
           dayFromBooking = dayFromBooking.replace(/\s+/g, '');
 
           var timeFromBooking = responseArr[i].time;
           timeFromBooking = timeFromBooking.replace(/\s+/g, '');
-
-          var name = responseArr[i].name.split(" ")[0];
+          console.log(responseArr[i].email);
+          var name = responseArr[i].user.name.split(" ")[0];
           name = name.replace(/\s+/g, '');
 
           //if day and time of the object match day and time of the cell, print the name in the cell
