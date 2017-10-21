@@ -1,4 +1,6 @@
  class Time{
+   //returns the startTime and endTime as Date objects to be used when
+   //making a booking (make_bookings.js)
     static startAndEndTimes(day,times,isoWeekNum,year){
     var isoWeekDay = moment(day,"dddd").isoWeekday();
     var startTimeString = isoWeekDay + "-" + times[0] + "-" + isoWeekNum + "-" + year;

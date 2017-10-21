@@ -79,7 +79,7 @@ app.get('/',(req,res)=>{
       //console.log(settings);
       //console.log(settings[0].days);
       //console.log(settings[0].returnTimes);
-      var startAndEnd = settings[0].startAndEndOfWeek;
+      //var startAndEnd = settings[0].startAndEndOfWeek;
       //console.log(settings[0].returnTimes);
 
       res.render('index',{
@@ -87,7 +87,7 @@ app.get('/',(req,res)=>{
         //EVERY PAGE WITH A BOOKINGS TABLE NEEDS TO LOAD SETTINGS
         days:settings[0].days,
         times:settings[0].returnTimes,
-        startAndEnd:startAndEnd
+        //startAndEnd:startAndEnd
       });
 
     }
@@ -102,7 +102,7 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
     }
 
     else{
-      var startAndEnd = settings[0].startAndEndOfWeek;
+      //var startAndEnd = settings[0].startAndEndOfWeek;
       //console.log(settings[0].returnTimes);
       res.render('account_page',{
         //TODO:replace with call to db for settings
@@ -110,7 +110,7 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
         user:req.user,
         days:settings[0].days,
         times:settings[0].returnTimes,
-        startAndEnd:startAndEnd
+        //startAndEnd:startAndEnd
 
       });
     }
@@ -143,6 +143,9 @@ app.get('/bookings/:isoWeekNum',(req,res)=>{
 //call to db for bookings
 //var bookingsArray = [];
 
+//returns bookings only with that isoWeekNum
+//TODO: make it so that it returns based on Space AND isoWeekNum once spaces
+//are being implemented
 Booking.find(function(err,bookings){
   if(err){
     throw err;
@@ -228,6 +231,21 @@ app.get('/get_user', isLoggedIn,(req,res)=>{
   console.log(req.user);
 
   res.json(req.user);
+});
+
+//returns the maximum week number
+app.get('/maxWeekNum', (req,res)=>{
+  Setting.find({},(err,settings)=>{
+    if(err){
+      throw err;
+    }
+
+    else{
+      var maxWeekNum = moment().isoWeek() + settings[0].weeksAhead;
+      console.log("max week num: " + maxWeekNum);
+      res.send(maxWeekNum.toString());
+    }
+  });
 });
 
 app.get('/logout',(req,res)=>{

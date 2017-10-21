@@ -26,24 +26,18 @@ search through tds
   }
 ];
 */
-$(document).ready(function(){
-  //storing weekNumber and year in the bookingsTable thing so we can use it
-  //later to make bookings
-  $("#bookings-table").data("weekNumber", moment().isoWeek());
-  $("#bookings-table").data("year", moment().year());
 
-  //$('<div id = "schedule" class = "text-center">Schedule: June 12 to June 16</div>').insertBefore("#bookings-table");
-
+function populateBookings(isoWeekNum){
   $.ajax({
     type:'GET',
     async:false,
-    url:'/bookings/' + $("#bookings-table").data("weekNumber"),
+    url:'/bookings/' + isoWeekNum,
     //success function : receives a response string consisting of an array
     //of booking objects. We will have to convert the JSOn string into
     //valid JSON first
     success:function(response){
       var responseArr = JSON.parse(response);
-      console.log(responseArr);
+      //console.log(responseArr);
 
       //Loop through all the table cells(td)
       $('td').each(function(){
@@ -56,12 +50,12 @@ $(document).ready(function(){
         //loop through the bookings array sent as response
         for(var i = 0; i < responseArr.length; i++){
           var dayFromBooking = moment(responseArr[i].date.startTime).format("dddd");
-          console.log(dayFromBooking);
+        //  console.log(dayFromBooking);
           dayFromBooking = dayFromBooking.replace(/\s+/g, '');
 
           var timeFromBooking = responseArr[i].time;
           timeFromBooking = timeFromBooking.replace(/\s+/g, '');
-          console.log(responseArr[i].email);
+          //console.log(responseArr[i].email);
           var name = responseArr[i].user.name.split(" ")[0];
           name = name.replace(/\s+/g, '');
 
@@ -76,5 +70,90 @@ $(document).ready(function(){
       });
     }
   });
+}
 
+//TODO: later change this so it asks a route for the start and end days of the week,
+//given the Space selected, so we can use that to find the following:
+function setScheduleHeader(pageWeekNum){
+  var startOfWeek = moment().isoWeek(pageWeekNum).weekday(1).format("MMMM DD");
+  var endOfWeek = moment().isoWeek(pageWeekNum).weekday(5).format("MMMM DD");
+  $("#startOfWeek").text(startOfWeek + " to ");
+  $("#endOfWeek").text(endOfWeek);
+}
+
+/*function weekNumButtons(pageWeekNum){
+  var maxWeekNum = 0;
+  $.ajax({
+    type:'GET',
+    url:'/maxWeekNum',
+
+    success:function(response){
+      console.log("max week num: " + parseInt(response));
+       maxWeekNum = parseInt(response);
+    }
+  });
+
+  if(pageWeekNum == moment().isoWeek()){
+    //disable prevWeek button
+    $("#prev-week").prop("disabled",true);
+  }
+
+  else if(pageWeekNum > moment().isoWeek()){
+    //enable prev week button
+    $("#prev-week").prop("disabled",false);
+  }
+
+  else if(pageWeekNum >= maxWeekNum){
+    $("#next-week").prop("disabled",true);
+    console.log("disabled next week");
+  }
+
+  $("#prev-week").click(function(){
+    //if NOT(pageWeekNum equals realtime currentWeekNum), decrease
+    if(!(pageWeekNum <= moment().isoWeek())){
+      pageWeekNum = pageWeekNum - 1;
+      $("#bookings-table").data("weekNumber", pageWeekNum);
+      weekNumButtons(pageWeekNum);
+      populateBookings(pageWeekNum);
+    }
+
+  });
+
+  $("#next-week").click(function(){
+    if(!(pageWeekNum >= maxWeekNum)){
+      pageWeekNum = pageWeekNum + 1;
+      $("#bookings-table").data("weekNumber", pageWeekNum);
+      weekNumButtons(pageWeekNum);
+      populateBookings(pageWeekNum);
+    }
+  });
+
+  console.log("pageWeekNum: " + pageWeekNum);
+  populateBookings(pageWeekNum);
+
+}*/
+
+$(document).ready(function(){
+  //storing weekNumber and year in the bookingsTable thing so we can use it
+  //later to make bookings
+  if(!$("bookings-table").data("weekNumber")){
+    //when page loads, if it's empty it will populate the field
+    //if not empty, that means a button was clicked so it's ok
+    //even if we press previous till we're down to the currentWeekNum, still ok
+    $("#bookings-table").data("weekNumber", moment().isoWeek());
+  }
+
+  else{
+    //do nothing
+  }
+  //$("#bookings-table").data("weekNumber", moment().isoWeek());
+  $("#bookings-table").data("year", moment().year());
+
+var pageWeekNum = $("#bookings-table").data("weekNumber");
+//var maxWeekNum = 0;
+  //$('<div id = "schedule" class = "text-center">Schedule: June 12 to June 16</div>').insertBefore("#bookings-table");
+console.log("apgeweekn: " + pageWeekNum);
+
+setScheduleHeader(pageWeekNum);
+populateBookings(pageWeekNum);
 });

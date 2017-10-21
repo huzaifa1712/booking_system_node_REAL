@@ -27,6 +27,9 @@ settingsSchema.virtual('returnTimes').get(function(){
 });
 
 settingsSchema.virtual('startAndEndOfWeek').get(function(){
+  //to be used for rendering e.g 'Oct 16 to Oct 20'
+  //could replace weekday thing with the start and end day of the spaces
+  //e.g if space goes from Tuesday to Thursday use those to generate the dates
   return{
     startOfWeek:moment().isoWeek(this.isoWeekNumber).weekday(1).format("MMMM DD"),
     endOfWeek:moment().isoWeek(this.isoWeekNumber).weekday(5).format("MMMM DD")

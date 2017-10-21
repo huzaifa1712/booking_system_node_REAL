@@ -6,7 +6,9 @@ html
     link(rel="stylesheet", href="/bower_components/bootstrap/dist/css/bootstrap.css")
     link(rel="stylesheet", href="/css/style.css")
   .container-fluid
-    h3#schedule.text-center Schedule: #{startAndEnd.startOfWeek} to #{startAndEnd.endOfWeek}
+    h3#schedule.text-center Schedule: 
+      span#startOfWeek 
+      span#endOfWeek 
     div
       button(type = "button")#next-week.btn.btn-default See next week
       button(type = "button")#prev-week.btn.btn-default See previous week
