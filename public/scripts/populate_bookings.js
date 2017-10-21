@@ -27,6 +27,8 @@ search through tds
 ];
 */
 
+//this function populates the bookings based on the isoWeekNumber passed in
+//uses this weeknum to request bookings that are in that week.
 function populateBookings(isoWeekNum){
   $.ajax({
     type:'GET',
@@ -37,7 +39,7 @@ function populateBookings(isoWeekNum){
     //valid JSON first
     success:function(response){
       var responseArr = JSON.parse(response);
-      //console.log(responseArr);
+      console.log(responseArr);
 
       //Loop through all the table cells(td)
       $('td').each(function(){
@@ -75,10 +77,60 @@ function populateBookings(isoWeekNum){
 //TODO: later change this so it asks a route for the start and end days of the week,
 //given the Space selected, so we can use that to find the following:
 function setScheduleHeader(pageWeekNum){
-  var startOfWeek = moment().isoWeek(pageWeekNum).weekday(1).format("MMMM DD");
-  var endOfWeek = moment().isoWeek(pageWeekNum).weekday(5).format("MMMM DD");
+  var startOfWeek = moment().isoWeek(pageWeekNum).weekday(1).format("MMMM D");
+  var endOfWeek = moment().isoWeek(pageWeekNum).weekday(5).format("MMMM D");
   $("#startOfWeek").text(startOfWeek + " to ");
   $("#endOfWeek").text(endOfWeek);
+}
+
+//requests and gets the maxWeekNumber possible. ajax request set to async false
+//because otherwise it just returns 0
+function getMaxWeekNum(){
+  var maxWeekNum = 0;
+  $.ajax({
+    type:'GET',
+    url:'/maxWeekNum',
+    async:false,
+    success:function(response){
+      console.log("max week num: " + parseInt(response));
+       maxWeekNum = parseInt(response);
+    }
+  });
+
+  return maxWeekNum;
+}
+
+//this function disables and enables the next and previous week buttons based on
+//the page week num
+function enableAndDisableButtons(pageWeekNum,maxWeekNum){
+  if(pageWeekNum == moment().isoWeek()){
+    //disable prevWeek button
+    $("#next-week").prop("disabled",false);
+    $("#prev-week").prop("disabled",true);
+
+
+  }
+
+  else if(pageWeekNum >= maxWeekNum){
+    $("#next-week").prop("disabled",true);
+    $("#prev-week").prop("disabled",false);
+
+  }
+
+  else if(pageWeekNum > moment().isoWeek()){
+    //enable prev week button
+    $("#next-week").prop("disabled",false);
+    $("#prev-week").prop("disabled",false);
+
+
+  }
+
+}
+
+function loadPage(pageWeekNum, maxWeekNum){
+  setScheduleHeader(pageWeekNum);
+  enableAndDisableButtons(pageWeekNum,maxWeekNum);
+  populateBookings(pageWeekNum);
 }
 
 /*function weekNumButtons(pageWeekNum){
@@ -150,10 +202,31 @@ $(document).ready(function(){
   $("#bookings-table").data("year", moment().year());
 
 var pageWeekNum = $("#bookings-table").data("weekNumber");
+//pageWeekNum = pageWeekNum + 1;
 //var maxWeekNum = 0;
   //$('<div id = "schedule" class = "text-center">Schedule: June 12 to June 16</div>').insertBefore("#bookings-table");
-console.log("apgeweekn: " + pageWeekNum);
+var maxWeekNum = getMaxWeekNum();
 
-setScheduleHeader(pageWeekNum);
-populateBookings(pageWeekNum);
+$("#prev-week").click(function(){
+  //if NOT(pageWeekNum equals realtime currentWeekNum), decrease
+  if(!(pageWeekNum <= moment().isoWeek())){
+    pageWeekNum = pageWeekNum - 1;
+    $("#bookings-table").data("weekNumber", pageWeekNum);
+    console.log("prevWeek pageWeekNum: " + pageWeekNum);
+    loadPage(pageWeekNum, maxWeekNum);
+  }
+
+});
+
+$("#next-week").click(function(){
+  if(!(pageWeekNum >= maxWeekNum)){
+    pageWeekNum = pageWeekNum + 1;
+    $("#bookings-table").data("weekNumber", pageWeekNum);
+    console.log("nextWeek pageWeekNum: " + pageWeekNum);
+    loadPage(pageWeekNum,maxWeekNum);
+  }
+});
+
+
+loadPage(pageWeekNum, maxWeekNum);
 });
