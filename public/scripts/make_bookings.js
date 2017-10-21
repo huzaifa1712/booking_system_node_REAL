@@ -1,5 +1,6 @@
 
 $(document).ready(function(){
+  console.log("Make bookings.js")
   console.log($("#bookings-table").data("weekNumber"))
   console.log($("#bookings-table").data("year"));
   //$(this).data('attr') == 'filled') - to identify elements with bookings
@@ -8,6 +9,8 @@ $(document).ready(function(){
       //add a click event if it is NOT filled
       $(this).click(function(){
         //sends booking through AJAX
+
+        //Modal trigger
         $(this).attr("data-toggle","modal");
         $(this).attr("data-target","#booking-modal");  //sets it so that it opens a modal when clicked
 
