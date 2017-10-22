@@ -3,17 +3,21 @@
 function getBookingFields(rowIndex,columnIndex){
   var tableCell = $('#bookings-table tr').eq(rowIndex + 1).find('td').eq(columnIndex);
 
+  //day for Booking
   var day =  $(tableCell).closest('table').find('th').eq(columnIndex).text().replace(/\s+/g, '');
   console.log("Day: " + day);
+  //timeString - e.g 12:45 - 1:45
   var time =  $(tableCell).parent().find("td").first().text().replace(/\s+/g, '');
   console.log("Time: " + time);
 
+  //array of the times so we can get start and end date -e.g [12:45,1:15]
   var times = time.split("-");
   console.log("Times array: " + times);
+  //page isoWeekNumber so we know which weeknumber we are booking for
   var isoWeek = $("#bookings-table").data("weekNumber");
   console.log("Week num: " + isoWeek);
   console.log("is weeknum an int: " + Number.isInteger(isoWeek));
-
+  //year - TODO: make it so that the year stored changes with pagination too
   var year = $("#bookings-table").data("year");
   console.log("Year: " + year);
   console.log("is year an int: " + Number.isInteger(year));
@@ -22,16 +26,23 @@ function getBookingFields(rowIndex,columnIndex){
 
   //var name = $(this).text().replace(/\s+/g, '');
   console.log("Date string to format: " + day + "-" + times[0] + "-" + isoWeek + "-" + year);
+  //start and end times as Date objects
   var startTime = Time.startAndEndTimes(day,times,isoWeek,year).startDate;
   var endTime = Time.startAndEndTimes(day,times,isoWeek,year).endDate;
   console.log("Created time variables");
   console.log(startTime);
   console.log(endTime);
 
+  //the selected value for the dropdown for space - taking out spaces for sanity
+  var selectedVal = $(".dropdown-menu li a").parents(".dropdown").find('.btn').text().replace(/\s+/g, '');
+  console.log("Selected value from dropdown:" + selectedVal);
+
+
   return {
     time:time,
     startTime:startTime,
-    endTime:endTime
+    endTime:endTime,
+    space:selectedVal
   }
 }
 
@@ -149,7 +160,8 @@ $(document).ready(function(){
               timeString:bookingFields.time,
               startTime: bookingFields.startTime,
               endTime: bookingFields.endTime,
-              reminder:reminderValue
+              reminder:reminderValue,
+              space:bookingFields.space
 
             },
             success:function(response){

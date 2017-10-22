@@ -124,10 +124,6 @@ function populateBookings(isoWeekNum){
   });
 }
 
-
-
-
-
 //TODO: later change this so it asks a route for the start and end days of the week,
 //given the Space selected, so we can use that to find the following:
 function setScheduleHeader(pageWeekNum){
@@ -152,6 +148,11 @@ function getMaxWeekNum(){
   });
 
   return maxWeekNum;
+}
+
+function getSelectedSpace(){
+  var selectedVal = $(".dropdown-menu li a").parents(".dropdown").find('.btn').text().replace(/\s+/g, '');
+  return selectedVal;
 }
 
 //this function disables and enables the next and previous week buttons based on
@@ -191,6 +192,8 @@ function loadPage(pageWeekNum, maxWeekNum){
   enableAndDisableButtons(pageWeekNum,maxWeekNum);
   setDropdownButton();
   removeAllBookings();
+  //var selectedVal = $(".dropdown-menu li a").parents(".dropdown").find('.btn').text();
+  //console.log("loadPage:" + selectedVal.replace(/\s+/g, ''));
   populateBookings(pageWeekNum);
 }
 
@@ -246,6 +249,8 @@ $("#next-week").click(function(){
 $(".dropdown-menu li a").click(function(){
   $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
   $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+  //var selectedVal = $(this).parents(".dropdown").find('.btn').text();
+  //console.log(selectedVal);
 });
   //$(".dropdown-toggle").dropdown("toggle");
 
@@ -253,6 +258,8 @@ $(".dropdown-menu li a").click(function(){
 
 
 loadPage(pageWeekNum, maxWeekNum);
+//var selectedVal = $(".dropdown-menu li a").parents(".dropdown").find('.btn').text();
+//console.log("Outside:" + selectedVal.replace(/\s+/g, ''));
 //populateBookings(pageWeekNum);
 
 });

@@ -212,6 +212,7 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
     newBooking.date.startTime = req.body.startTime;
     newBooking.date.endTime = req.body.endTime;
     newBooking.reminder = req.body.reminder;
+    newBooking.space = req.body.space;
     console.log(newBooking);
     //console.log("Booking isoWeekNum: " + newBooking.isoWeekNum);
 
