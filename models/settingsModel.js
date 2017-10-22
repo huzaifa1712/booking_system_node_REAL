@@ -9,7 +9,9 @@ var settingsSchema = mongoose.Schema({
   times: [String],
   days: [String],
   //current Week Number - can use it to get the date given a day and year
-  spaces:[String],
+  spaces:[
+    {type:mongoose.Schema.Types.ObjectId,ref:'Space'}
+  ],
   weeksAhead:Number
 
 });
@@ -17,6 +19,8 @@ var settingsSchema = mongoose.Schema({
 //a virtual is a property that does not get persisted to the DB. Can call this property in code
 //have set this prop to the result of the returnTimes function so we can have
 //one property for the times and another for the thing to display in the table
+
+/*
 settingsSchema.virtual('returnTimes').get(function(){
   var returnArray = [];
   for(var i = 0; i < this.times.length-1; i++){
@@ -24,7 +28,7 @@ settingsSchema.virtual('returnTimes').get(function(){
   }
 
   return returnArray;
-});
+});*/
 
 settingsSchema.virtual('startAndEndOfWeek').get(function(){
   //to be used for rendering e.g 'Oct 16 to Oct 20'
@@ -36,19 +40,38 @@ settingsSchema.virtual('startAndEndOfWeek').get(function(){
   }
 });
 
+settingsSchema.statics.retTimes = function(times){
+  var returnArray = [];
+  for(var i = 0; i < times.length-1; i++){
+    returnArray.push(times[i] + " - " + times[i+1]);
+  }
+
+  return returnArray;
+}
+
 module.exports = mongoose.model('Setting',settingsSchema);
 
 
 var Setting = mongoose.model('Setting', settingsSchema);
 
+/*spaces:[
+  {
+  name:'Green Screen Room 1',
+  times:[String],
+  days:[String]
 
-/*var s = new Setting({
+  }
+]*/
+var s = new Setting({
   times:["12:45pm","1:15pm","1:45pm","2:15pm","2:45pm"],
   days:[days.MONDAY,days.TUESDAY,days.WEDNESDAY,days.THURSDAY,days.FRIDAY],
   spaces:['Green Screen Room 1', 'Green Screen Room 2'],
   weeksAhead:4
 });
 
+console.log(Setting.retTimes(["12:45pm","1:15pm","1:45pm","2:15pm","2:45pm"]));
+
+/*
 mongoose.connect('mongodb://localhost/bookings');
 s.save((err)=>{
   if(err){
@@ -57,7 +80,6 @@ s.save((err)=>{
 
 
 });*/
-
 
 
 

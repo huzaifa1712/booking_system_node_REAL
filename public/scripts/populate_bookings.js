@@ -155,11 +155,36 @@ function getSelectedSpace(){
   return selectedVal;
 }
 
+function getSettings(){
+  var days = [];
+  var times = [];
+  $.ajax({
+    url:'/getSettings',
+    async:false,
+    type:'GET',
+    success:function(response){
+      console.log("Settings:");
+      console.log(response);
+
+      days = response.days;
+      times = response.times;
+
+    }
+  });
+
+  return{
+    days:days,
+    times:times
+  }
+}
+
 function drawTable(){
   //times:["12:45pm","1:15pm","1:45pm","2:15pm","2:45pm"]
   //days:["Monday","Tuesday","Wednesday","Thursday","Friday"]
-  var times = ["12:45pm-1:15pm","1:15pm-1:45pm","1:45pm-2:15pm","2:15pm-2:45pm"];
-  var days = ["Monday","Tuesday","Wednesday","Thursday","Friday"];
+  var settings = getSettings();
+
+  var times = settings.times;
+  var days = settings.days;
 
   var table = $('#bookings-table');
   $('<thead><tr id = "timesRow"><th> Times </th>').appendTo(table);
@@ -289,6 +314,7 @@ $(".dropdown-menu li a").click(function(){
 
 drawTable();
 loadPage(pageWeekNum, maxWeekNum);
+console.log(getSelectedSpace());
 //var selectedVal = $(".dropdown-menu li a").parents(".dropdown").find('.btn').text();
 //console.log("Outside:" + selectedVal.replace(/\s+/g, ''));
 //populateBookings(pageWeekNum);

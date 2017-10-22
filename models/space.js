@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 
 var spaceSchema = mongoose.Schema({
   name:String,
-  availableDays:[String],
-  availableTimes:[String]
+  days:[String],
+  times:[String]
 });
 
 module.exports = mongoose.model('Space',spaceSchema);

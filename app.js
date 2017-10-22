@@ -69,6 +69,28 @@ app.set('view engine','pug');
   }))
 
 //normal routes
+//get the Settings required to render the table. TODO: include route param for
+//requesting settings by space
+app.get('/getSettings/:spaceName',(req,res)=>{
+  Setting.find({},function(err,settings){
+    if(err){
+      throw err;
+    }
+
+    else{
+      var days = settings[0].days;
+      var times = settings[0].returnTimes;
+
+      var settingsObj = {
+        days:days,
+        times:times
+      }
+
+      res.json(settingsObj);
+    }
+  });
+});
+
 app.get('/',(req,res)=>{
   //USES SETTINGS
   Setting.find(function(err,settings){
