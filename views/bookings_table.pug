@@ -21,7 +21,7 @@ html
         tbody
           each time in times
             tr
-              td=time
+              td.time=time
               each day in days
                 td(title = "Make a booking")
     div#booking-modal.modal.fade(role = "dialog")
@@ -51,6 +51,7 @@ html
   script(src = "/bower_components/jquery/dist/jquery.js")
   script(src = "/bower_components/bootstrap/dist/js/bootstrap.js")
   script(src= "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.js")
+  script(src = "/scripts/Time.js")
   script(src = "/scripts/populate_bookings.js")
 
 
