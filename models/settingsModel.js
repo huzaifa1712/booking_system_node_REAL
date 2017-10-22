@@ -9,7 +9,7 @@ var settingsSchema = mongoose.Schema({
   times: [String],
   days: [String],
   //current Week Number - can use it to get the date given a day and year
-  isoWeekNumber:Number,
+  spaces:[String],
   weeksAhead:Number
 
 });
@@ -41,11 +41,11 @@ module.exports = mongoose.model('Setting',settingsSchema);
 
 var Setting = mongoose.model('Setting', settingsSchema);
 
-/*
+
 var s = new Setting({
   times:["12:45pm","1:15pm","1:45pm","2:15pm","2:45pm"],
   days:[days.MONDAY,days.TUESDAY,days.WEDNESDAY,days.THURSDAY,days.FRIDAY],
-  isoWeekNumber: moment().isoWeek(),
+  spaces:['Green Screen Room 1', 'Green Screen Room 2'],
   weeksAhead:4
 });
 
@@ -56,7 +56,7 @@ s.save((err)=>{
   }
 
 
-});*/
+});
 
 
 
