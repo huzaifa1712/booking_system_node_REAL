@@ -22,17 +22,7 @@ html
       button(type = "button")#prev-week.btn.btn-default See previous week
     
     table#bookings-table.table.table-bordered.table-responsive.table-striped(style = "border: 2px solid #6F7C7D;font-size:150%;")
-      thead
-        tr
-          th Times
-          each day in days
-            th=day
-        tbody
-          each time in times
-            tr
-              td.time=time
-              each day in days
-                td(title = "Make a booking")
+      
     div#booking-modal.modal.fade(role = "dialog")
       div.modal-dialog
         div.modal-header

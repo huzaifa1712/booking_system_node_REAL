@@ -155,6 +155,37 @@ function getSelectedSpace(){
   return selectedVal;
 }
 
+function drawTable(){
+  //times:["12:45pm","1:15pm","1:45pm","2:15pm","2:45pm"]
+  //days:["Monday","Tuesday","Wednesday","Thursday","Friday"]
+  var times = ["12:45pm-1:15pm","1:15pm-1:45pm","1:45pm-2:15pm","2:15pm-2:45pm"];
+  var days = ["Monday","Tuesday","Wednesday","Thursday","Friday"];
+
+  var table = $('#bookings-table');
+  $('<thead><tr id = "timesRow"><th> Times </th>').appendTo(table);
+
+  var timesRow = $('#timesRow');
+
+  //determines number of columns
+  for(var i = 0; i < days.length; i++){
+    $('<th>' + days[i] + '</th>').appendTo(timesRow);
+  }
+
+  $('<tbody>').appendTo(table);
+  var tBody = $('tbody');
+
+  //determines number of rows
+  for(var i = 0; i < times.length; i++){
+    var tr = $('<tr>');
+    $('<td class = "time">' + times[i] + "</td>").appendTo(tr);
+
+    for(var j = 0; j < days.length; j++){
+      $('<td title = "Make a booking"> </td>').appendTo(tr);
+    }
+    tr.appendTo(tBody);
+  }
+}
+
 //this function disables and enables the next and previous week buttons based on
 //the page week num
 function enableAndDisableButtons(pageWeekNum,maxWeekNum){
@@ -256,7 +287,7 @@ $(".dropdown-menu li a").click(function(){
 
   //Sets the dropdown button the value of the first element upon loading
 
-
+drawTable();
 loadPage(pageWeekNum, maxWeekNum);
 //var selectedVal = $(".dropdown-menu li a").parents(".dropdown").find('.btn').text();
 //console.log("Outside:" + selectedVal.replace(/\s+/g, ''));
