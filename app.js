@@ -70,6 +70,7 @@ app.set('view engine','pug');
 
 //normal routes
 app.get('/',(req,res)=>{
+  //USES SETTINGS
   Setting.find(function(err,settings){
     if(err){
       throw err;
@@ -81,12 +82,13 @@ app.get('/',(req,res)=>{
       //console.log(settings[0].returnTimes);
       //var startAndEnd = settings[0].startAndEndOfWeek;
       //console.log(settings[0].returnTimes);
-
+      console.log(settings[0].spaces);
       res.render('index',{
         //TODO:replace with call to db for settings
         //EVERY PAGE WITH A BOOKINGS TABLE NEEDS TO LOAD SETTINGS
         days:settings[0].days,
         times:settings[0].returnTimes,
+        spaces:settings[0].spaces
         //startAndEnd:startAndEnd
       });
 
@@ -95,6 +97,7 @@ app.get('/',(req,res)=>{
 });
 
 app.get('/account_page',isLoggedIn, (req,res)=>{
+  //USES SETTINGS
   Setting.find(function(err,settings){
 
     if(err){
@@ -110,6 +113,7 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
         user:req.user,
         days:settings[0].days,
         times:settings[0].returnTimes,
+        spaces:settings[0].spaces
         //startAndEnd:startAndEnd
 
       });
@@ -244,6 +248,19 @@ app.get('/maxWeekNum', (req,res)=>{
       var maxWeekNum = moment().isoWeek() + settings[0].weeksAhead;
       console.log("max week num: " + maxWeekNum);
       res.send(maxWeekNum.toString());
+    }
+  });
+});
+
+app.get('/getSpaces',(req,res)=>{
+  Setting.find({},(err,settings)=>{
+    if(err){
+      throw err;
+    }
+
+    else{
+      var spaces = settings[0].spaces;
+      res.send(spaces)
     }
   });
 });

@@ -70,8 +70,8 @@ thead{
 #next-week{
   margin:auto;
   float:right;
-  background-color: #49748A;
   color:white;
+  background-color: #49748A;
   padding:10px;
   font-size:110%;
 }
@@ -83,4 +83,19 @@ thead{
   color:white;
   padding:10px;
   font-size:110%;
+}
+
+.dropdown{
+  margin:auto;
+  float:left;
+}
+
+.dropdown-toggle{
+  background-color:#49748A;
+}
+
+#buttons{
+  margin:auto;
+  float:right
+  padding:0;
 }

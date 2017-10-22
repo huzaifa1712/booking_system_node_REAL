@@ -9,9 +9,18 @@ html
     h3#schedule.text-center Schedule: 
       span#startOfWeek 
       span#endOfWeek 
-    div
-      button(type = "button")#next-week.btn.btn-default See next week
+    
+    div.dropdown
+      button.btn.btn-info.dropdown-toggle(type = "button" data-toggle = "dropdown") Select space
+        span.caret 
+      ul.dropdown-menu
+        each space in spaces
+          li
+            a(href = "#")=space  
+    div#buttons
+      button(type = "button")#next-week.btn See next week
       button(type = "button")#prev-week.btn.btn-default See previous week
+    
     table#bookings-table.table.table-bordered.table-responsive.table-striped(style = "border: 2px solid #6F7C7D;font-size:150%;")
       thead
         tr
@@ -48,8 +57,8 @@ html
         div.modal-footer 
           button(type = "button")#submitBtn.btn.btn-default.btn-info Submit
           button(type = "button" data-dismiss = "modal").btn.btn-default.btn-danger Close
-  script(src = "/bower_components/jquery/dist/jquery.js")
   script(src = "/bower_components/bootstrap/dist/js/bootstrap.js")
+  script(src = "/bower_components/jquery/dist/jquery.js")
   script(src= "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.js")
   script(src = "/scripts/Time.js")
   script(src = "/scripts/populate_bookings.js")

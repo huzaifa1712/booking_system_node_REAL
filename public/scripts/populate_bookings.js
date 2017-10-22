@@ -180,10 +180,16 @@ function enableAndDisableButtons(pageWeekNum,maxWeekNum){
   }
 
 }
+//sets the dropdown button text to the value of the first option upon page load
+function setDropdownButton(){
+  $(".dropdown-menu li a").parents(".dropdown").find('.btn').html($(".dropdown-menu li:first a").text() + ' <span class="caret"></span>');
+  $(".dropdown-menu li a").parents(".dropdown").find('.btn').val($(".dropdown-menu li:first a").data('value'));
+}
 
 function loadPage(pageWeekNum, maxWeekNum){
   setScheduleHeader(pageWeekNum);
   enableAndDisableButtons(pageWeekNum,maxWeekNum);
+  setDropdownButton();
   removeAllBookings();
   populateBookings(pageWeekNum);
 }
@@ -236,6 +242,14 @@ $("#next-week").click(function(){
     //window.location.reload();
   }
 });
+
+$(".dropdown-menu li a").click(function(){
+  $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+  $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+});
+  //$(".dropdown-toggle").dropdown("toggle");
+
+  //Sets the dropdown button the value of the first element upon loading
 
 
 loadPage(pageWeekNum, maxWeekNum);
