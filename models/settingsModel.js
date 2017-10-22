@@ -40,7 +40,7 @@ settingsSchema.virtual('startAndEndOfWeek').get(function(){
   }
 });
 
-settingsSchema.statics.retTimes = function(times){
+settingsSchema.statics.returnTimes = function(times){
   var returnArray = [];
   for(var i = 0; i < times.length-1; i++){
     returnArray.push(times[i] + " - " + times[i+1]);
@@ -62,16 +62,16 @@ var Setting = mongoose.model('Setting', settingsSchema);
 
   }
 ]*/
-var s = new Setting({
+/*var s = new Setting({
   times:["12:45pm","1:15pm","1:45pm","2:15pm","2:45pm"],
   days:[days.MONDAY,days.TUESDAY,days.WEDNESDAY,days.THURSDAY,days.FRIDAY],
-  spaces:['Green Screen Room 1', 'Green Screen Room 2'],
+  spaces:[mongoose.Schema.Types.ObjectId("59ec8ba833d723989991426d"), mongoose.Schema.Types.ObjectId("59ec8ba833d723989991426e")],
   weeksAhead:4
 });
 
-console.log(Setting.retTimes(["12:45pm","1:15pm","1:45pm","2:15pm","2:45pm"]));
+//console.log(Setting.retTimes(["12:45pm","1:15pm","1:45pm","2:15pm","2:45pm"]));
 
-/*
+
 mongoose.connect('mongodb://localhost/bookings');
 s.save((err)=>{
   if(err){

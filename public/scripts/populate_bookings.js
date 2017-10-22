@@ -68,7 +68,7 @@ function populateBookings(isoWeekNum){
   $.ajax({
     type:'GET',
     async:false,
-    url:'/bookings/' + isoWeekNum,
+    url:'/bookings/' + isoWeekNum + '/' + getSelectedSpace(),
     //success function : receives a response string consisting of an array
     //of booking objects. We will have to convert the JSOn string into
     //valid JSON first
@@ -151,15 +151,17 @@ function getMaxWeekNum(){
 }
 
 function getSelectedSpace(){
-  var selectedVal = $(".dropdown-menu li a").parents(".dropdown").find('.btn').text().replace(/\s+/g, '');
+  var selectedVal = $(".dropdown-menu li a").parents(".dropdown").find('.btn').text();
   return selectedVal;
 }
 
-function getSettings(){
+function getSettings(spaceName){
+  //console.log("Get Settings: ");
+  //console.log(getSelectedSpace());
   var days = [];
   var times = [];
   $.ajax({
-    url:'/getSettings',
+    url:'/getSettings/' + spaceName ,
     async:false,
     type:'GET',
     success:function(response){
@@ -178,10 +180,10 @@ function getSettings(){
   }
 }
 
-function drawTable(){
+function drawTable(spaceName){
   //times:["12:45pm","1:15pm","1:45pm","2:15pm","2:45pm"]
   //days:["Monday","Tuesday","Wednesday","Thursday","Friday"]
-  var settings = getSettings();
+  var settings = getSettings(spaceName);
 
   var times = settings.times;
   var days = settings.days;
@@ -208,6 +210,13 @@ function drawTable(){
       $('<td title = "Make a booking"> </td>').appendTo(tr);
     }
     tr.appendTo(tBody);
+  }
+}
+
+function destroyTable(){
+  var myNode = document.getElementById("bookings-table");
+  while (myNode.firstChild) {
+      myNode.removeChild(myNode.firstChild);
   }
 }
 
@@ -246,7 +255,6 @@ function setDropdownButton(){
 function loadPage(pageWeekNum, maxWeekNum){
   setScheduleHeader(pageWeekNum);
   enableAndDisableButtons(pageWeekNum,maxWeekNum);
-  setDropdownButton();
   removeAllBookings();
   //var selectedVal = $(".dropdown-menu li a").parents(".dropdown").find('.btn').text();
   //console.log("loadPage:" + selectedVal.replace(/\s+/g, ''));
@@ -305,6 +313,9 @@ $("#next-week").click(function(){
 $(".dropdown-menu li a").click(function(){
   $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
   $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+  destroyTable();
+  drawTable(getSelectedSpace());
+  populateBookings(pageWeekNum);
   //var selectedVal = $(this).parents(".dropdown").find('.btn').text();
   //console.log(selectedVal);
 });
@@ -312,7 +323,13 @@ $(".dropdown-menu li a").click(function(){
 
   //Sets the dropdown button the value of the first element upon loading
 
-drawTable();
+//var spaceName = $(".dropdown-menu li a").parents(".dropdown").find('.btn').text();
+console.log("Selected space");
+console.log(getSelectedSpace());
+setDropdownButton();
+var spaceName = getSelectedSpace();
+drawTable(spaceName);
+
 loadPage(pageWeekNum, maxWeekNum);
 console.log(getSelectedSpace());
 //var selectedVal = $(".dropdown-menu li a").parents(".dropdown").find('.btn').text();

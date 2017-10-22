@@ -8,11 +8,13 @@ let session = require('express-session');
 let config = require('./config/database');
 var passport = require('passport');
 require('./config/passport.js')(passport)
-//var settings = require('./setting.js');
 var fs = require('fs');
 
+//Models
 var Booking = require('./models/bookingSimple');
-var Setting = require('./models/settingsModel')
+var Setting = require('./models/settingsModel');
+var Space = require('./models/space');
+//Moment
 var moment = require('moment');
 
 var app = express();
@@ -72,14 +74,23 @@ app.set('view engine','pug');
 //get the Settings required to render the table. TODO: include route param for
 //requesting settings by space
 app.get('/getSettings/:spaceName',(req,res)=>{
-  Setting.find({},function(err,settings){
+  console.log("Visited getSettings");
+  console.log(req.params.spaceName);
+  Space.find({name:req.params.spaceName},function(err,spaces){
     if(err){
       throw err;
     }
 
     else{
-      var days = settings[0].days;
-      var times = settings[0].returnTimes;
+      console.log('spaces');
+      console.log(spaces);
+      var days = spaces[0].days;
+      console.log("days:")
+      console.log(days);
+      console.log("times:")
+
+      var times = spaces[0].returnTimes;
+      console.log(times);
 
       var settingsObj = {
         days:days,
@@ -89,37 +100,74 @@ app.get('/getSettings/:spaceName',(req,res)=>{
       res.json(settingsObj);
     }
   });
-});
-
-app.get('/',(req,res)=>{
-  //USES SETTINGS
-  Setting.find(function(err,settings){
+  /*
+  Setting.find({},function(err,settings){
     if(err){
       throw err;
     }
 
     else{
-      //console.log(settings);
-      //console.log(settings[0].days);
-      //console.log(settings[0].returnTimes);
-      //var startAndEnd = settings[0].startAndEndOfWeek;
-      //console.log(settings[0].returnTimes);
-      console.log(settings[0].spaces);
-      res.render('index',{
-        //TODO:replace with call to db for settings
-        //EVERY PAGE WITH A BOOKINGS TABLE NEEDS TO LOAD SETTINGS
-        days:settings[0].days,
-        times:settings[0].returnTimes,
-        spaces:settings[0].spaces
-        //startAndEnd:startAndEnd
-      });
+      var days = settings[0].days;
+      console.log(days);
+      var times = settings[0].returnTimes;
+      console.log(times);
 
+      var settingsObj = {
+        days:days,
+        times:times
+      }
+
+      res.json(settingsObj);
     }
+  });*/
+
+});
+
+app.get('/',(req,res)=>{
+  //USES SETTINGS
+  //var spaceNames = [];
+  console.log("Visited Index");
+
+  Space.find({},function(err,spaces){
+    var spaceNames = [];
+    for(var i = 0; i < spaces.length;i++){
+      spaceNames.push(spaces[i].name);
+    }
+
+    res.render('index',{
+      //TODO:replace with call to db for settings
+      //EVERY PAGE WITH A BOOKINGS TABLE NEEDS TO LOAD SETTINGS
+      //days:settings[0].days,
+      //times:settings[0].returnTimes,
+      spaces:spaceNames
+      //startAndEnd:startAndEnd
+    });
+
   });
+
+
 });
 
 app.get('/account_page',isLoggedIn, (req,res)=>{
   //USES SETTINGS
+  Space.find({},function(err,spaces){
+    var spaceNames = [];
+    for(var i = 0; i < spaces.length;i++){
+      spaceNames.push(spaces[i].name);
+    }
+
+    res.render('account_page',{
+      //TODO:replace with call to db for settings
+      //EVERY PAGE WITH A BOOKINGS TABLE NEEDS TO LOAD SETTINGS
+      //days:settings[0].days,
+      //times:settings[0].returnTimes,
+      user:req.user,
+      spaces:spaceNames
+      //startAndEnd:startAndEnd
+    });
+
+  });
+  /*
   Setting.find(function(err,settings){
 
     if(err){
@@ -140,7 +188,7 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
 
       });
     }
-  });
+  });*/
 });
 
 //Unnecessary - remove it later
@@ -165,7 +213,7 @@ app.get('/test_bookings_get',(req,res)=>{
   });
 
 //populate bookings uses this route to get the bookings and populate the table
-app.get('/bookings/:isoWeekNum',(req,res)=>{
+app.get('/bookings/:isoWeekNum/:spaceName',(req,res)=>{
 //call to db for bookings
 //var bookingsArray = [];
 
@@ -180,8 +228,10 @@ Booking.find(function(err,bookings){
   else{
     //console.log("Booking variable");
     var bookingsArr = bookings.filter(function(booking){
-      return moment(booking.date.startTime).isoWeek() == req.params.isoWeekNum;
+      return moment(booking.date.startTime).isoWeek() == req.params.isoWeekNum && booking.space == req.params.spaceName.replace(/\s+/g, '');
     });
+    console.log("Bookings returned: ");
+    console.log(bookingsArr);
     res.json(JSON.stringify(bookingsArr));
   }
 });

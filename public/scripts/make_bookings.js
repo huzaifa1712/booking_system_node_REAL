@@ -123,6 +123,10 @@ $(document).ready(function(){
       //window.location.reload();
   });
 
+  $(".dropdown-menu li a").click(function(){
+    makeBookings();
+  });
+
   $("#submitBtn").click(function(){
     //if none of the buttons in the group are checked, alert to pick one
 
