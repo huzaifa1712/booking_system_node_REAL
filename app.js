@@ -176,6 +176,12 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
     });
 
   });
+
+  app.get('/your_bookings',isLoggedIn,(req,res)=>{
+    res.render('your_bookings',{
+      user:req.user
+    });
+  });
   /*
   Setting.find(function(err,settings){
 
@@ -200,26 +206,6 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
   });*/
 });
 
-//Unnecessary - remove it later
-app.get('/bookings_table',(req,res)=>{
-
-});
-
-//test for getting bookings from the database
-//Unnecessary - remove it later
-app.get('/test_bookings_get',(req,res)=>{
-  Booking.find(function(err,bookings){
-    if(err){
-      throw err;
-    }
-
-    else{
-      console.log(bookings);
-    }
-  });
-
-
-  });
 
 //populate bookings uses this route to get the bookings and populate the table
 app.get('/bookings/:isoWeekNum/:spaceName',(req,res)=>{

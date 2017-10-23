@@ -2,12 +2,15 @@ extends layout
 
 block content
   link(href = '/css/booked.css' rel = 'stylesheet')
+  include header.pug
+  nav.navbar.navbar-default
+    div.container-fluid
+      ul.nav.navbar-nav
+        li.active
+          a(href = "/account_page") Make bookings 
+        li
+          a(href = "/your_bookings") Your bookings
   div#account_body.container-fluid
-    - var names = user.name.split(" ");
-    - var firstName = names[0];
-    div.row
-      h3.col-lg-2.col-md-2.col-sm-2.col-xs-2 Welcome, #{firstName}!
-      a.col-lg-2.col-md-2.col-sm-2.col-xs-2(href = "/logout" style = "float:right;font-size:120%;").btn Log out
     br
     div.col-lg-2.col-md-2.col-sm-2.col-xs-2 
       h3(style = "color:#FFBE3F; margin-left:160%; padding-bottom:20px;").text-center To make a booking, please select one of the free times below.

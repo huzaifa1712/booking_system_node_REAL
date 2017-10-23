@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  div.container-fluid
+    div.row
+      include header.pug
+      nav.navbar.navbar-default
+        div.container-fluid
+          ul.nav.navbar-nav
+            li
+              a(href = "/account_page") Make bookings 
+            li.active
+              a(href = "/your_bookings") Your bookings
+ 

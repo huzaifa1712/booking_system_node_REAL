@@ -99,3 +99,17 @@ thead{
   float:right
   padding:0;
 }
+
+
+body{
+  padding:5px;
+}
+
+li.active{
+  background-color:#6F7C7D;
+}
+
+nav{
+  color:black;
+  font-size:120%;
+}
