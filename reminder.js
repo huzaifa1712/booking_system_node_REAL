@@ -4,6 +4,12 @@ var moment = require('moment');
 var mongoose = require('mongoose');
 //testDate stores example startDate that you'd have for a booking
 var Booking = require('./models/bookingSimple');
+var Mail = require('./mail');
+let account = require('./config/email_user');
+
+
+var MailObj = new Mail(account.user,account.pass);
+MailObj.sendMail('windowpane1712@gmail.com','TESTMAIL','<h1> Mail </h1>');
 mongoose.connect('mongodb://localhost/bookings');
 
 
