@@ -17,7 +17,8 @@ var bookingSchema = mongoose.Schema({
   },
   space:String,
   spaceNameWithSpaces:String,
-  reminder:String
+  reminder:String,
+  emailSent:Boolean
 });
 
 class Booking{

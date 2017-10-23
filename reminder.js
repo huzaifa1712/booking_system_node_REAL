@@ -12,31 +12,10 @@ var MailObj = new Mail(account.user,account.pass);
 //MailObj.sendMail('windowpane1712@gmail.com','TESTMAIL','<h1> Mail </h1>');
 mongoose.connect('mongodb://localhost/bookings');
 
+//console.log("Monent of booking: " + moment(times.startDate).format("E-hh:mma-DD-MM-WW-YYYY"));
 
-function startAndEndTimes(day,times,isoWeekNum,year){
-  var isoWeekDay = moment(day,"dddd").isoWeekday();
-  var startTimeString = isoWeekDay + "-" + times[0] + "-" + isoWeekNum + "-" + year;
-  var endTimeString =  isoWeekDay + "-" + times[1] + "-" + isoWeekNum + "-" + year;
-
-  var startDate = moment(startTimeString, "E-hh:mma-WW-YYYY");
-  console.log(startDate.format("E-hh:mma-WW-YYYY"));
-  var endDate = moment(endTimeString, "E-hh:mma-WW-YYYY");
-  console.log(endDate.format("E-hh:mma-WW-YYYY"));
-
-  return {
-    startDate:startDate.toDate(),
-    endDate:endDate.toDate()
-  }
-}
-
-var day = "Monday";
-var times = ["1:32pm","12:50am"];
-var isoWeekNum = moment().isoWeek();
-var year = "2017";
-
-var times = startAndEndTimes(day,times,isoWeekNum,year);
-console.log("Monent of booking: " + moment(times.startDate).format("E-hh:mma-DD-MM-WW-YYYY"));
-
+//Takes the startDate of the booking and reminder in minutes, returns
+//the moment object at which we need to send the e-mail for this
 function momentToSend(startDate,reminderInMinutes){
   var reminderInSeconds = reminderInMinutes*60;
   var secondsOfDate = moment(startDate).seconds();
@@ -45,13 +24,14 @@ function momentToSend(startDate,reminderInMinutes){
   return momentToSendAt;
 }
 
-var momentToSendAt = momentToSend(times.startDate, 1);
 
-console.log("Moment to send at: " + momentToSendAt.format("E-hh:mma-DD-MM-WW-YYYY"));
+//console.log("Moment to send at: " + momentToSendAt.format("E-hh:mma-DD-MM-WW-YYYY"));
 
+//outputs whether or not a reminder should be sent right now(true/false), given booking startDate and
+//reminder in minutes
 function shouldSendReminder(startDate,reminderInMinutes){
   var momentToSendAt = momentToSend(startDate,reminderInMinutes);
-  console.log("Moment to send: " + momentToSendAt.format("E-hh:mma-DD-MM-WW-YYYY"));
+  //console.log("Moment to send: " + momentToSendAt.format("E-hh:mma-DD-MM-WW-YYYY"));
   var bookingIsNow = false;
 
   if(momentToSendAt.isSame(moment(),'second')){
@@ -61,6 +41,8 @@ function shouldSendReminder(startDate,reminderInMinutes){
   return bookingIsNow;
 }
 
+//sends the reminder email given a bookingObject. Creates email string and sends using
+//the MailObj
 function sendReminderEmail(bookingObject){
   var firstName = bookingObject.user.name;
   var spaceName = bookingObject.spaceNameWithSpaces;
@@ -79,8 +61,10 @@ function sendReminderEmail(bookingObject){
   MailObj.sendMail(emailAddress,subjectString,emailString);
 }
 
-console.log(shouldSendReminder(momentToSendAt));
+//console.log(shouldSendReminder(momentToSendAt));
 
+//this is the main function. Loops through all the bookings and checks whether
+//an email should be sent. If yes, sends the email.
 function checkBookingsAndSendEmails(){
   Booking.find({},function(err,bookings){
     console.log('running');
@@ -104,9 +88,50 @@ function checkBookingsAndSendEmails(){
   });
 }
 
-setInterval(function(){
-  checkBookingsAndSendEmails();
-});
+checkBookingsAndSendEmails();
+
+
+/*
+    var query = {
+      "id":mongoose.Schema.Types.ObjectId("59ed9b529d050aaf4da52a2e")
+    }
+
+    var update = {
+      "emailSent":false
+    }
+
+
+    Booking.update(query,update,{multi:true},function(err,numAffected){
+      if(err){
+        throw err;
+      }
+
+      else{
+        console.log(numAffected);
+      }
+    });*/
+
+
+/*
+var idString = "59ed9b569d050aaf4da52a2f" ;
+console.log(idString);
+var query = {
+  "id":mongoose.Schema.Types.ObjectId("59ed9b569d050aaf4da52a2f")
+}
+
+var update = {
+  "emailSent":true
+}
+
+Booking.update(query,update,function(err,numAffected){
+  if(err){
+    throw err;
+  }
+
+  else{
+    console.log(numAffected);
+  }
+});*/
 /*
 setInterval(function(){
   console.log(moment(times.startDate).format("E-hh:mma-DD-MM-WW-YYYY"));
