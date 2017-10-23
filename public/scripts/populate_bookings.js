@@ -67,6 +67,7 @@ function removeAllBookings(){
 //fill the table with the bookings, while assigning the 'booked' class to any filled tds
 function populateBookings(isoWeekNum){
   console.log("isoWeek from populate: " + isoWeekNum);
+  console.log(getSelectedSpace());
   $.ajax({
     type:'GET',
     async:false,

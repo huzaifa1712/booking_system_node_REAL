@@ -16,6 +16,7 @@ var bookingSchema = mongoose.Schema({
     endTime:Date
   },
   space:String,
+  spaceNameWithSpaces:String,
   reminder:String
 });
 

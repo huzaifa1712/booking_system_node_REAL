@@ -9,7 +9,7 @@ let account = require('./config/email_user');
 
 
 var MailObj = new Mail(account.user,account.pass);
-MailObj.sendMail('windowpane1712@gmail.com','TESTMAIL','<h1> Mail </h1>');
+//MailObj.sendMail('windowpane1712@gmail.com','TESTMAIL','<h1> Mail </h1>');
 mongoose.connect('mongodb://localhost/bookings');
 
 
@@ -61,6 +61,11 @@ function shouldSendReminder(startDate,reminderInMinutes){
   return bookingIsNow;
 }
 
+function createReminderEmail(bookingObject){
+  var firstName = bookingObject.name.split()[0];
+
+}
+
 console.log(shouldSendReminder(momentToSendAt));
 
 Booking.find({},function(err,bookings){
@@ -74,7 +79,7 @@ Booking.find({},function(err,bookings){
       console.log("Start date: " + startMoment.format("E-hh:mma-DD-MM-WW-YYYY"));
       var reminderInMinutes = bookings[i].reminderInMinutes;
       console.log("Reminder in min: " + bookings[i].reminderInMinutes);
-
+      console.log(bookings[i].spaceNameWithSpaces);
       console.log(shouldSendReminder(startMoment,reminderInMinutes));
     }
   }

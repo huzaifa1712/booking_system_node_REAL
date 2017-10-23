@@ -228,6 +228,8 @@ Booking.find(function(err,bookings){
   else{
     //console.log("Booking variable");
     var bookingsArr = bookings.filter(function(booking){
+      //.replace(/\s+/g, '')
+      console.log(req.params.spaceName);
       return moment(booking.date.startTime).isoWeek() == req.params.isoWeekNum && booking.space == req.params.spaceName.replace(/\s+/g, '');
     });
     console.log("Bookings returned: ");
@@ -285,6 +287,7 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
     newBooking.date.endTime = req.body.endTime;
     newBooking.reminder = req.body.reminder;
     newBooking.space = req.body.space;
+    newBooking.spaceNameWithSpaces = req.body.spaceNameWithSpaces;
     console.log(newBooking);
     //console.log("Booking isoWeekNum: " + newBooking.isoWeekNum);
 

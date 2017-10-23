@@ -35,7 +35,9 @@ function getBookingFields(rowIndex,columnIndex){
   console.log(endTime);
 
   //the selected value for the dropdown for space - taking out spaces for sanity
+  //.replace(/\s+/g, '')
   var selectedVal = $(".dropdown-menu li a").parents(".dropdown").find('.btn').text().replace(/\s+/g, '');
+  var spaceNameWithSpaces = $(".dropdown-menu li a").parents(".dropdown").find('.btn').text();
   console.log("Selected value from dropdown:" + selectedVal);
 
 
@@ -43,7 +45,8 @@ function getBookingFields(rowIndex,columnIndex){
     time:time,
     startTime:startTime,
     endTime:endTime,
-    space:selectedVal
+    space:selectedVal,
+    spaceNameWithSpaces:spaceNameWithSpaces
   }
 }
 
@@ -176,7 +179,8 @@ $(document).ready(function(){
               startTime: bookingFields.startTime,
               endTime: bookingFields.endTime,
               reminder:reminderValue,
-              space:bookingFields.space
+              space:bookingFields.space,
+              spaceNameWithSpaces:bookingFields.spaceNameWithSpaces
 
             },
             success:function(response){
