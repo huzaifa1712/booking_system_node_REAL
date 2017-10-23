@@ -47,7 +47,7 @@ search through tds
           }
         })*/
 
-
+//removes all bookings from table. Used for when going to the next or previous week
 function removeAllBookings(){
   console.log("Columns: " +$("table > tbody > tr:first > td").length);
   var noOfColumns = $("table > tbody > tr:first > td").length;
@@ -63,12 +63,14 @@ function removeAllBookings(){
 
   };
 
+//gets the bookings based on week number, and selected space, then uses them to
+//fill the table with the bookings, while assigning the 'booked' class to any filled tds
 function populateBookings(isoWeekNum){
   console.log("isoWeek from populate: " + isoWeekNum);
   $.ajax({
     type:'GET',
     async:false,
-    url:'/bookings/' + isoWeekNum + '/' + getSelectedSpace(),
+    url:'/bookings/' + isoWeekNum + '/' + getSelectedSpace(), //uses space name and week number to get the bookings
     //success function : receives a response string consisting of an array
     //of booking objects. We will have to convert the JSOn string into
     //valid JSON first
@@ -126,6 +128,7 @@ function populateBookings(isoWeekNum){
 
 //TODO: later change this so it asks a route for the start and end days of the week,
 //given the Space selected, so we can use that to find the following:
+//This sets the schedule header based on the week number
 function setScheduleHeader(pageWeekNum){
   var startOfWeek = moment().isoWeek(pageWeekNum).weekday(1).format("MMMM D");
   var endOfWeek = moment().isoWeek(pageWeekNum).weekday(5).format("MMMM D");
@@ -150,6 +153,8 @@ function getMaxWeekNum(){
   return maxWeekNum;
 }
 
+//gets the space currently selected in the dropdown. Upon page load, this is just
+//the first space.
 function getSelectedSpace(){
   var selectedVal = $(".dropdown-menu li a").parents(".dropdown").find('.btn').text();
   return selectedVal;

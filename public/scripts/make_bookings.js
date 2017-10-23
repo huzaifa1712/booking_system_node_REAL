@@ -1,5 +1,6 @@
 
 
+//takes the row and column of a td and outputs the booking fields needed e.g day, time
 function getBookingFields(rowIndex,columnIndex){
   var tableCell = $('#bookings-table tr').eq(rowIndex + 1).find('td').eq(columnIndex);
 
@@ -46,6 +47,8 @@ function getBookingFields(rowIndex,columnIndex){
   }
 }
 
+//assigns the click event needed to make bookings to all the tds not booked
+//need to run this everytime the table is destroyed or bookings are removed etc
 function makeBookings(){
   $("#bookings-table td:not(:first-child)").each(function(){
     if($(this).hasClass("booked") == false){
@@ -109,6 +112,8 @@ $(document).ready(function(){
   console.log($("#bookings-table").data("year"));
   //$(this).data('attr') == 'filled') - to identify elements with bookings
 
+  //because in populate this button clears any booked cells, so they don't have the click
+  //event assigned.
   $("#next-week").click(function(){
     makeBookings();
 
@@ -116,6 +121,8 @@ $(document).ready(function(){
       //window.location.reload();
   });
 
+  //because in populate this button clears any booked cells, so they don't have the click
+  //event assigned.
   $("#prev-week").click(function(){
     makeBookings();
 
@@ -123,10 +130,14 @@ $(document).ready(function(){
       //window.location.reload();
   });
 
+//when changing spaces, the entire table is destroyed so a new table can be made,
+//so all the tds need to be assigned their click events again
   $(".dropdown-menu li a").click(function(){
     makeBookings();
   });
 
+//submit button event when making a booking.
+//getsBookingFields, then sends AJAX to make the booking
   $("#submitBtn").click(function(){
     //if none of the buttons in the group are checked, alert to pick one
 
