@@ -61,30 +61,52 @@ function shouldSendReminder(startDate,reminderInMinutes){
   return bookingIsNow;
 }
 
-function createReminderEmail(bookingObject){
-  var firstName = bookingObject.name.split()[0];
+function sendReminderEmail(bookingObject){
+  var firstName = bookingObject.user.name;
+  var spaceName = bookingObject.spaceNameWithSpaces;
+  var startDate = moment(bookingObject.date.startTime).format("dddd Do MMMM");
+  var startTime = moment(bookingObject.date.startTime).format("h:mma");
 
+  var emailAddress = bookingObject.user.email;
+  var subjectString = "IDEAS Hub Booking";
+
+  var emailString =
+    "<p>Dear " + firstName + "," + "<br>"
+    + "Your booking for " + spaceName + "is on " + startDate + " at " + startTime
+    +"." +  "<br><br>" + "Kind regards," + "<br>" + "IDEAS Hub"
+    + "<br><br>" + "Note: This is an automated e-mail. Please do not reply.</p>";
+
+  MailObj.sendMail(emailAddress,subjectString,emailString);
 }
 
 console.log(shouldSendReminder(momentToSendAt));
 
-Booking.find({},function(err,bookings){
-  if(err){
-    throw err;
-  }
-
-  else{
-    for(var i = 0; i < bookings.length; i++){
-      var startMoment = moment(bookings[i].date.startTime);
-      console.log("Start date: " + startMoment.format("E-hh:mma-DD-MM-WW-YYYY"));
-      var reminderInMinutes = bookings[i].reminderInMinutes;
-      console.log("Reminder in min: " + bookings[i].reminderInMinutes);
-      console.log(bookings[i].spaceNameWithSpaces);
-      console.log(shouldSendReminder(startMoment,reminderInMinutes));
+function checkBookingsAndSendEmails(){
+  Booking.find({},function(err,bookings){
+    console.log('running');
+    if(err){
+      throw err;
     }
-  }
-});
 
+    else{
+      for(var i = 0; i < bookings.length; i++){
+        var startMoment = moment(bookings[i].date.startTime);
+        //console.log("Start date: " + startMoment.format("E-hh:mma-DD-MM-WW-YYYY"));
+        var reminderInMinutes = bookings[i].reminderInMinutes;
+        //console.log("Reminder in min: " + bookings[i].reminderInMinutes);
+        //console.log(bookings[i].spaceNameWithSpaces);
+        if(shouldSendReminder(startMoment,reminderInMinutes)){
+          sendReminderEmail(bookings[i]);
+        }
+        //var email = bookings[i].user.email;
+      }
+    }
+  });
+}
+
+setInterval(function(){
+  checkBookingsAndSendEmails();
+});
 /*
 setInterval(function(){
   console.log(moment(times.startDate).format("E-hh:mma-DD-MM-WW-YYYY"));
