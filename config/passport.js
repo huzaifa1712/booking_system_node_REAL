@@ -5,6 +5,7 @@ var User = require('../models/user');
 var configAuth = require('./auth');
 
 module.exports = function(passport){
+
   passport.serializeUser((user,done)=>{
     done(null,user.id); //only user id is serialized to the session
   });
@@ -14,24 +15,33 @@ module.exports = function(passport){
       done(err,user);
     });
   });
-
+      //defining which login strategy we are using
       passport.use(new GoogleStrategy({
         clientID: configAuth.googleAuth.clientID,
         clientSecret: configAuth.googleAuth.clientSecret,
-        callbackURL: configAuth.googleAuth.callbackURL
+        callbackURL: configAuth.googleAuth.callbackURL,
+        passReqToCallback:true
       },
-
-      function(accessToken, refreshToken, profile, done){
+      //this function is called when a user is logging in, based on OAuth 2.0
+      //OAuth is a way to authenticate users
+      //Profile is an object that refers to the Gmail account that is attempting to sign in.
+      function(req,accessToken, refreshToken, profile, done){
+        //Checks if the user exists
         User.findOne({
           'google_id':profile.id
         }, (err,user)=>{
-          //
+          //if there was an error, returns that there was an error
           if(err){
             return done(err);
           }
-
+          //if user exists, everything is fine.
           if(user){
             return done(null,user);
+          }
+          //if user doesn't exist, but no error, create a new User.
+
+          if(!(profile.emails[0].value.endsWith('@gapps.uwcsea.edu.sg'))){
+            return done(null,false,req.flash('signupMessage','Please use a UWCSEA gmail account that ends with @gapps.uwcsea.edu.sg '));
           }
 
           else{
@@ -39,6 +49,7 @@ module.exports = function(passport){
             newUser.google_id = profile.id;
             newUser.token = accessToken;
             newUser.name = profile.displayName;
+            console.log(profile.emails[0].value);
             newUser.email = profile.emails[0].value;
             newUser.isAdmin = false;
 

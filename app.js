@@ -9,7 +9,13 @@ let config = require('./config/database');
 var passport = require('passport');
 require('./config/passport.js')(passport)
 var fs = require('fs');
+var reminder = require('./reminder');
 
+//check bookings and send reminder emails when required every one second.
+setInterval(function(){
+  reminder.checkBookingsAndSendEmails();
+
+},1000);
 //Models
 var Booking = require('./models/bookingSimple');
 var Setting = require('./models/settingsModel');
@@ -43,7 +49,7 @@ app.set('view engine','pug');
     saveUninitialized: true,
   }))
 
-  app.use(require('connect-flash')()); //messages and flash middleware
+  app.use(flash()); //messages and flash middleware
   app.use(function (req, res, next) {
     res.locals.messages = require('express-messages')(req, res);
     next();
@@ -58,6 +64,7 @@ app.set('view engine','pug');
 //Routes
 
 //Google routes(login)
+//route to authenticate users
   app.get('/auth/google', passport.authenticate('google', {
     scope: ['profile','email']
   }));
@@ -68,7 +75,8 @@ app.set('view engine','pug');
     successRedirect: '/account_page',
     failureRedirect: '/',
     failureFlash:true
-  }))
+
+  }));
 
 //normal routes
 //get the Settings required to render the table. TODO: include route param for
@@ -139,7 +147,8 @@ app.get('/',(req,res)=>{
       //EVERY PAGE WITH A BOOKINGS TABLE NEEDS TO LOAD SETTINGS
       //days:settings[0].days,
       //times:settings[0].returnTimes,
-      spaces:spaceNames
+      spaces:spaceNames,
+      message:req.flash('signupMessage')
       //startAndEnd:startAndEnd
     });
 
@@ -288,7 +297,7 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
     newBooking.reminder = req.body.reminder;
     newBooking.space = req.body.space;
     newBooking.spaceNameWithSpaces = req.body.spaceNameWithSpaces;
-    newBooking.emailSent = false;
+    //newBooking.emailSent = false;
     console.log(newBooking);
     //console.log("Booking isoWeekNum: " + newBooking.isoWeekNum);
 

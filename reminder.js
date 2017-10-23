@@ -65,9 +65,9 @@ function sendReminderEmail(bookingObject){
 
 //this is the main function. Loops through all the bookings and checks whether
 //an email should be sent. If yes, sends the email.
-function checkBookingsAndSendEmails(){
+module.exports.checkBookingsAndSendEmails = function(){
   Booking.find({},function(err,bookings){
-    console.log('running');
+    console.log('Checking for bookings');
     if(err){
       throw err;
     }
@@ -81,6 +81,7 @@ function checkBookingsAndSendEmails(){
         //console.log(bookings[i].spaceNameWithSpaces);
         if(shouldSendReminder(startMoment,reminderInMinutes)){
           sendReminderEmail(bookings[i]);
+          console.log('email sent');
         }
         //var email = bookings[i].user.email;
       }
@@ -88,7 +89,6 @@ function checkBookingsAndSendEmails(){
   });
 }
 
-checkBookingsAndSendEmails();
 
 
 /*
