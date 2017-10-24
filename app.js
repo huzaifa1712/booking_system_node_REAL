@@ -135,7 +135,7 @@ app.get('/',(req,res)=>{
   //USES SETTINGS
   //var spaceNames = [];
   console.log("Visited Index");
-
+  //TODO: Make this a static function in Space since it is used in account page route too
   Space.find({},function(err,spaces){
     var spaceNames = [];
     for(var i = 0; i < spaces.length;i++){
@@ -166,21 +166,37 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
     }
 
     res.render('account_page',{
-      //TODO:replace with call to db for settings
-      //EVERY PAGE WITH A BOOKINGS TABLE NEEDS TO LOAD SETTINGS
-      //days:settings[0].days,
-      //times:settings[0].returnTimes,
       user:req.user,
       spaces:spaceNames
-      //startAndEnd:startAndEnd
     });
 
   });
 
-  app.get('/your_bookings',isLoggedIn,(req,res)=>{
-    res.render('your_bookings',{
-      user:req.user
+  //route that returns bookings for the user. Used in your_bookings page
+  //to populate the table
+  app.get('/user_bookings',(req,res)=>{
+    var query = {
+      id:req.user_id
+    }
+
+    Booking.find(query,function(err,bookings){
+      if(err){
+        throw err;
+      }
+
+      else{
+        console.log("user bookings:");
+        console.log(bookings);
+        res.json(bookings);
+      }
     });
+  });
+
+  //get route for your_bookings page.
+  app.get('/your_bookings',isLoggedIn,(req,res)=>{
+        res.render('your_bookings',{
+          user:req.user,
+        });
   });
   /*
   Setting.find(function(err,settings){
@@ -274,7 +290,7 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
   //check if req object empty
 
     var newBooking = new Booking();
-    newBooking.id = req.body.id;
+    newBooking.user_id = req.body.id;
     newBooking.name = req.body.name;
     newBooking.email = req.body.email;
     newBooking.time = req.body.timeString;
@@ -305,22 +321,7 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
 app.get('/get_user', isLoggedIn,(req,res)=>{
   console.log("User body: ");
   console.log(req.user);
-  console.log("ID: " + req.user._id);
 
-  var query = {
-    id:req.user._id
-  }
-  console.log(query);
-  Booking.find(query,function(err,bookings){
-    if(err){
-      throw err;
-    }
-
-    else{
-      console.log("Bookings for user:")
-      console.log(bookings);
-    }
-  });
   res.json(req.user);
 });
 

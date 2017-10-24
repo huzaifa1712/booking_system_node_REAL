@@ -161,6 +161,8 @@ function getSelectedSpace(){
   return selectedVal;
 }
 
+//function that returns the settings for the table given the spaceName selected.
+//ajax request is using asnyc false so we can return the contents
 function getSettings(spaceName){
   //console.log("Get Settings: ");
   //console.log(getSelectedSpace());
@@ -185,7 +187,8 @@ function getSettings(spaceName){
     times:times
   }
 }
-
+//draws the table given the spaceName selected. Can be called multiple times
+//after destroy table.
 function drawTable(spaceName){
   //times:["12:45pm","1:15pm","1:45pm","2:15pm","2:45pm"]
   //days:["Monday","Tuesday","Wednesday","Thursday","Friday"]
@@ -219,6 +222,7 @@ function drawTable(spaceName){
   }
 }
 
+//destroys the entire table so that it can be redrawn.
 function destroyTable(){
   var myNode = document.getElementById("bookings-table");
   while (myNode.firstChild) {
@@ -258,6 +262,8 @@ function setDropdownButton(){
   $(".dropdown-menu li a").parents(".dropdown").find('.btn').val($(".dropdown-menu li:first a").data('value'));
 }
 
+//this function puts together all the above functions so we can use it when
+//loading the page upon visiting, or upon clicking next week or previous week buttons
 function loadPage(pageWeekNum, maxWeekNum){
   setScheduleHeader(pageWeekNum);
   enableAndDisableButtons(pageWeekNum,maxWeekNum);
@@ -290,6 +296,7 @@ var pageWeekNum = $("#bookings-table").data("weekNumber");
   //$('<div id = "schedule" class = "text-center">Schedule: June 12 to June 16</div>').insertBefore("#bookings-table");
 var maxWeekNum = getMaxWeekNum();
 
+//defining what happens when previous week button is clicked
 $("#prev-week").click(function(){
   //if NOT(pageWeekNum equals realtime currentWeekNum), decrease
   if(!(pageWeekNum <= moment().isoWeek())){
@@ -316,6 +323,7 @@ $("#next-week").click(function(){
   }
 });
 
+//defines what happens when a new setting from the dropdown is clicked
 $(".dropdown-menu li a").click(function(){
   $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
   $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
@@ -337,6 +345,13 @@ var spaceName = getSelectedSpace();
 drawTable(spaceName);
 
 loadPage(pageWeekNum, maxWeekNum);
+
+//running populate every second so that if a new booking is made
+//the user can see it without having to refresh the page.
+setInterval(function(){
+  console.log("running");
+  populateBookings(pageWeekNum);
+},1000);
 console.log(getSelectedSpace());
 //var selectedVal = $(".dropdown-menu li a").parents(".dropdown").find('.btn').text();
 //console.log("Outside:" + selectedVal.replace(/\s+/g, ''));

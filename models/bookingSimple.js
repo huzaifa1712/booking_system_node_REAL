@@ -5,7 +5,7 @@ var moment = require('moment');
 var bookingSchema = mongoose.Schema({
   /*name:String,
   email:String,*/
-  id:String,
+  user_id:String,
   name:String,
   email:String,
   time:String,
