@@ -112,4 +112,6 @@ li.active{
 nav{
   color:black;
   font-size:120%;
+  font-family:inherit;
+  font-weight:bold;
 }

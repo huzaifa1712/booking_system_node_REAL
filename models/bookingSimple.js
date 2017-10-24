@@ -5,11 +5,9 @@ var moment = require('moment');
 var bookingSchema = mongoose.Schema({
   /*name:String,
   email:String,*/
-  user: {
-    id:String,
-    name:String,
-    email:String
-  },
+  id:String,
+  name:String,
+  email:String,
   time:String,
   date:{
     startTime:Date,

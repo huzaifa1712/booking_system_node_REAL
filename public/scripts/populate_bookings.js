@@ -98,7 +98,7 @@ function populateBookings(isoWeekNum){
             var timeFromBooking = responseArr[i].time;
             timeFromBooking = timeFromBooking.replace(/\s+/g, '');
             //console.log(responseArr[i].email);
-            var name = responseArr[i].user.name.split(" ")[0];
+            var name = responseArr[i].name.split(" ")[0];
             name = name.replace(/\s+/g, '');
 
             var bookingIsoWeekNumber = moment(responseArr[i].date.startTime).isoWeek();

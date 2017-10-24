@@ -228,7 +228,7 @@ Booking.find(function(err,bookings){
       return moment(booking.date.startTime).isoWeek() == req.params.isoWeekNum && booking.space == req.params.spaceName.replace(/\s+/g, '');
     });
     console.log("Bookings returned: ");
-    console.log(bookingsArr);
+    //console.log(bookingsArr);
     res.json(JSON.stringify(bookingsArr));
   }
 });
@@ -274,9 +274,9 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
   //check if req object empty
 
     var newBooking = new Booking();
-    newBooking.user.id = req.body.id;
-    newBooking.user.name = req.body.name;
-    newBooking.user.email = req.body.email;
+    newBooking.id = req.body.id;
+    newBooking.name = req.body.name;
+    newBooking.email = req.body.email;
     newBooking.time = req.body.timeString;
     newBooking.date.startTime = req.body.startTime;
     newBooking.date.endTime = req.body.endTime;
@@ -305,7 +305,22 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
 app.get('/get_user', isLoggedIn,(req,res)=>{
   console.log("User body: ");
   console.log(req.user);
+  console.log("ID: " + req.user._id);
 
+  var query = {
+    id:req.user._id
+  }
+  console.log(query);
+  Booking.find(query,function(err,bookings){
+    if(err){
+      throw err;
+    }
+
+    else{
+      console.log("Bookings for user:")
+      console.log(bookings);
+    }
+  });
   res.json(req.user);
 });
 
