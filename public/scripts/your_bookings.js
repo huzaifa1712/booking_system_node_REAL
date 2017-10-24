@@ -33,7 +33,7 @@ function returnBookingDetails(){
 
       //controls formatting for date
       var id = bookings[i]._id;
-      var date = startTime.format("MMMM D YYYY, ") + bookings[i].time;
+      var date = startTime.format("dddd MMMM D YYYY, ") + bookings[i].time;
       //space Name
       var space = bookings[i].spaceNameWithSpaces;
 
@@ -96,7 +96,9 @@ function populateTable(){
         $(this).attr("data-target","#cancel-modal");
 
         $("#cancel-modal").data("bookingId", $(this).data("bookingId"));
-        $("#booking").text($(this).text());
+        var bookingAndSpace = $(this).text() + " , " + $(this).parent().find("td:nth-child(2)").text();
+        $("#booking").text(bookingAndSpace);
+
         //console.log("ID booking: " + $(this).data("bookingId"));
         //console.log(typeof $(this).data("bookingId"));
 
