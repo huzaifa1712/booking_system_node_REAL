@@ -68,16 +68,24 @@ function populateTable(){
 
   var tBody = $('tbody');
 
+  //This loops through all the booking details returned and creates a table row for each,
+  //filling in the cells appropriately with date and space.
   for(var i = 0; i < bookingDetails.length; i++){
     var tr = $("<tr>");
 
+    //if there were bookings, this if statement will run, because
+    //returnBookingDetails doesn't give an id property when no bookings found.
     if(bookingDetails[i].hasOwnProperty('id')){
       var tdDate = $('<td class = "date" title = "Cancel this booking">' + bookingDetails[i].date + '</td>');
+      //storing the id in the cell so we can access it when cancelling
       tdDate.data("bookingId",bookingDetails[i].id);
       console.log("ID: " + tdDate.data("bookingId"));
       tdDate.appendTo(tr);
     }
 
+    //if no bookings found, this code will run. Doesn't assign date class or tooltip,
+    //and because there's no date class it won't get the click event, won't have the
+    //hover styling.
     else{
       var tdDate = $('<td>' + bookingDetails[i].date + '</td>');
       tdDate.appendTo(tr);
@@ -88,7 +96,9 @@ function populateTable(){
     tr.appendTo(tBody);
   }
 
-
+  //searches through the cells in the dates column. If it has the class date,
+  //it will assign the click event to open the modal. Also stores the
+  //bookingId, and the booking string to display to user before cancelling.
   $("#your-bookings td:first-child").each(function(){
     if($(this).hasClass('date')){
       $(this).click(function(){
@@ -110,6 +120,10 @@ function populateTable(){
 $(document).ready(function(){
   populateTable();
 
+//when cancel is pressed, we get the bookingId stored earlier and send it to the
+//delete_booking route. When it goes to thar route, if the booking is deleted
+//successfully it returns an object: {deleted:true}. This is to make it alert and refresh
+//the page when deleting is done.
   $("#cancelBtn").click(function(){
     var bookingId = $("#cancel-modal").data("bookingId");
     console.log("bookingID: " + bookingId);
