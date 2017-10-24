@@ -115,3 +115,7 @@ nav{
   font-family:inherit;
   font-weight:bold;
 }
+
+.date:hover{
+  background-color: #6F7C7D;
+}

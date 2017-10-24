@@ -32,12 +32,14 @@ function returnBookingDetails(){
       var startTime = moment(bookings[i].date.startTime);
 
       //controls formatting for date
+      var id = bookings[i]._id;
       var date = startTime.format("MMMM D YYYY, ") + bookings[i].time;
       //space Name
       var space = bookings[i].spaceNameWithSpaces;
 
       //the final booking object to push into the array
       var booking = {
+        id:id,
         date:date,
         space:space
       }
@@ -66,24 +68,34 @@ function populateTable(){
 
   var tBody = $('tbody');
 
-  if(bookingDetails.length){
-    for(var i = 0; i < bookingDetails.length; i++){
-      var tr = $("<tr>");
-      $('<td>' + bookingDetails[i].date + '</td>').appendTo(tr);
-      $('<td>' + bookingDetails[i].space + '</td>').appendTo(tr);
+  for(var i = 0; i < bookingDetails.length; i++){
+    var tr = $("<tr>");
 
-      tr.appendTo(tBody);
-    }
+    var tdDate = $('<td class = "date" title = "Cancel this booking">' + bookingDetails[i].date + '</td>');
+    tdDate.data("bookingId",bookingDetails[i].id);
+    console.log("ID: " + tdDate.data("bookingId"));
+    tdDate.appendTo(tr);
+    $('<td>' + bookingDetails[i].space + '</td>').appendTo(tr);
+
+    tr.appendTo(tBody);
   }
+
 
   $("#your-bookings td:first-child").each(function(){
     $(this).click(function(){
       $(this).attr("data-toggle","modal");
       $(this).attr("data-target","#cancel-modal");
+
+      $("#cancel-modal").data("bookingId", $(this).data("bookingId"));
+      console.log("ID booking: " + $(this).data("bookingId"));
+      console.log(typeof $(this).data("bookingId"));
+
     });
   });
 }
 
 $(document).ready(function(){
   populateTable();
+
+
 });
