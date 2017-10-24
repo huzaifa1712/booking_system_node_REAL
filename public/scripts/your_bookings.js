@@ -87,8 +87,8 @@ function populateTable(){
       $(this).attr("data-target","#cancel-modal");
 
       $("#cancel-modal").data("bookingId", $(this).data("bookingId"));
-      console.log("ID booking: " + $(this).data("bookingId"));
-      console.log(typeof $(this).data("bookingId"));
+      //console.log("ID booking: " + $(this).data("bookingId"));
+      //console.log(typeof $(this).data("bookingId"));
 
     });
   });
@@ -96,6 +96,25 @@ function populateTable(){
 
 $(document).ready(function(){
   populateTable();
+
+  $("#cancelBtn").click(function(){
+    var bookingId = $("#cancel-modal").data("bookingId");
+    console.log("bookingID: " + bookingId);
+
+    $.ajax({
+      url:'/delete_booking/' + bookingId,
+      type:'GET',
+      async:false,
+      success:function(response){
+        if(response.deleted == true){
+          alert("Booking deleted!");
+          window.location.reload();
+        }
+      }
+    });
+
+
+  });
 
 
 });

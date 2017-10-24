@@ -185,7 +185,7 @@ $(document).ready(function(){
             },
             success:function(response){
               //do nothing
-              alert("Booking saved!");
+              //alert("Booking saved!");
 
               console.log(response);
             }

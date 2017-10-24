@@ -192,6 +192,17 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
     });
   });
 
+  //route to delete a booking by ID
+  app.get('/delete_booking/:id',(req,res)=>{
+    var id = req.params.id;
+    console.log("Delete id: " + id);
+    Booking.findById(id,function(err,doc){
+      console.log("Deleted: " + doc);
+      doc.remove();
+      res.json({deleted:true});
+    });
+  });
+
   //get route for your_bookings page.
   app.get('/your_bookings',isLoggedIn,(req,res)=>{
         res.render('your_bookings',{
