@@ -1,5 +1,6 @@
 var nodemailer = require('nodemailer');
 let account = require('./config/email_user');
+var moment = require('moment');
 //Class for sending e-mail
 module.exports = class Mail{
   //constructor to instantiate Mail object
@@ -38,7 +39,28 @@ module.exports = class Mail{
       }
     });
   }
-}
 
-//const mail = new Mail(account.user,account.pass);
-//mail.sendMail('windowpane1712@gmail.com','TEST2','<h1> Hi </h1>');
+  static constructDeleteEmailHTML(booking){
+
+    var date = moment(booking.date.startTime).format("MMMM D");
+    var year = moment(booking.date.startTime).format("YYYY");
+    var name = booking.name;
+    var spaceName = booking.spaceNameWithSpaces;
+    var time = booking.time;
+
+    var emailString =
+      "<p>Dear " + name + "," + "<br>"
+      + "Your booking for " + spaceName + "on " + date + ", " + time + ", " + year
+      +" has been cancelled by the administator. Apologies for the inconvenience." +
+       "<br><br>" + "Kind regards," + "<br>" + "IDEAS Hub"
+      + "<br><br>" + "Note: This is an automated e-mail. Please do not reply.</p>";
+
+    return emailString;
+  }
+}
+//There is no way to check if the email was successfully received.
+//However, if there is an error we can send a mail to the admin.
+
+/*
+const mail = new Mail(account.user,account.pass);
+mail.sendMail('windowe1712@gm3ail.com','TEST2','<h1> Hi </h1>');*/

@@ -10,6 +10,10 @@ var passport = require('passport');
 require('./config/passport.js')(passport)
 var fs = require('fs');
 var reminder = require('./reminder');
+let account = require('./config/email_user');
+var Mail = require('./mail');
+
+const mail = new Mail(account.user,account.pass);
 
 //check bookings and send reminder emails when required every one second.
 setInterval(function(){
@@ -209,6 +213,22 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
       res.json({deleted:true});
     });
   });
+
+  app.get('/cancel_booking/:id',(req,res)=>{
+    var id = req.params.id;
+    console.log("Delete id: " + id);
+    Booking.findById(id,function(err,booking){
+      var email = Mail.constructDeleteEmailHTML(booking);
+      var address = booking.email;
+      var subject = "Booking cancelled"
+
+      mail.sendMail(address,subject,email);
+      console.log("Deleted: " + booking);
+      booking.remove();
+      res.json({deleted:true});
+    });
+  });
+
 
   //get route for your_bookings page.
   app.get('/your_bookings',isLoggedIn,(req,res)=>{

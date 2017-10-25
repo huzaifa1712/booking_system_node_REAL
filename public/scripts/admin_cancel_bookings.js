@@ -68,7 +68,7 @@ $(document).ready(function(){
   $("#cancelBtn").click(function(){
     var id = $("#cancel-modal").data("bookingId");
     $.ajax({
-      url:'/delete_booking/' + id,
+      url:'/cancel_booking/' + id,
       type:'GET',
       async:false,
       success:function(response){
