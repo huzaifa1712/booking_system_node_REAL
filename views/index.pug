@@ -2,11 +2,6 @@ extends layout
 
 block content
   .container-fluid(style = "position:relative; height:70%;")
-    if message.length > 0
-      div.alert.alert-danger.alert-dismissable
-        a(href = "#" data-dismiss = "alert" aria-label = "close").close &times;
-        strong=message
-        
     include bookings_table.pug
     .row
         

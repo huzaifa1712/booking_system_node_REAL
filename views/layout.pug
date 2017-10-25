@@ -7,6 +7,8 @@ html
     link(rel="stylesheet", href="/css/style.css")
     script(src ="https://use.fontawesome.com/09e88108a5.js")
   .jumbotron IDEAS Hub Booking System
+  //-this line of code renders messages sent through req.flash
+  != messages('message',locals)
   block content
     br
     hr

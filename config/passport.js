@@ -35,15 +35,36 @@ module.exports = function(passport){
             return done(err);
           }
           //if user exists, everything is fine.
-          if(user){
+          else if(user){
             return done(null,user);
           }
-          //if user doesn't exist, but no error, create a new User.
+          /*
+          else if(profile.emails[0].value == "windowpane1712@gmail.com"){
+            var newUser = new User();
+            newUser.google_id = profile.id;
+            newUser.token = accessToken;
+            newUser.name = profile.displayName;
+            console.log(profile.emails[0].value);
+            newUser.email = profile.emails[0].value;
+            newUser.isAdmin = true;
 
-          if(!(profile.emails[0].value.endsWith('@gapps.uwcsea.edu.sg'))){
-            return done(null,false,req.flash('signupMessage','Please use a UWCSEA gmail account that ends with @gapps.uwcsea.edu.sg '));
+            newUser.save((err)=>{
+              if(err){
+                throw err;
+              }
+
+              else{
+                return done(null, newUser);
+              }
+            });
+          }*/
+
+          //if the email used is not a UWCSEA email, return a message. Redirects them to index and displays the message.
+          else if(!(profile.emails[0].value.endsWith('@gapps.uwcsea.edu.sg'))){
+            return done(null,false,req.flash('danger','Please use a UWCSEA gmail account that ends with @gapps.uwcsea.edu.sg '));
           }
 
+          //if user doesn't exist, but no error, create a new User.
           else{
             var newUser = new User();
             newUser.google_id = profile.id;

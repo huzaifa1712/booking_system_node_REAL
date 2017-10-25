@@ -131,6 +131,7 @@ app.get('/getSettings/:spaceName',(req,res)=>{
 
 });
 
+//Index page(landing page)
 app.get('/',(req,res)=>{
   //USES SETTINGS
   //var spaceNames = [];
@@ -148,7 +149,8 @@ app.get('/',(req,res)=>{
       //days:settings[0].days,
       //times:settings[0].returnTimes,
       spaces:spaceNames,
-      message:req.flash('signupMessage')
+      //signupMessage:req.flash('signupMessage'),
+      //danger:req.flash('danger')
       //startAndEnd:startAndEnd
     });
 
@@ -159,18 +161,30 @@ app.get('/',(req,res)=>{
 
 app.get('/account_page',isLoggedIn, (req,res)=>{
   //USES SETTINGS
-  Space.find({},function(err,spaces){
-    var spaceNames = [];
-    for(var i = 0; i < spaces.length;i++){
-      spaceNames.push(spaces[i].name);
-    }
 
-    res.render('account_page',{
-      user:req.user,
-      spaces:spaceNames
+  //if user is not administrator, proceed to account page.
+  if(!req.user.isAdmin){
+    Space.find({},function(err,spaces){
+      var spaceNames = [];
+      for(var i = 0; i < spaces.length;i++){
+        spaceNames.push(spaces[i].name);
+      }
+
+      res.render('account_page',{
+        user:req.user,
+        spaces:spaceNames
+      });
+
     });
+  }
 
-  });
+  //if user is admin, redirect to admin_page
+  else{
+    res.redirect('/')
+  }
+});
+
+
 
   //route that returns bookings for the user. Used in your_bookings page
   //to populate the table
@@ -206,8 +220,14 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
   //get route for your_bookings page.
   app.get('/your_bookings',isLoggedIn,(req,res)=>{
         res.render('your_bookings',{
-          user:req.user,
+          user:req.user
         });
+  });
+
+  app.get('/admin_page',isAdmin,(req,res)=>{
+    res.render('admin_page',{
+      user:req.user
+    });
   });
   /*
   Setting.find(function(err,settings){
@@ -231,9 +251,9 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
       });
     }
   });*/
-});
 
 
+//app.get('/admin_page',)
 //populate bookings uses this route to get the bookings and populate the table
 app.get('/bookings/:isoWeekNum/:spaceName',(req,res)=>{
 //call to db for bookings
@@ -378,8 +398,24 @@ function isLoggedIn(req,res,next){
   else{
     //flashes a message that says 'please login to view a profile' if you
     //try to access /profile without logging in.
-    req.flash('danger','Please login to view a profile');
+    req.flash('danger','Please login to access that page');
     res.redirect('/');
+  }
+}
+
+function isAdmin(req,res,next){
+  if(req.isAuthenticated() && req.user.isAdmin == true){
+    return next();
+  }
+
+  else if(req.isAuthenticated()){
+    req.flash('danger','You must be logged in as an administator to access that page');
+    res.redirect('/account_page');
+  }
+
+  else{
+    req.flash('danger','You must be logged in as an administator to access that page');
+    res.redirect('/')
   }
 }
 
