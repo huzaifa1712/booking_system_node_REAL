@@ -144,14 +144,7 @@ app.get('/',(req,res)=>{
     }
 
     res.render('index',{
-      //TODO:replace with call to db for settings
-      //EVERY PAGE WITH A BOOKINGS TABLE NEEDS TO LOAD SETTINGS
-      //days:settings[0].days,
-      //times:settings[0].returnTimes,
       spaces:spaceNames,
-      //signupMessage:req.flash('signupMessage'),
-      //danger:req.flash('danger')
-      //startAndEnd:startAndEnd
     });
 
   });
@@ -180,7 +173,7 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
 
   //if user is admin, redirect to admin_page
   else{
-    res.redirect('/')
+    res.redirect('/admin_page');
   }
 });
 
@@ -391,6 +384,7 @@ app.get('/logout',(req,res)=>{
 
 //Checks if user has logged in before giving access to profile
 function isLoggedIn(req,res,next){
+  //checks if user is authenticated(logged in)
   if(req.isAuthenticated()){
     return next();
   }
@@ -403,16 +397,21 @@ function isLoggedIn(req,res,next){
   }
 }
 
+//This middleware checks if the user is an admin account. If logged in but not
+//admin, it redirects to account page. If not logged in, redirects to index.
 function isAdmin(req,res,next){
+  //logged in and admin
   if(req.isAuthenticated() && req.user.isAdmin == true){
     return next();
   }
 
+  //logged in but not admin
   else if(req.isAuthenticated()){
     req.flash('danger','You must be logged in as an administator to access that page');
     res.redirect('/account_page');
   }
 
+  //not logged in
   else{
     req.flash('danger','You must be logged in as an administator to access that page');
     res.redirect('/')
