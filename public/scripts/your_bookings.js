@@ -101,10 +101,10 @@ function populateTable(){
   //bookingId, and the booking string to display to user before cancelling.
   $("#your-bookings td:first-child").each(function(){
     if($(this).hasClass('date')){
+      $(this).attr("data-toggle","modal");
+      $(this).attr("data-target","#cancel-modal");
+      
       $(this).click(function(){
-        $(this).attr("data-toggle","modal");
-        $(this).attr("data-target","#cancel-modal");
-
         $("#cancel-modal").data("bookingId", $(this).data("bookingId"));
         var bookingAndSpace = $(this).text() + " , " + $(this).parent().find("td:nth-child(2)").text();
         $("#booking").text(bookingAndSpace);

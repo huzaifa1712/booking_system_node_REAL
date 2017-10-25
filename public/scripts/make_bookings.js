@@ -59,9 +59,6 @@ function makeBookings(){
 
       //Modal trigger
      //sets it so that it opens a modal when clicked
-
-
-
       $(this).click(function(){
         $(this).attr("data-toggle","modal");
         $(this).attr("data-target","#booking-modal");
