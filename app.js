@@ -249,7 +249,11 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
     }
   });*/
 
-
+app.get('/bookingById/:id',(req,res)=>{
+  Booking.findById(req.params.id, function(err,booking){
+    res.json(booking);
+  });
+});
 //populate bookings uses this route to get the bookings and populate the table
 app.get('/bookings/:isoWeekNum/:spaceName',(req,res)=>{
 //returns bookings only with that isoWeekNum

@@ -56,12 +56,12 @@ function makeBookings(){
   $("#bookings-table td:not(:first-child)").each(function(){
     if($(this).hasClass("booked") == false){
       //add a click event if it is NOT filled
-
+      $(this).attr("data-toggle","modal");
+      $(this).attr("data-target","#booking-modal");
       //Modal trigger
      //sets it so that it opens a modal when clicked
       $(this).click(function(){
-        $(this).attr("data-toggle","modal");
-        $(this).attr("data-target","#booking-modal");
+
         var rowIndex = $(this).closest("tr").index(); //starts from 0
         var columnIndex = $(this).index(); //starts from 1 goes up to number of columns
 

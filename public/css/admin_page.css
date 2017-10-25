@@ -1,3 +1,8 @@
 .booked:hover{
   background-color:#FFBE3F;
 }
+
+.field{
+  color:white;
+  font-size:140%;
+}
