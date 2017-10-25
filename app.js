@@ -135,35 +135,27 @@ app.get('/getSettings/:spaceName',(req,res)=>{
 app.get('/',(req,res)=>{
   //USES SETTINGS
   console.log("Visited Index");
-  //TODO: Make this a static function in Space since it is used in account page route too
-  Space.find({},function(err,spaces){
-    var spaceNames = [];
-    for(var i = 0; i < spaces.length;i++){
-      spaceNames.push(spaces[i].name);
+//TODO: Make this a static function in Space since it is used in account page route too
+  Space.getSpaceNames(function(err,spaces){
+    if(err){
+      throw err;
     }
-
-    res.render('index',{
-      spaces:spaceNames,
-    });
-
+    else{
+      res.render('index',{
+        spaces:spaces
+      });
+    }
   });
-
-
 });
 
 app.get('/account_page',isLoggedIn, (req,res)=>{
   //USES SETTINGS
   //if user is not administrator, proceed to account page.
   if(!req.user.isAdmin){
-    Space.find({},function(err,spaces){
-      var spaceNames = [];
-      for(var i = 0; i < spaces.length;i++){
-        spaceNames.push(spaces[i].name);
-      }
-
+    Space.getSpaceNames(function(err,spaces){
       res.render('account_page',{
         user:req.user,
-        spaces:spaceNames
+        spaces:spaces
       });
 
     });
@@ -216,8 +208,11 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
   });
 
   app.get('/admin_page',isAdmin,(req,res)=>{
-    res.render('admin_page',{
-      user:req.user
+    Space.getSpaceNames(function(err,spaces){
+      res.render('admin_page',{
+        user:req.user,
+        spaces:spaces
+      });
     });
   });
   /*
