@@ -214,6 +214,8 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
     });
   });
 
+  //route used for admin page, cancelling a booking. Sends e-mail then deletes
+  //the booking.
   app.get('/cancel_booking/:id',(req,res)=>{
     var id = req.params.id;
     console.log("Delete id: " + id);
