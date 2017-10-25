@@ -15,8 +15,27 @@ spaceSchema.virtual('returnTimes').get(function(){
   return returnArray;
 });
 
-module.exports = mongoose.model('Space',spaceSchema);
+//Static method that returns array of objects with id and space name for each space
+//document. Uses 'projection': the 'name' in quotes refers to the property we want
+//to get
+spaceSchema.statics.getSpaceNames = function getSpaceNames(cb){
+  return this.model('Space').find({},'name',cb);
+};
 
+module.exports = mongoose.model('Space',spaceSchema);
+/*
+var Space = mongoose.model('Space',spaceSchema);
+mongoose.connect('mongodb://localhost/bookings');
+
+Space.getSpaceNames(function(err,names){
+  if(err){
+    throw err;
+  }
+
+  else{
+    console.log(names);
+  }
+});*/
 /*
 var Space = mongoose.model('Space',spaceSchema);
 

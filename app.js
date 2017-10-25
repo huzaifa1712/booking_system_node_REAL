@@ -134,7 +134,6 @@ app.get('/getSettings/:spaceName',(req,res)=>{
 //Index page(landing page)
 app.get('/',(req,res)=>{
   //USES SETTINGS
-  //var spaceNames = [];
   console.log("Visited Index");
   //TODO: Make this a static function in Space since it is used in account page route too
   Space.find({},function(err,spaces){
@@ -154,7 +153,6 @@ app.get('/',(req,res)=>{
 
 app.get('/account_page',isLoggedIn, (req,res)=>{
   //USES SETTINGS
-
   //if user is not administrator, proceed to account page.
   if(!req.user.isAdmin){
     Space.find({},function(err,spaces){
