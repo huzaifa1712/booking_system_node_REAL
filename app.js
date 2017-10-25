@@ -217,6 +217,7 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
         });
   });
 
+  //get route for admin page.
   app.get('/admin_page',isAdmin,(req,res)=>{
     Space.getSpaceNames(function(err,spaces){
       res.render('admin_page',{

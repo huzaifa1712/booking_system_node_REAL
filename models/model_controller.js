@@ -1,5 +1,0 @@
-class ModelController{
-  constructor(model){
-    
-  }
-}
