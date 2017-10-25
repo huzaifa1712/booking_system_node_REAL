@@ -38,7 +38,9 @@ var app = express();
     throw err;
   });
 
+//sets where to look for the template files(the 'views folder')
 app.set('views', path.join(__dirname,'views'));
+//sets the view engine to use, in this case Pug
 app.set('view engine','pug');
 
 //MIDDLEWARES
@@ -50,6 +52,7 @@ app.set('view engine','pug');
   }))
 
   app.use(flash()); //messages and flash middleware
+  //this middleware needed for flashing messages
   app.use(function (req, res, next) {
     res.locals.messages = require('express-messages')(req, res);
     next();
@@ -61,30 +64,35 @@ app.set('view engine','pug');
   app.use(passport.session());
   var urlencodedParser = bodyParser.urlencoded({extended:false}); //bodyParser for POST
 
-//Routes
+//ROUTES
 
-//Google routes(login)
-//route to authenticate users
+  //Google routes(login)
+
+  //Route to authenticate users. This is where the login button on the landing page
+  //points to.
   app.get('/auth/google', passport.authenticate('google', {
+    //telling it what to look for in the account(scope), so profile(for name,id) and email
     scope: ['profile','email']
   }));
 
   //This is a callback that executes after login is done.
   app.get('/auth/google/callback',passport.authenticate('google',{
-    //redirect to 'profile' if succeeded in logging in, if not go to index
+    //redirect to 'account_page' if succeeded in logging in, if not go to index
     successRedirect: '/account_page',
     failureRedirect: '/',
     failureFlash:true
-
   }));
 
-//normal routes
-//get the Settings required to render the table. TODO: include route param for
-//requesting settings by space
+//Normal routes
+
+//get the Settings required to render the bookings_table. This is used in
+//populate_bookings.js
 app.get('/getSettings/:spaceName',(req,res)=>{
   console.log("Visited getSettings");
   console.log(req.params.spaceName);
-  Space.find({name:req.params.spaceName},function(err,spaces){
+
+  //Find all Spaces with that name. Should be only one, so we are using findOne
+  Space.findOne({name:req.params.spaceName},function(err,spaces){
     if(err){
       throw err;
     }
@@ -92,14 +100,16 @@ app.get('/getSettings/:spaceName',(req,res)=>{
     else{
       console.log('spaces');
       console.log(spaces);
-      var days = spaces[0].days;
+      //Get the days array for that space(e.g ["Monday","Tuesday","Wednesday","Thursday"])
+      var days = spaces.days;
       console.log("days:")
       console.log(days);
       console.log("times:")
-
-      var times = spaces[0].returnTimes;
+      //Get the times array for that space(e.g ["12:45 - 1:15","1:15 - 1:45","1:45 - 2:15"])
+      var times = spaces.returnTimes;
       console.log(times);
 
+      //return an object with days and times as response.
       var settingsObj = {
         days:days,
         times:times
@@ -135,7 +145,7 @@ app.get('/getSettings/:spaceName',(req,res)=>{
 app.get('/',(req,res)=>{
   //USES SETTINGS
   console.log("Visited Index");
-//TODO: Make this a static function in Space since it is used in account page route too
+  //Find and pass in array of spaces with the name. Used to populate dropdown.
   Space.getSpaceNames(function(err,spaces){
     if(err){
       throw err;
@@ -239,24 +249,19 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
   });*/
 
 
-//app.get('/admin_page',)
 //populate bookings uses this route to get the bookings and populate the table
 app.get('/bookings/:isoWeekNum/:spaceName',(req,res)=>{
-//call to db for bookings
-//var bookingsArray = [];
-
 //returns bookings only with that isoWeekNum
-//TODO: make it so that it returns based on Space AND isoWeekNum once spaces
-//are being implemented
 Booking.find(function(err,bookings){
   if(err){
     throw err;
   }
 
   else{
-    //console.log("Booking variable");
+    //Filter out and return an array of bookings where the weeknumber of the booking
+    //is equal to the weeknumber requested, and where the booking's space name is equal to
+    //the space name being requested.
     var bookingsArr = bookings.filter(function(booking){
-      //.replace(/\s+/g, '')
       console.log(req.params.spaceName);
       return moment(booking.date.startTime).isoWeek() == req.params.isoWeekNum && booking.space == req.params.spaceName.replace(/\s+/g, '');
     });
@@ -350,6 +355,7 @@ app.get('/maxWeekNum', (req,res)=>{
     }
 
     else{
+      //max week num = current week num + max number of weeks ahead from Settings
       var maxWeekNum = moment().isoWeek() + settings[0].weeksAhead;
       console.log("max week num: " + maxWeekNum);
       res.send(maxWeekNum.toString());
@@ -357,19 +363,7 @@ app.get('/maxWeekNum', (req,res)=>{
   });
 });
 
-app.get('/getSpaces',(req,res)=>{
-  Setting.find({},(err,settings)=>{
-    if(err){
-      throw err;
-    }
-
-    else{
-      var spaces = settings[0].spaces;
-      res.send(spaces)
-    }
-  });
-});
-
+//this route handles logging out.
 app.get('/logout',(req,res)=>{
   req.logout();     //logout is a function Passport adds to Express somehow
   res.redirect('/');
