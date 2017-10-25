@@ -267,7 +267,7 @@ Booking.find(function(err,bookings){
       return moment(booking.date.startTime).isoWeek() == req.params.isoWeekNum && booking.space == req.params.spaceName.replace(/\s+/g, '');
     });
     console.log("Bookings returned: ");
-    //console.log(bookingsArr);
+    console.log(bookingsArr);
     res.json(JSON.stringify(bookingsArr));
   }
 });

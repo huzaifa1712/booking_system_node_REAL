@@ -112,6 +112,10 @@ function populateBookings(isoWeekNum){
             //find the weeknumber in which the booking takes place.
             var bookingIsoWeekNumber = moment(responseArr[i].date.startTime).isoWeek();
 
+            //get the _id of the booking as it is in the database, so we can access it
+            //when cancelling bookings from the admin side.
+            var bookingId = responseArr[i]._id;
+
             //if day and time of the object match day and time of the cell, print the name in the cell
             if(dayFromTable == dayFromBooking && timeFromBooking == timeFromTable && bookingIsoWeekNumber == isoWeekNum){
               //sets the text of the table cell to the name of the user who booked.
@@ -119,6 +123,9 @@ function populateBookings(isoWeekNum){
               //gives the table cell a class of 'booked' we can check later when assigning click events
               //in make_bookings
               $(this).addClass('booked');
+              //assign the bookingId as an attribute to the cell.
+              $(this).data("bookingId",bookingId);
+              console.log($(this).data("bookingId"));
             }
 
           }
