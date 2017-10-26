@@ -122,162 +122,61 @@ app.get('/getSettings/:spaceName',(req,res)=>{
       res.json(settingsObj);
     }
   });
-  /*
-  Setting.find({},function(err,settings){
-    if(err){
-      throw err;
-    }
-
-    else{
-      var days = settings[0].days;
-      console.log(days);
-      var times = settings[0].returnTimes;
-      console.log(times);
-
-      var settingsObj = {
-        days:days,
-        times:times
-      }
-
-      res.json(settingsObj);
-    }
-  });*/
-
 });
 
-//Index page(landing page)
-app.get('/',(req,res)=>{
-  //USES SETTINGS
-  console.log("Visited Index");
-  //Find and pass in array of spaces with the name. Used to populate dropdown.
-  Space.getSpaceNames(function(err,spaces){
-    if(err){
-      throw err;
-    }
-    else{
-      res.render('index',{
-        spaces:spaces
-      });
-    }
-  });
-});
 
-app.get('/account_page',isLoggedIn, (req,res)=>{
-  //USES SETTINGS
-  //if user is not administrator, proceed to account page.
-  if(!req.user.isAdmin){
-    Space.getSpaceNames(function(err,spaces){
-      res.render('account_page',{
-        user:req.user,
-        spaces:spaces
-      });
 
-    });
+//API ROUTES. ALL USED IN JQUERY
+
+//route that returns bookings for the user, using user's id.. Used in your_bookings page
+//to populate the table
+app.get('/user_bookings',(req,res)=>{
+  //request bookings with this user's id.
+  var query = {
+    user_id:req.user._id
   }
 
-  //if user is admin, redirect to admin_page
-  else{
-    res.redirect('/admin_page');
-  }
-});
-
-
-
-  //route that returns bookings for the user. Used in your_bookings page
-  //to populate the table
-  app.get('/user_bookings',(req,res)=>{
-    //request bookings with this user's id.
-    var query = {
-      user_id:req.user._id
-    }
-
-    Booking.find(query,function(err,bookings){
-      if(err){
-        throw err;
-      }
-
-      else{
-        console.log("user bookings:");
-        console.log(bookings);
-        //send the bookings 
-        res.json(bookings);
-      }
-    });
-  });
-
-  //route to delete a booking by ID
-  app.get('/delete_booking/:id',(req,res)=>{
-    var id = req.params.id;
-    console.log("Delete id: " + id);
-    Booking.findById(id,function(err,doc){
-      console.log("Deleted: " + doc);
-      doc.remove();
-      res.json({deleted:true});
-    });
-  });
-
-  //route used for admin page, cancelling a booking. Sends e-mail then deletes
-  //the booking.
-  app.get('/cancel_booking/:id',(req,res)=>{
-    var id = req.params.id;
-    console.log("Delete id: " + id);
-    Booking.findById(id,function(err,booking){
-      var email = Mail.constructDeleteEmailHTML(booking);
-      var address = booking.email;
-      var subject = "Booking cancelled"
-
-      mail.sendMail(address,subject,email);
-      console.log("Deleted: " + booking);
-      booking.remove();
-      res.json({deleted:true});
-    });
-  });
-
-
-  //get route for your_bookings page.
-  app.get('/your_bookings',isLoggedIn,(req,res)=>{
-        res.render('your_bookings',{
-          user:req.user
-        });
-  });
-
-  //get route for admin page.
-  app.get('/admin_page',isAdmin,(req,res)=>{
-    Space.getSpaceNames(function(err,spaces){
-      res.render('admin_page',{
-        user:req.user,
-        spaces:spaces
-      });
-    });
-  });
-
-  app.get('/admin_settings',isAdmin,(req,res)=>{
-    res.render('admin_settings',{
-      user:req.user
-    })
-  });
-  /*
-  Setting.find(function(err,settings){
-
+  Booking.find(query,function(err,bookings){
     if(err){
       throw err;
     }
 
     else{
-      //var startAndEnd = settings[0].startAndEndOfWeek;
-      //console.log(settings[0].returnTimes);
-      res.render('account_page',{
-        //TODO:replace with call to db for settings
-        //EVERY PAGE WITH A BOOKINGS TABLE NEEDS TO LOAD SETTINGS
-        user:req.user,
-        days:settings[0].days,
-        times:settings[0].returnTimes,
-        spaces:settings[0].spaces
-        //startAndEnd:startAndEnd
-
-      });
+      console.log("user bookings:");
+      console.log(bookings);
+      //send the bookings
+      res.json(bookings);
     }
-  });*/
+  });
+});
+
+//route to delete a booking by ID
+app.get('/delete_booking/:id',(req,res)=>{
+  var id = req.params.id;
+  console.log("Delete id: " + id);
+  Booking.findById(id,function(err,doc){
+    console.log("Deleted: " + doc);
+    doc.remove();
+    res.json({deleted:true});
+  });
+});
+
+//route used for admin page, cancelling a booking. Sends e-mail then deletes
+//the booking.
+app.get('/cancel_booking/:id',(req,res)=>{
+  var id = req.params.id;
+  console.log("Delete id: " + id);
+  Booking.findById(id,function(err,booking){
+    var email = Mail.constructDeleteEmailHTML(booking);
+    var address = booking.email;
+    var subject = "Booking cancelled"
+
+    mail.sendMail(address,subject,email);
+    console.log("Deleted: " + booking);
+    booking.remove();
+    res.json({deleted:true});
+  });
+});
 
 app.get('/bookingById/:id',(req,res)=>{
   Booking.findById(req.params.id, function(err,booking){
@@ -287,48 +186,24 @@ app.get('/bookingById/:id',(req,res)=>{
 //populate bookings uses this route to get the bookings and populate the table
 app.get('/bookings/:isoWeekNum/:spaceName',(req,res)=>{
 //returns bookings only with that isoWeekNum
-Booking.find(function(err,bookings){
-  if(err){
-    throw err;
-  }
-
-  else{
-    //Filter out and return an array of bookings where the weeknumber of the booking
-    //is equal to the weeknumber requested, and where the booking's space name is equal to
-    //the space name being requested.
-    var bookingsArr = bookings.filter(function(booking){
-      console.log(req.params.spaceName);
-      return moment(booking.date.startTime).isoWeek() == req.params.isoWeekNum && booking.space == req.params.spaceName.replace(/\s+/g, '');
-    });
-    console.log("Bookings returned: ");
-    console.log(bookingsArr);
-    res.json(JSON.stringify(bookingsArr));
-  }
-});
-
-
-  /*var bookings = [
-    {
-      name:'Jeff',
-      time: '12:45-1:15',
-      day:'Monday'
-    },
-    {
-      name:'Carl',
-      time: '1:15-1:45',
-      day:'Wednesday'
-    },
-
-    {
-      name:'John',
-      time: '1:15-1:45',
-      day:'Thursday'
+  Booking.find(function(err,bookings){
+    if(err){
+      throw err;
     }
 
-  ];
-//if we are sending it as JSON string, we will have to parse it on the
-//jQuery side before being able to access anything.
-  res.json(JSON.stringify(bookings));*/
+    else{
+      //Filter out and return an array of bookings where the weeknumber of the booking
+      //is equal to the weeknumber requested, and where the booking's space name is equal to
+      //the space name being requested.
+      var bookingsArr = bookings.filter(function(booking){
+        console.log(req.params.spaceName);
+        return moment(booking.date.startTime).isoWeek() == req.params.isoWeekNum && booking.space == req.params.spaceName.replace(/\s+/g, '');
+      });
+      console.log("Bookings returned: ");
+      console.log(bookingsArr);
+      res.json(JSON.stringify(bookingsArr));
+    }
+  });
 });
 
 //this route takes the Booking information and saves it
@@ -398,11 +273,80 @@ app.get('/maxWeekNum', (req,res)=>{
   });
 });
 
+
+
+//ROUTES FOR PAGES.
+
+//Index page(landing page)
+app.get('/',(req,res)=>{
+  //USES SETTINGS
+  console.log("Visited Index");
+  //Find and pass in array of spaces with the name. Used to populate dropdown.
+  Space.getSpaceNames(function(err,spaces){
+    if(err){
+      throw err;
+    }
+    else{
+      res.render('index',{
+        spaces:spaces
+      });
+    }
+  });
+});
+
+app.get('/account_page',isLoggedIn, (req,res)=>{
+  //USES SETTINGS
+  //if user is not administrator, proceed to account page.
+  if(!req.user.isAdmin){
+    Space.getSpaceNames(function(err,spaces){
+      res.render('account_page',{
+        user:req.user,
+        spaces:spaces
+      });
+
+    });
+  }
+
+  //if user is admin, redirect to admin_page
+  else{
+    res.redirect('/admin_page');
+  }
+});
+
+
+
+  //get route for your_bookings page.
+  app.get('/your_bookings',isLoggedIn,(req,res)=>{
+        res.render('your_bookings',{
+          user:req.user
+        });
+  });
+
+  //get route for admin page.
+  app.get('/admin_page',isAdmin,(req,res)=>{
+    Space.getSpaceNames(function(err,spaces){
+      res.render('admin_page',{
+        user:req.user,
+        spaces:spaces
+      });
+    });
+  });
+
+  app.get('/admin_settings',isAdmin,(req,res)=>{
+    res.render('admin_settings',{
+      user:req.user
+    })
+  });
+
+
 //this route handles logging out.
 app.get('/logout',(req,res)=>{
   req.logout();     //logout is a function Passport adds to Express somehow
   res.redirect('/');
 });
+
+
+//CUSTOM MIDDLEWARE
 
 //Checks if user has logged in before giving access to profile
 function isLoggedIn(req,res,next){
