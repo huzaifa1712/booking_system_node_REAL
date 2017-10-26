@@ -32,6 +32,11 @@ module.exports = class Mail{
     this.transporter.sendMail(mailOptions,function(err,info){
       if(err){
         console.log(err);
+        var subject = "Error in sending mail";
+        var recipient = this.user;
+        var content = "<p> There was an error in sending an e-mail </p>";
+
+        this.sendMail(recipient,subject,content);
       }
 
       else{
@@ -40,6 +45,7 @@ module.exports = class Mail{
     });
   }
 
+  //constructs the delete email given a booking object.
   static constructDeleteEmailHTML(booking){
 
     var date = moment(booking.date.startTime).format("MMMM D");

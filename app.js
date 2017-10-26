@@ -248,6 +248,12 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
       });
     });
   });
+
+  app.get('/admin_settings',isAdmin,(req,res)=>{
+    res.render('admin_settings',{
+      user:req.user
+    })
+  });
   /*
   Setting.find(function(err,settings){
 
