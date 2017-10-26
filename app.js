@@ -130,6 +130,7 @@ app.get('/getSettings/:spaceName',(req,res)=>{
 
 //route that returns bookings for the user, using user's id.. Used in your_bookings page
 //to populate the table
+//Files: your_bookings.js
 app.get('/user_bookings',(req,res)=>{
   //request bookings with this user's id.
   var query = {
@@ -150,7 +151,9 @@ app.get('/user_bookings',(req,res)=>{
   });
 });
 
-//route to delete a booking by ID
+//route to delete a booking by ID. Different from cancel because it doesn't send
+//an email.
+//Files: your_bookings.js
 app.get('/delete_booking/:id',(req,res)=>{
   var id = req.params.id;
   console.log("Delete id: " + id);
@@ -163,6 +166,7 @@ app.get('/delete_booking/:id',(req,res)=>{
 
 //route used for admin page, cancelling a booking. Sends e-mail then deletes
 //the booking.
+//Files: admin_cancel_bookings.js
 app.get('/cancel_booking/:id',(req,res)=>{
   var id = req.params.id;
   console.log("Delete id: " + id);
@@ -178,12 +182,17 @@ app.get('/cancel_booking/:id',(req,res)=>{
   });
 });
 
+//App to return a booking by ID. Used in populating the modal when admin cancels
+//booking.
+//Files: admin_cancel_bookings.js
 app.get('/bookingById/:id',(req,res)=>{
   Booking.findById(req.params.id, function(err,booking){
     res.json(booking);
   });
 });
+
 //populate bookings uses this route to get the bookings and populate the table
+//Files: populate_bookings.js
 app.get('/bookings/:isoWeekNum/:spaceName',(req,res)=>{
 //returns bookings only with that isoWeekNum
   Booking.find(function(err,bookings){
@@ -206,7 +215,8 @@ app.get('/bookings/:isoWeekNum/:spaceName',(req,res)=>{
   });
 });
 
-//this route takes the Booking information and saves it
+//this route takes the Booking information when user makes a booking and saves it
+//Files: make_bookings.js
 app.post('/make_booking', urlencodedParser, (req,res)=>{
   //console.log('lol');
   console.log(req.body);
@@ -250,6 +260,7 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
 });
 
 //a route that sends back a user JSON object which can be used when making bookings
+//Files: make_bookings.js
 app.get('/get_user', isLoggedIn,(req,res)=>{
   console.log("User body: ");
   console.log(req.user);
@@ -257,7 +268,8 @@ app.get('/get_user', isLoggedIn,(req,res)=>{
   res.json(req.user);
 });
 
-//returns the maximum week number
+//returns the maximum week number. Used for pagination of the bookings table.
+//Files: populate_bookings.js
 app.get('/maxWeekNum', (req,res)=>{
   Setting.find({},(err,settings)=>{
     if(err){
