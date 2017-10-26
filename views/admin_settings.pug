@@ -27,33 +27,39 @@ block content
           div#modal-body.modal-body
             div#days
               div.checkbox
-                input(type = "checkbox")
+                input#monday(type = "checkbox")
                 span.middle Monday
               div.checkbox
-                input(type = "checkbox")
+                input#tuesday(type = "checkbox")
                 span.middle Tuesday
               div.checkbox
-                input(type = "checkbox" checked)
+                input#wednesday(type = "checkbox")
                 span.middle Wednesday
               div.checkbox
-                input(type = "checkbox")
+                input#thursday(type = "checkbox")
                 span.middle Thursday
               div.checkbox
-                input(type = "checkbox")
+                input#friday(type = "checkbox")
                 span.middle Friday
-            div.row.time-group(style = "padding:20px;")
+              div.checkbox
+                input#saturday(type = "checkbox")
+                span.middle Saturday
+              div.checkbox
+                input#sunday(type = "checkbox")
+                span.middle Sunday
+            //-div.row.time-group
               input(type = "time" value = "11:45") 
               span.middle to
               input(type = "time" value = "12:45") 
-            div.row.time-group(style = "padding:20px;")
+          //-  div.row.time-group
               input(type = "time" value = "12:45") 
               span.middle to
               input(type = "time" value = "13:45")
-            div.row.time-group(style = "padding:20px;")
+            div.row.time-group
               input(type = "time" value = "13:45") 
               span.middle to
               input(type = "time" value = "14:45")
-            div.row.time-group(style = "padding:20px;")
+            div.row.time-group
               input(type = "time" value = "14:45") 
               span.middle to
               input(type = "time" value = "15:45")
