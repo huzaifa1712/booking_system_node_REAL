@@ -24,12 +24,42 @@ block content
             button(type = "button" data-dismiss="modal").close &times;
             h4.modal-title Edit settings for the selected space: 
               span#spaceName
-
-          div.modal-body 
-            
-          div.modal-footer 
-            button(type = "button")#saveBtn.btn.btn-default.btn-info Save settings for the space
-            button(type = "button" data-dismiss = "modal").btn.btn-default.btn-danger Go back
+          div#modal-body.modal-body
+            div#days
+              div.checkbox
+                input(type = "checkbox")
+                span.middle Monday
+              div.checkbox
+                input(type = "checkbox")
+                span.middle Tuesday
+              div.checkbox
+                input(type = "checkbox" checked)
+                span.middle Wednesday
+              div.checkbox
+                input(type = "checkbox")
+                span.middle Thursday
+              div.checkbox
+                input(type = "checkbox")
+                span.middle Friday
+            div.row.time-group(style = "padding:20px;")
+              input(type = "time" value = "11:45") 
+              span.middle to
+              input(type = "time" value = "12:45") 
+            div.row.time-group(style = "padding:20px;")
+              input(type = "time" value = "12:45") 
+              span.middle to
+              input(type = "time" value = "13:45")
+            div.row.time-group(style = "padding:20px;")
+              input(type = "time" value = "13:45") 
+              span.middle to
+              input(type = "time" value = "14:45")
+            div.row.time-group(style = "padding:20px;")
+              input(type = "time" value = "14:45") 
+              span.middle to
+              input(type = "time" value = "15:45")
+          div.clearfix
+          button(type = "button")#saveBtn.btn.btn-default.btn-info Save settings for the space
+          button(type = "button" data-dismiss = "modal").btn.btn-default.btn-danger Go back
           
           
           

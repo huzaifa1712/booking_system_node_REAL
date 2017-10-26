@@ -299,6 +299,20 @@ app.get('/get_spaces',(req,res)=>{
   });
 });
 
+//Route for getting details for one space and populating the modal in admin_settings.
+//File: admin_settings.js
+app.get('/get_space/:id',(req,res)=>{
+  Space.findById(req.params.id,function(err,space){
+    if(err){
+      throw err;
+    }
+
+    else{
+      res.json(space);
+    }
+  });
+});
+
 
 
 //ROUTES FOR PAGES.

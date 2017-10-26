@@ -11,3 +11,25 @@
 td:hover{
   background-color: #6F7C7D;
 }
+
+.time-group{
+  display:block;
+  float:right;
+  margin:5px;
+}
+
+.middle{
+  color:white;
+  padding:10px;
+  font-size:120%;
+}
+#days{
+  float:left;
+}
+#times{
+  float:right;
+}
+
+button{
+  margin:10px;
+}
