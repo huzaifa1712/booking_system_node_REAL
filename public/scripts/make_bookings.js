@@ -141,22 +141,25 @@ $(document).ready(function(){
   $("#submitBtn").click(function(){
     //if none of the buttons in the group are checked, alert to pick one
 
-    //get the booking fields needed
-    //var bookingFields = getBookingFields();
+    //get the booking fields needed, using the table cell's row and column index
+    //which were stored upon clicking.
     var rowIndex = $("#booking-modal").data("rowIndex");
     console.log(rowIndex);
     var colIndex = $("#booking-modal").data("colIndex");
 
     var bookingFields = getBookingFields(rowIndex,colIndex);
 
+    //If nothing was checked.
     if(!$("input[name='reminder']:checked").val()){
       alert("Please pick one of the reminder options!");
     }
 
     else{
+      //get the reminder option picked.
       var reminderValue = $("input[name='reminder']:checked").val();
       console.log(reminderValue);
 
+      //Make the booking using an ajax request.
       $.ajax({
         type:'GET',
         url:'/get_user',         //getting the user object so we can make a booking
@@ -187,6 +190,7 @@ $(document).ready(function(){
               console.log(response);
             }
           });
+          //Alert and reload page once booking made.
           alert("Booking saved!");
           window.location.reload();
         }
@@ -194,7 +198,7 @@ $(document).ready(function(){
     }
   });
 
-
+  //Upon page load, assign click events to non-booked cells.
   makeBookings();
 
 

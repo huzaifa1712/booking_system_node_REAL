@@ -1,4 +1,4 @@
-//assigns the table cells that have bookings the click events needed to
+//Thisfile: assigns the table cells that have bookings the click events needed to
 //cancel/delete the booking. Inside this click event, ajax request made
 //with the bookingId for that cell, which will go to a route that deletes the booking
 //and sends the e-mail.
@@ -27,6 +27,8 @@ function setBookingFields(id){
   });
 }
 
+//This function assigns the appropriate table cells(booked cells) a click function
+//for cancelling. Is run everytime table is destroyed/changed.
 function cancelBooking(){
   $("#bookings-table td:not(:first-child)").each(function(){
     if($(this).hasClass("booked") == true){
@@ -65,6 +67,7 @@ $(document).ready(function(){
     cancelBooking();
   });
 
+  //get the bookingId stored, then use it to cancel the booking.
   $("#cancelBtn").click(function(){
     var id = $("#cancel-modal").data("bookingId");
     $.ajax({
@@ -78,5 +81,6 @@ $(document).ready(function(){
   });
 });
 
+  //Upon page load, need to assign the click events.
   cancelBooking();
 });
