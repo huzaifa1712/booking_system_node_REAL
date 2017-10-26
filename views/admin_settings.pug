@@ -12,13 +12,28 @@ block content
             a(href = "/admin_settings") Settings
     div#settings-body.container-fluid
       br
-      h3(style = "color:#FFBE3F; padding-bottom:20px;").text-center To edit settings for a space, select one from the table below
+      h3(style = "color:#FFBE3F; padding-bottom:20px;").text-center To edit or view settings for a space, select one from the table below
       table#spaces-table.table.table-bordered.table-responsive.table-striped(style = "border: 2px solid #6F7C7D;font-size:150%;")
         thead
           tr
             th Name of space
-        tr 
-          td 1
+        tbody
+      div#edit-space-modal.modal.fade(role = "dialog")
+        div.modal-dialog
+          div.modal-header
+            button(type = "button" data-dismiss="modal").close &times;
+            h4.modal-title Edit settings for the selected space: 
+              span#spaceName
+
+          div.modal-body 
+            
+          div.modal-footer 
+            button(type = "button")#saveBtn.btn.btn-default.btn-info Save settings for the space
+            button(type = "button" data-dismiss = "modal").btn.btn-default.btn-danger Go back
+          
+          
+          
+   
     script(src = "/bower_components/bootstrap/dist/js/bootstrap.js")
     script(src = "/bower_components/jquery/dist/jquery.js")
     script(src= "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.js")
