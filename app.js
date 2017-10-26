@@ -285,6 +285,20 @@ app.get('/maxWeekNum', (req,res)=>{
   });
 });
 
+//Route for getting space details and populating the table in admin_settings.
+//File: admin_settings.js
+app.get('/get_spaces',(req,res)=>{
+  Space.find({},function(err,spaces){
+    if(err){
+      throw err;
+    }
+
+    else{
+      res.json(spaces);
+    }
+  });
+});
+
 
 
 //ROUTES FOR PAGES.
