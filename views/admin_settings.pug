@@ -2,4 +2,24 @@ extends layout
 
 block content
     include header.pug
+    link(href = "/css/admin_settings.css" rel = "stylesheet")
+    nav.navbar.navbar-default
+      div.container-fluid
+        ul.nav.navbar-nav
+          li
+            a(href = "/admin_page") Cancel bookings 
+          li.active
+            a(href = "/admin_settings") Settings
+    div#settings-body.container-fluid
+      br
+      h3(style = "color:#FFBE3F; padding-bottom:20px;").text-center To edit settings for a space, select one from the table below
+      table#spaces-table.table.table-bordered.table-responsive.table-striped(style = "border: 2px solid #6F7C7D;font-size:150%;")
+        thead
+          tr
+            th Name of space
+        tr 
+          td 1
+
+        
+
     

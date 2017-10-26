@@ -119,3 +119,7 @@ nav{
 .date:hover{
   background-color: #6F7C7D;
 }
+
+th{
+  text-align:center;
+}

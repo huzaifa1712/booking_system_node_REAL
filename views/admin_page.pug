@@ -5,6 +5,13 @@ block content
   div.container-fluid
     div.row
       include header.pug
+    nav.navbar.navbar-default
+      div.container-fluid
+        ul.nav.navbar-nav
+          li.active
+            a(href = "/admin_page") Cancel bookings 
+          li
+            a(href = "/admin_settings") Settings
     div.col-lg-12.col-md-10.col-sm-10.col-xs-8 
       h3(style = "color:#FFBE3F; padding-bottom:20px;").text-center To cancel a booking, please select one of the booked times, if any.
   include bookings_table.pug

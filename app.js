@@ -186,8 +186,9 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
   //route that returns bookings for the user. Used in your_bookings page
   //to populate the table
   app.get('/user_bookings',(req,res)=>{
+    //request bookings with this user's id.
     var query = {
-      id:req.user_id
+      user_id:req.user._id
     }
 
     Booking.find(query,function(err,bookings){
@@ -198,6 +199,7 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
       else{
         console.log("user bookings:");
         console.log(bookings);
+        //send the bookings 
         res.json(bookings);
       }
     });
