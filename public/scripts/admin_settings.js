@@ -288,51 +288,17 @@ $(document).ready(function(){
 
 
     }
-
-/*
-    var selectedDays = [];
-    //go through the inputs and push the days selected into an array.
-    $("#days input:checked").each(function(){
-      selectedDays.push($(this).attr('id'));
-    });
-
-    console.log(selectedDays);
-
-    var selectedTimes = []; //24 HOUR TIME.
-    //go through the divs with the times, and select the value of the time value in the
-    //div. Includes duplicates. GETS THE 24 HOUR TIME VALUES.
-    $("div.time-group input").each(function(){
-      selectedTimes.push($(this).val());
-    });
-
-    //this method returns only the unique values in the array.
-    selectedTimes = selectedTimes.filter(function(value,index,self){
-      return self.indexOf(value) === index;
-    });
-
-    //this returns an array with the 12 hour time values + meridien(am/pm). This is the
-    //final version we need to set the Space settings.
-     selectedTimes = selectedTimes.map(function(time){
-      return moment(time,"kk:mm").format("h:mma");
-    });
-
-    console.log(selectedTimes);
-    //Get the id of the space being edited.
-    var spaceId = $("#edit-space-modal").data("spaceId");
-    console.log(spaceId);
-
-    var spaceUpdate = {
-      id:spaceId,
-      days:selectedDays,
-      times:selectedTimes
-    };
-    */
-
-
-    //console.log(moment(document.getElementById("time").valueAsDate).zone("+00:00").format("hh:mma"));
-    //var date = moment(document.getElementById("time").valueAsDate).zone("+00:00");
-    //console.log(document.getElementById("time").valueAsDate);
-    //console.log(date.format("hh:mma"));
-
   });
+
+  $("#addDuration").click(function(){
+    var modalBody = $("#modal-body");
+
+    var div = $('<div class = "row time-group">');
+    $('<input id = "start" type = "time">').appendTo(div);
+    $('<span class = "middle"> to </span>').appendTo(div);
+    $('<input id = "end" type = "time">').appendTo(div);
+    
+    div.appendTo(modalBody);
+  });
+
 });
