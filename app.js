@@ -95,7 +95,7 @@ app.get('/getSettings/:spaceName',(req,res)=>{
   console.log("Visited getSettings");
   console.log(req.params.spaceName);
 
-  //Find all Spaces with that name. Should be only one, so we are using findOne
+  //Find all spaces with that name. Should be only one, so we are using findOne
   Space.findOne({name:req.params.spaceName},function(err,spaces){
     if(err){
       throw err;
@@ -313,12 +313,22 @@ app.get('/get_space/:id',(req,res)=>{
   });
 });
 
+//Route for updating a space from admin_settings page modal.
+//Files: admin_settings.js
 app.post('/update_space',urlencodedParser,(req,res)=>{
   var space = req.body;
-  var days = space['days[]'];
-  var times = space['times[]'];
+  //var days = space['days[]'];
+  //var times = space['times[]'];
+  console.log("SPACE");
+  console.log(req);
+  console.log(space.data);
 
-  Space.findOneAndUpdate({_id:space.id},{$set:{days:days, times:times}},{new:true},function(err,space){
+  var shit = space.data;
+  console.log(JSON.parse(shit));
+  var moreShit = JSON.parse(shit);
+  console.log(moreShit.times);
+
+  Space.findOneAndUpdate({_id:moreShit.id},{$set:{days:moreShit.days, times:moreShit.times}},{new:true},function(err,space){
     if(err){
       throw err;
     }

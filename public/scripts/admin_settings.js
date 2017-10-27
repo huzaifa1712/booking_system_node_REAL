@@ -49,9 +49,27 @@ function populateModal(id){
   var space = getSpace(id);
   //make a new array with the result of the 24 hour time version of the
   //times in the space object.
+  console.log(space.times);
+  var timesFromSpace = space.times;
+  var times24h = [];
+  /*
   var times = space.times.map(function(time){
-    return moment(time,"hh:mma").format("kk:mm");
-  });
+    //return moment(time,"hh:mma").format("kk:mm");
+    return {moment(time.start,"hh:mma").format("kk:mm"),moment(time.end,"hh:mma").format("kk:mm")};
+  });*/
+
+  for(var i = 0; i < timesFromSpace.length; i++){
+    var timeObj = {
+      start:moment(timesFromSpace[i].start,"hh:mma").format("kk:mm"),
+      end:moment(timesFromSpace[i].end,"hh:mma").format("kk:mm")
+    }
+
+    times24h.push(timeObj);
+  }
+
+  console.log(times24h);
+
+  console.log("Times array: " + times24h);
   //days array
   var days = space.days;
 
@@ -88,11 +106,11 @@ function populateModal(id){
 
   //populates the time elements. e.g 12:45 to 1:45, which is why the for loop
   //goes from 0 to length-1, and uses i and i+1th elements of the array.
-  for(var i = 0; i < times.length - 1; i++){
+  for(var i = 0; i < times24h.length; i++){
     var div = $('<div class = "row time-group">');
-    $('<input id = "start" type = "time" value = "' + times[i] + '">').appendTo(div);
+    $('<input id = "start" type = "time" value = "' + times24h[i].start + '">').appendTo(div);
     $('<span class = "middle"> to </span>').appendTo(div);
-    $('<input id = "end" type = "time" value = "' + times[i + 1] + '">').appendTo(div);
+    $('<input id = "end" type = "time" value = "' + times24h[i].end + '">').appendTo(div);
     div.appendTo(modalBody);
   }
   /*
@@ -230,30 +248,52 @@ function getSelectedSettings(){
   var selectedTimes = []; //24 HOUR TIME.
   //go through the divs with the times, and select the value of the time value in the
   //div. Includes duplicates. GETS THE 24 HOUR TIME VALUES.
-  $("div.time-group input").each(function(){
-    selectedTimes.push($(this).val());
+  $("div.time-group").each(function(){
+    var start = $(this).find("#start").val();
+    var end = $(this).find("#end").val();
+    console.log(start);
+    console.log(end);
+    var timeObj = {
+      start:start,
+      end:end
+    }
+    console.log(timeObj);
+    selectedTimes.push(timeObj);
   });
 
-  //this method returns only the unique values in the array.
-  selectedTimes = selectedTimes.filter(function(value,index,self){
-    return self.indexOf(value) === index;
-  });
-
+  console.log(selectedTimes);
   //this returns an array with the 12 hour time values + meridien(am/pm). This is the
   //final version we need to set the Space settings.
+  /*
    selectedTimes = selectedTimes.map(function(time){
     return moment(time,"kk:mm").format("h:mma");
-  });
+  });*/
+
+  var finalTimes = [];
+
+  for(var i = 0; i < selectedTimes.length; i++){
+    var timeObj = {
+      start:moment(selectedTimes[i].start,"kk:mm").format("h:mma"),
+      end:moment(selectedTimes[i].end,"kk:mm").format("h:mma")
+    }
+
+    console.log(timeObj);
+
+    finalTimes.push(timeObj);
+  }
 
   console.log(selectedTimes);
   //Get the id of the space being edited.
   var spaceId = $("#edit-space-modal").data("spaceId");
   console.log(spaceId);
 
+  console.log("Finaltimes:");
+  console.log(finalTimes);
+
   var spaceUpdate = {
     id:spaceId,
     days:selectedDays,
-    times:selectedTimes
+    times:finalTimes
   };
 
   return spaceUpdate;
@@ -272,11 +312,13 @@ $(document).ready(function(){
 
     else{
       var selectedSpaceSettings = getSelectedSettings();
-
+      selectedSpaceSettings = JSON.stringify(selectedSpaceSettings);
       $.ajax({
         type:'POST',
         url:'/update_space',
-        data:selectedSpaceSettings,
+        data:{"data":selectedSpaceSettings},
+        //contentType:'application/json;charset=utf-8',
+        dataType:"json",
         async:false,
         success:function(response){
 
