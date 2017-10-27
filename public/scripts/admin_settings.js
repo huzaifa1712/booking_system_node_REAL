@@ -133,7 +133,7 @@ function validateSettingsInput(){
   //1. Check that at least one day is checked.
   if(!$("input[name='day']:checked").val()){
     isErr = true;
-    errorMsg = errorMsg + "At least one day is selected.\n";
+    errorMsg = errorMsg + "At least one day is selected.\n\n";
   }
 
   //2. Check that none of the time fields are blank. This gets triggered
@@ -148,7 +148,7 @@ function validateSettingsInput(){
   //set error message for if fields are blank.
   if(fieldBlank == true){
     isErr = true;
-    errorMsg = errorMsg + "No time fields are left blank.\n"
+    errorMsg = errorMsg + "No time fields are left blank.\n\n"
   }
 
   //if none are blank:
@@ -176,14 +176,37 @@ function validateSettingsInput(){
     //3. set the error message.
     if(momentIsAfter){
       isErr = true;
-      errorMsg = errorMsg + "Within a duration, the first time set is before the second one.\n"
+      errorMsg = errorMsg + "Within a duration, the first time set is before the second one.\n\n"
     }
 
     //using elif because if the above isn't set properly, it can affect this one too.
     //4. Check that each consecutive time group's starting time is ahead of the previous time-group's
     //end time.
-    else if(!momentIsAfter){
+     else if(!momentIsAfter){
+      //get the number of time-groups
+      var numTimeGroups = $(".time-group").length;
+      var endAheadOfStart = false;
+      //if there is at least one:
+      if(numTimeGroups){
+        //loop through the time groups. if i + 1 th startTime is NOT after or same as
+        //i th endTime, set flag to true and do error.
+        for(var i = 0; i < numTimeGroups-1; i++){
+          var thisTimeGroup = $(".time-group:eq(" + i + ")");
+          var nextTimeGroup = $(".time-group:eq(" + (i + 1) + ")");
 
+          var thisEndTime = moment(thisTimeGroup.find("#end").val(),"kk:mm");
+          var nextStartTime = moment(nextTimeGroup.find("#start").val(),"kk:mm");
+
+          if(!nextStartTime.isSameOrAfter(thisEndTime,"minute")){
+            endAheadOfStart = true;
+          }
+        }
+      }
+
+      if(endAheadOfStart){
+        isErr = true;
+        errorMsg = errorMsg + "The start time of each consecutive duration is ahead of the end time of its previous duration."
+      }
     }
   }
 

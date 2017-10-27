@@ -34,3 +34,14 @@ td:hover{
 button{
   margin:10px;
 }
+
+#addDuration{
+  color:white;
+  background-color: #FFBE3F;
+}
+
+#deleteDuration{
+  color:white;
+
+  background-color: #B6282D;
+}
