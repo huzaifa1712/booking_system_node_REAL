@@ -316,19 +316,12 @@ app.get('/get_space/:id',(req,res)=>{
 //Route for updating a space from admin_settings page modal.
 //Files: admin_settings.js
 app.post('/update_space',urlencodedParser,(req,res)=>{
-  var space = req.body;
-  //var days = space['days[]'];
-  //var times = space['times[]'];
-  console.log("SPACE");
-  console.log(req);
-  console.log(space.data);
+  var space = JSON.parse(req.body.data);
+  //console.log(JSON.parse(shit));
+  //var moreShit = JSON.parse(shit);
+  //console.log(moreShit.times);
 
-  var shit = space.data;
-  console.log(JSON.parse(shit));
-  var moreShit = JSON.parse(shit);
-  console.log(moreShit.times);
-
-  Space.findOneAndUpdate({_id:moreShit.id},{$set:{days:moreShit.days, times:moreShit.times}},{new:true},function(err,space){
+  Space.findOneAndUpdate({_id:space.id},{$set:{days:space.days, times:space.times}},{new:true},function(err,space){
     if(err){
       throw err;
     }
