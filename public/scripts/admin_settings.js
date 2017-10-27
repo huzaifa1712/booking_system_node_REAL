@@ -297,8 +297,12 @@ $(document).ready(function(){
     $('<input id = "start" type = "time">').appendTo(div);
     $('<span class = "middle"> to </span>').appendTo(div);
     $('<input id = "end" type = "time">').appendTo(div);
-    
+
     div.appendTo(modalBody);
+  });
+
+  $("#deleteDuration").click(function(){
+    $("#modal-body div.time-group").last().remove();
   });
 
 });
