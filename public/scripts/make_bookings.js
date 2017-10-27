@@ -149,7 +149,7 @@ $(document).ready(function(){
 
     var bookingFields = getBookingFields(rowIndex,colIndex);
 
-    //If nothing was checked.
+    //If nothing was checked, do an alert.
     if(!$("input[name='reminder']:checked").val()){
       alert("Please pick one of the reminder options!");
     }

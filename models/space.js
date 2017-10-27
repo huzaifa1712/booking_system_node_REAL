@@ -27,15 +27,15 @@ module.exports = mongoose.model('Space',spaceSchema);
 var Space = mongoose.model('Space',spaceSchema);
 mongoose.connect('mongodb://localhost/bookings');
 
-Space.getSpaceNames(function(err,names){
+Space.findOneAndUpdate({_id:"59ec8ba833d723989991426e"},{$set:{days:["Monday","Tuesday"]}},{new:true},function(err,doc){
   if(err){
     throw err;
   }
 
   else{
-    console.log(names);
+    console.log(doc);
   }
-});*/
+});
 /*
 var Space = mongoose.model('Space',spaceSchema);
 

@@ -313,6 +313,24 @@ app.get('/get_space/:id',(req,res)=>{
   });
 });
 
+app.post('/update_space',urlencodedParser,(req,res)=>{
+  var space = req.body;
+  var days = space['days[]'];
+  var times = space['times[]'];
+
+  Space.findOneAndUpdate({_id:space.id},{$set:{days:days, times:times}},{new:true},function(err,space){
+    if(err){
+      throw err;
+    }
+
+    else{
+      console.log(space);
+    }
+  });
+
+  res.json();
+});
+
 
 
 //ROUTES FOR PAGES.

@@ -66,14 +66,14 @@ function populateModal(id){
   //the checkboxes. If the day of the id corresponding to the box(#monday gives 'monday')
   //is equal to the day, check the box.
   days.forEach(function(day){
-    var idText = day.toLowerCase();
-    console.log("idText: " + idText);
+    var dayFromSpace = day;
+    console.log("dayFromSpace: " + day);
 
     $("#days input").each(function(){
       var inputId = $(this).attr('id');
       console.log("Input id:" + inputId);
 
-      if(inputId == idText){
+      if(inputId == day){
         $(this).prop("checked",true);
       }
     });
@@ -121,10 +121,63 @@ $(document).ready(function(){
   populateSpacesTable();
   openModal();
   $("#saveBtn").click(function(){
+    //check that at least one day checkbox is picked
+    if(!$("input[name='day']:checked").val()){
+      alert("Please pick at least one of the days!");
+    }
+
+    var selectedDays = [];
+    //go through the inputs and push the days selected into an array.
+    $("#days input:checked").each(function(){
+      selectedDays.push($(this).attr('id'));
+    });
+
+    console.log(selectedDays);
+
+    var selectedTimes = []; //24 HOUR TIME.
+    //go through the divs with the times, and select the value of the time value in the
+    //div. Includes duplicates. GETS THE 24 HOUR TIME VALUES.
+    $("div.time-group input").each(function(){
+      selectedTimes.push($(this).val());
+    });
+
+    //this method returns only the unique values in the array.
+    selectedTimes = selectedTimes.filter(function(value,index,self){
+      return self.indexOf(value) === index;
+    });
+
+    //this returns an array with the 12 hour time values + meridien(am/pm). This is the
+    //final version we need to set the Space settings.
+     selectedTimes = selectedTimes.map(function(time){
+      return moment(time,"kk:mm").format("h:mma");
+    });
+
+    console.log(selectedTimes);
+    //Get the id of the space being edited.
+    var spaceId = $("#edit-space-modal").data("spaceId");
+    console.log(spaceId);
+
+    var spaceUpdate = {
+      id:spaceId,
+      days:selectedDays,
+      times:selectedTimes
+    };
+
+    $.ajax({
+      type:'POST',
+      url:'/update_space',
+      data:spaceUpdate,
+      async:false,
+      success:function(response){
+
+      }
+    });
     //console.log(moment(document.getElementById("time").valueAsDate).zone("+00:00").format("hh:mma"));
     //var date = moment(document.getElementById("time").valueAsDate).zone("+00:00");
     //console.log(document.getElementById("time").valueAsDate);
     //console.log(date.format("hh:mma"));
+    alert('Space setting saved!');
+    window.location.reload();
 
   });
 });
