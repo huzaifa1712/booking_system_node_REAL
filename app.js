@@ -355,6 +355,21 @@ app.post('/create_space',urlencodedParser,(req,res)=>{
   res.json();
 });
 
+//Route to delete space from settings.
+//File: admin_settings.js
+app.get('/delete_space/:id',(req,res)=>{
+  Space.findById(req.params.id,function(err,space){
+    if(err){
+      throw err;
+    }
+
+    else{
+      space.remove();
+    }
+  });
+
+  res.json();
+});
 
 
 //ROUTES FOR PAGES.

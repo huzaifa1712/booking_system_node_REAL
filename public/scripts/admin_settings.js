@@ -423,4 +423,25 @@ $(document).ready(function(){
 
   });
 
+  //confirm prompt.
+  $("#deleteSpace").click(function(){
+    var confirm = window.confirm("Are you sure you want to delete this space?");
+    //if yes, send id to delete route.
+    var spaceId = $("#edit-space-modal").data("spaceId");
+
+    if(confirm){
+      $.ajax({
+        type:'GET',
+        url:'/delete_space/' + spaceId,
+        async:false,
+        success:function(response){
+
+        }
+      });
+
+      alert('Space deleted!');
+      window.location.reload();
+    }
+
+  });
 });
