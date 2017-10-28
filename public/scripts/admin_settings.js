@@ -116,6 +116,33 @@ function populateModal(id){
     $('<input type = "time" value = "' + times[i] + '">').appendTo(modalBody);
   }*/
 }
+
+//populate for add space modal.
+function populateAddSpace(){
+
+  //unchecks all checkboxes.
+  $("#days input").each(function(){
+    $(this).prop("checked",false);
+  });
+
+
+  var modalBody = $("#modal-body");
+
+  //removes all the time-group elements before populating with new ones.
+  $(".time-group").each(function(){
+    $(this).remove();
+  });
+
+  //populates the time elements. Puts 4 in there for a start.
+  for(var i = 0; i < 3; i++){
+    var div = $('<div class = "row time-group">');
+    $('<input id = "start" type = "time" value = "">').appendTo(div);
+    $('<span class = "middle"> to </span>').appendTo(div);
+    $('<input id = "end" type = "time" value = "">').appendTo(div);
+    div.appendTo(modalBody);
+  }
+
+}
 //goes through the table cells and assigns them a click event that opens the modal.
 //Also sets spaceName.
 function openModal(){
@@ -124,6 +151,7 @@ function openModal(){
     $(this).attr("data-target","#edit-space-modal");
 
     $(this).click(function(){
+      //set the header to the name, and the text area to the name.
       $("#spaceName").text($(this).text());
       $("#editName").val($(this).text());
 
@@ -153,6 +181,12 @@ function validateSettingsInput(){
   if(!$("input[name='day']:checked").val()){
     isErr = true;
     errorMsg = errorMsg + "At least one day is selected.\n\n";
+  }
+
+  //Check the name field isn't blank
+  if(!$("#editName").val()){
+    isErr = true;
+    errorMsg = errorMsg + "The name field should not be left blank.\n\n";
   }
 
   //2. Check that none of the time fields are blank. This gets triggered
@@ -286,7 +320,10 @@ function getSelectedSettings(){
 
   console.log(selectedTimes);
   //Get the id of the space being edited.
-  var spaceId = $("#edit-space-modal").data("spaceId");
+  if($("#edit-space-modal").data("spaceId")){
+    var spaceId = $("#edit-space-modal").data("spaceId");
+
+  }
   console.log(spaceId);
 
   console.log("Finaltimes:");
@@ -319,18 +356,38 @@ $(document).ready(function(){
 
     else{
       var selectedSpaceSettings = getSelectedSettings();
-      selectedSpaceSettings = JSON.stringify(selectedSpaceSettings);
-      $.ajax({
-        type:'POST',
-        url:'/update_space',
-        data:{"data":selectedSpaceSettings},
-        //contentType:'application/json;charset=utf-8',
-        dataType:"json",
-        async:false,
-        success:function(response){
 
-        }
-      });
+      if(selectedSpaceSettings.id){
+        selectedSpaceSettings = JSON.stringify(selectedSpaceSettings);
+        $.ajax({
+          type:'POST',
+          url:'/update_space',
+          data:{"data":selectedSpaceSettings},
+          //contentType:'application/json;charset=utf-8',
+          dataType:"json",
+          async:false,
+          success:function(response){
+
+          }
+        });
+      }
+
+      else{
+        selectedSpaceSettings = JSON.stringify(selectedSpaceSettings);
+
+        $.ajax({
+          type:'POST',
+          url:'/create_space',
+          data:{"data":selectedSpaceSettings},
+          //contentType:'application/json;charset=utf-8',
+          dataType:"json",
+          async:false,
+          success:function(response){
+
+          }
+        });
+      }
+
 
       alert('Space setting saved!');
       window.location.reload();
@@ -352,6 +409,18 @@ $(document).ready(function(){
 
   $("#deleteDuration").click(function(){
     $("#modal-body div.time-group").last().remove();
+  });
+
+  $("#addSpace").click(function(){
+    //First make it so it can open the modal
+    $(this).attr("data-toggle","modal");
+    $(this).attr("data-target","#edit-space-modal");
+
+    //populate the modal with empty time elements, unchecked boxes.
+    $(".modal-title").text("Create settings for this space");
+    populateAddSpace();
+
+
   });
 
 });

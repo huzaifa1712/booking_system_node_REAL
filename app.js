@@ -333,6 +333,28 @@ app.post('/update_space',urlencodedParser,(req,res)=>{
   res.json();
 });
 
+//Route for creating a new space.
+//Files: admin_settings.js
+app.post('/create_space',urlencodedParser,(req,res)=>{
+  //console.log("NEW SPACE");
+  var spaceData = JSON.parse(req.body.data);
+
+  var newSpace = new Space({
+    name:spaceData.name,
+    days:spaceData.days,
+    //times:["12:45pm","1:15pm","1:45pm","2:15pm","2:45pm"]
+    times:spaceData.times
+  });
+
+  newSpace.save((err)=>{
+    if(err){
+      throw err;
+    }
+  });
+
+  res.json();
+});
+
 
 
 //ROUTES FOR PAGES.
