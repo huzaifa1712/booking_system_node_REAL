@@ -317,11 +317,10 @@ app.get('/get_space/:id',(req,res)=>{
 //Files: admin_settings.js
 app.post('/update_space',urlencodedParser,(req,res)=>{
   var space = JSON.parse(req.body.data);
-  //console.log(JSON.parse(shit));
-  //var moreShit = JSON.parse(shit);
-  //console.log(moreShit.times);
+  console.log(space.name);
 
-  Space.findOneAndUpdate({_id:space.id},{$set:{days:space.days, times:space.times}},{new:true},function(err,space){
+  //find the space by its id, then set days,times and name based on data sent.
+  Space.findOneAndUpdate({_id:space.id},{$set:{days:space.days, times:space.times,name:space.name}},{new:true},function(err,space){
     if(err){
       throw err;
     }

@@ -47,8 +47,7 @@ function populateSpacesTable(){
 //populates the modal with times and days selections.
 function populateModal(id){
   var space = getSpace(id);
-  //make a new array with the result of the 24 hour time version of the
-  //times in the space object.
+
   console.log(space.times);
   var timesFromSpace = space.times;
   var times24h = [];
@@ -58,6 +57,8 @@ function populateModal(id){
     return {moment(time.start,"hh:mma").format("kk:mm"),moment(time.end,"hh:mma").format("kk:mm")};
   });*/
 
+  //make a new array with the result of the 24 hour time version of the
+  //times in the space object.
   for(var i = 0; i < timesFromSpace.length; i++){
     var timeObj = {
       start:moment(timesFromSpace[i].start,"hh:mma").format("kk:mm"),
@@ -67,9 +68,6 @@ function populateModal(id){
     times24h.push(timeObj);
   }
 
-  console.log(times24h);
-
-  console.log("Times array: " + times24h);
   //days array
   var days = space.days;
 
@@ -119,6 +117,7 @@ function populateModal(id){
   }*/
 }
 //goes through the table cells and assigns them a click event that opens the modal.
+//Also sets spaceName.
 function openModal(){
   $("#spaces-table td").each(function(){
     $(this).attr("data-toggle","modal");
@@ -126,6 +125,8 @@ function openModal(){
 
     $(this).click(function(){
       $("#spaceName").text($(this).text());
+      $("#editName").val($(this).text());
+
       //setting the modal data to the spaceId
       var spaceId = $(this).data("spaceId");
 
@@ -269,6 +270,7 @@ function getSelectedSettings(){
     return moment(time,"kk:mm").format("h:mma");
   });*/
 
+  //convert the 24 hour times obtained into 24 hour.
   var finalTimes = [];
 
   for(var i = 0; i < selectedTimes.length; i++){
@@ -290,10 +292,15 @@ function getSelectedSettings(){
   console.log("Finaltimes:");
   console.log(finalTimes);
 
+  //get the space name from the text box.
+  var spaceName = $("#editName").val();
+  console.log(spaceName);
+
   var spaceUpdate = {
     id:spaceId,
     days:selectedDays,
-    times:finalTimes
+    times:finalTimes,
+    name:spaceName
   };
 
   return spaceUpdate;
