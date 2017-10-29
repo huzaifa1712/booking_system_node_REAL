@@ -315,10 +315,13 @@ $(document).ready(function(){
 
   //storing the current year. TODO:change it so that it's based on weekNumber,
   //i.e it should increase if we're back at 0 again.
-  $("#bookings-table").data("year", moment().year());
+
 
 //get the current week number for the page
 var pageWeekNum = $("#bookings-table").data("weekNumber");
+
+var year = moment().isoWeek(pageWeekNum).year();
+$("#bookings-table").data("year", year);
 
 //gets the max week number alloed
 var maxWeekNum = getMaxWeekNum();
