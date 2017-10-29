@@ -349,6 +349,22 @@ app.get('/update_weeksAhead/:num',(req,res)=>{
     res.json();
   });
 });
+
+app.get('/get_weeksAhead',(req,res)=>{
+  Setting.findById("59f45f5943f5346a3e0d4a0d",(err,setting)=>{
+    if(err){
+      throw err;
+    }
+
+    else{
+
+      //max week num = current week num + max number of weeks ahead from Settings
+      var weeksAhead =  setting.weeksAhead;
+
+      res.send(weeksAhead.toString());
+    }
+  });
+});
 //Route for creating a new space.
 //Files: admin_settings.js
 app.post('/create_space',urlencodedParser,(req,res)=>{

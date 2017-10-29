@@ -269,6 +269,21 @@ function validateSettingsInput(){
   }
 
 }
+
+//retrieve current weeksAhead value.
+function getWeeksAhead(){
+  var weeksAhead = '';
+  $.ajax({
+    type:'GET',
+    url:'get_weeksAhead',
+    async:false,
+    success:function(response){
+      weeksAhead = response;
+    }
+  });
+
+  return weeksAhead;
+}
 //returns the selected settings for the space, as well as spaceId. Used for
 //saving settings after save button is clicked.
 function getSelectedSettings(){
@@ -346,6 +361,9 @@ function getSelectedSettings(){
 $(document).ready(function(){
   populateSpacesTable();
   openModal();
+
+  $("#weeksAhead").val(getWeeksAhead());
+
   $("#saveBtn").click(function(){
 
     var validateSettings = validateSettingsInput();
