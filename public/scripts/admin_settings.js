@@ -423,7 +423,7 @@ $(document).ready(function(){
 
   });
 
-  //confirm prompt.
+  //Delete space: confirm yes or no first.
   $("#deleteSpace").click(function(){
     var confirm = window.confirm("Are you sure you want to delete this space?");
     //if yes, send id to delete route.
@@ -444,4 +444,51 @@ $(document).ready(function(){
     }
 
   });
+
+  $("#saveWeeksAhead").click(function(){
+    var weeksAhead = parseInt($("#weeksAhead").val());
+    //if an integer and > 1 and < 20
+    if(!isNaN(weeksAhead) && (weeksAhead >= 1 && weeksAhead <= 20)){
+      $.ajax({
+        type:'GET',
+        url:'/update_weeksAhead/' + weeksAhead,
+        async:false,
+        success:function(response){
+
+        }
+      });
+
+      alert("Setting saved!");
+    }
+
+    else{
+      alert("Please input an integer between 1 and 20");
+    }
+  });
+/*
+  $("#saveWeeksAhead").click(function(){
+    var weeksAheadVal = $("#weeksAhead").val();
+    if(!Number.isInteger(parseInt(weeksAheadVal)){
+      alert("Please input an integer value from 1-20 for weeksAhead");
+    }
+
+    else if (parseInt(weeksAheadVal) < 1 || parseInt(weeksAheadVal) >= 20){
+      alert("Please input an integer value from 1-20 for weeksAhead");
+    }
+
+    else{
+      $.ajax({
+        type:'GET',
+        url:'/update_weeksAhead/' + weeksAheadVal,
+        async:false,
+        success:function(response){
+
+        }
+      });
+
+      alert("Weeks ahead value saved!");
+      window.location.reload();
+    }
+
+  });*/
 });

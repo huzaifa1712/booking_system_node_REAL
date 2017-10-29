@@ -20,6 +20,13 @@ block content
         tbody
           
       button(type = "button")#addSpace.btn.btn-lg.btn-default.btn-info Add a space
+      br
+      br
+      div.row
+        label.col-lg-4(style = "font-size:150%;") Number of weeks ahead:
+        input(type = "number" min = "1" max = "20")#weeksAhead.form-control.col-lg-4.input-sm
+        button(type = "button").col-lg-3#saveWeeksAhead.btn.btn-default.btn-info Save setting
+      div.row
       div#edit-space-modal.modal.fade(role = "dialog")
         div.modal-dialog
           div.modal-header
@@ -73,7 +80,7 @@ block content
           button(type = "button")#addDuration.btn.btn-default Add a duration
           button(type = "button")#deleteDuration.btn.btn-default Delete the last duration
           button(type = "button" data-dismiss = "modal").btn.btn-default.btn-danger Go back
-          button(type = "button")#deleteSpace.btn.btn-default.btn-danger.confirm DELETE this space
+          button(type = "button")#deleteSpace.btn.btn-default.btn-danger.confirm Delete this space
 
         
 

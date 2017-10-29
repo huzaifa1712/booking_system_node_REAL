@@ -6,14 +6,7 @@ Number of rows: corresponds to length of timesArray from function
 Number of heads: corresponds to length of days array
 */
 var settingsSchema = mongoose.Schema({
-  times: [String],
-  days: [String],
-  //current Week Number - can use it to get the date given a day and year
-  spaces:[
-    {type:mongoose.Schema.Types.ObjectId,ref:'Space'}
-  ],
   weeksAhead:Number
-
 });
 
 //a virtual is a property that does not get persisted to the DB. Can call this property in code
@@ -29,7 +22,7 @@ settingsSchema.virtual('returnTimes').get(function(){
 
   return returnArray;
 });*/
-
+/*
 settingsSchema.virtual('startAndEndOfWeek').get(function(){
   //to be used for rendering e.g 'Oct 16 to Oct 20'
   //could replace weekday thing with the start and end day of the spaces
@@ -62,25 +55,21 @@ var Setting = mongoose.model('Setting', settingsSchema);
 
   }
 ]*/
-/*var s = new Setting({
-  times:["12:45pm","1:15pm","1:45pm","2:15pm","2:45pm"],
-  days:[days.MONDAY,days.TUESDAY,days.WEDNESDAY,days.THURSDAY,days.FRIDAY],
-  spaces:[mongoose.Schema.Types.ObjectId("59ec8ba833d723989991426d"), mongoose.Schema.Types.ObjectId("59ec8ba833d723989991426e")],
-  weeksAhead:4
-});
+module.exports = mongoose.model('Setting',settingsSchema);
 
 //console.log(Setting.retTimes(["12:45pm","1:15pm","1:45pm","2:15pm","2:45pm"]));
 
 
-mongoose.connect('mongodb://localhost/bookings');
-s.save((err)=>{
+/*mongoose.connect('mongodb://localhost/bookings');
+Setting.findOneAndUpdate({_id:"59f45f5943f5346a3e0d4a0d"},{$set:{weeksAhead:5}},{new:true},function(err,setting){
   if(err){
     throw err;
   }
 
-
+  else{
+    console.log(setting);
+  }
 });*/
-
 
 
 

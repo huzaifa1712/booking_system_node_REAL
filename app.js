@@ -271,14 +271,15 @@ app.get('/get_user', isLoggedIn,(req,res)=>{
 //returns the maximum week number. Used for pagination of the bookings table.
 //Files: populate_bookings.js
 app.get('/maxWeekNum', (req,res)=>{
-  Setting.find({},(err,settings)=>{
+  Setting.findById("59f45f5943f5346a3e0d4a0d",(err,setting)=>{
     if(err){
       throw err;
     }
 
     else{
+      console.log(setting);
       //max week num = current week num + max number of weeks ahead from Settings
-      var maxWeekNum = moment().isoWeek() + settings[0].weeksAhead;
+      var maxWeekNum = moment().isoWeek() + setting.weeksAhead;
       console.log("max week num: " + maxWeekNum);
       res.send(maxWeekNum.toString());
     }
@@ -333,6 +334,21 @@ app.post('/update_space',urlencodedParser,(req,res)=>{
   res.json();
 });
 
+//Update weeksAhead setting.
+//File: admin_settings.js
+app.get('/update_weeksAhead/:num',(req,res)=>{
+  Setting.findOneAndUpdate({_id:"59f45f5943f5346a3e0d4a0d"},{$set:{weeksAhead:req.params.num}},{new:true},function(err,setting){
+    if(err){
+      throw err;
+    }
+
+    else{
+      console.log(setting);
+    }
+
+    res.json();
+  });
+});
 //Route for creating a new space.
 //Files: admin_settings.js
 app.post('/create_space',urlencodedParser,(req,res)=>{

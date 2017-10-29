@@ -322,6 +322,7 @@ var pageWeekNum = $("#bookings-table").data("weekNumber");
 
 //gets the max week number alloed
 var maxWeekNum = getMaxWeekNum();
+console.log("MaxWeekNum: " + maxWeekNum);
 
 //defining what happens when previous week button is clicked
 $("#prev-week").click(function(){
