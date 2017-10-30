@@ -3,7 +3,7 @@
 var moment = require('moment');
 var mongoose = require('mongoose');
 //testDate stores example startDate that you'd have for a booking
-var Booking = require('./models/bookingSimple');
+var Booking = require('./models/booking');
 var Mail = require('./mail');
 let account = require('./config/email_user');
 
@@ -24,8 +24,6 @@ function momentToSend(startDate,reminderInMinutes){
   return momentToSendAt;
 }
 
-
-//console.log("Moment to send at: " + momentToSendAt.format("E-hh:mma-DD-MM-WW-YYYY"));
 
 //outputs whether or not a reminder should be sent right now(true/false), given booking startDate and
 //reminder in minutes

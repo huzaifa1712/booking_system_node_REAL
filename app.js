@@ -2,7 +2,6 @@ let express = require('express');
 let path = require('path');
 let mongoose = require('mongoose');
 let bodyParser = require('body-parser');
-let expressValidator = require('express-validator');
 let flash = require('connect-flash');
 let session = require('express-session');
 let config = require('./config/database');
@@ -21,7 +20,7 @@ setInterval(function(){
 
 },1000);
 //Models
-var Booking = require('./models/bookingSimple');
+var Booking = require('./models/booking');
 var Setting = require('./models/settingsModel');
 var Space = require('./models/space');
 //Moment
@@ -62,7 +61,7 @@ app.set('view engine','pug');
     next();
   });
 
-  app.use(expressValidator()); //validator middleware
+  //app.use(expressValidator()); //validator middleware
 
   app.use(passport.initialize()); //passport middleware
   app.use(passport.session());
