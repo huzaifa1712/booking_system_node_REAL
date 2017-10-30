@@ -34,7 +34,8 @@ function shouldSendReminder(startDate,reminderInMinutes){
   //console.log("Moment to send: " + momentToSendAt.format("E-hh:mma-DD-MM-WW-YYYY"));
   var bookingIsNow = false;
 
-  if(momentToSendAt.isSame(moment(),'second')){
+  //checks by minute so it has 60 seconds to check.
+  if(momentToSendAt.isSame(moment(),'minute')){
     bookingIsNow = true;
   }
 
@@ -44,12 +45,12 @@ function shouldSendReminder(startDate,reminderInMinutes){
 //sends the reminder email given a bookingObject. Creates email string and sends using
 //the MailObj
 function sendReminderEmail(bookingObject){
-  var firstName = bookingObject.user.name;
+  var firstName = bookingObject.name;
   var spaceName = bookingObject.spaceNameWithSpaces;
   var startDate = moment(bookingObject.date.startTime).format("dddd Do MMMM");
   var startTime = moment(bookingObject.date.startTime).format("h:mma");
 
-  var emailAddress = bookingObject.user.email;
+  var emailAddress = bookingObject.email;
   var subjectString = "IDEAS Hub Booking";
 
   var emailString =
@@ -75,11 +76,19 @@ module.exports.checkBookingsAndSendEmails = function(){
     else{
       for(var i = 0; i < bookings.length; i++){
         var startMoment = moment(bookings[i].date.startTime);
-        //console.log("Start date: " + startMoment.format("E-hh:mma-DD-MM-WW-YYYY"));
         var reminderInMinutes = bookings[i].reminderInMinutes;
-        //console.log("Reminder in min: " + bookings[i].reminderInMinutes);
-        //console.log(bookings[i].spaceNameWithSpaces);
-        if(shouldSendReminder(startMoment,reminderInMinutes)){
+
+        //if remindertime = now, and emailSent is false, send the email and set emailSent to false.
+        if(shouldSendReminder(startMoment,reminderInMinutes) && bookings[i].emailSent == false){
+          Booking.findOneAndUpdate({_id:bookings[i].id},{$set:{emailSent:true}},{new:true},function(err,booking){
+              if(err){
+              throw err;
+            }
+
+            else{
+              console.log(booking);
+            }
+          });
           sendReminderEmail(bookings[i]);
           console.log('email sent');
         }
@@ -92,6 +101,15 @@ module.exports.checkBookingsAndSendEmails = function(){
 
 
 /*
+Booking.findOneAndUpdate({_id:bookings[i].id},{$set:{emailSent:false}},{new:true},function(err,booking){
+    if(err){
+    throw err;
+  }
+
+  else{
+    console.log(booking);
+  }
+});
     var query = {
       "id":mongoose.Schema.Types.ObjectId("59ed9b529d050aaf4da52a2e")
     }

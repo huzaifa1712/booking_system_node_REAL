@@ -241,7 +241,7 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
     newBooking.reminder = req.body.reminder;
     newBooking.space = req.body.space;
     newBooking.spaceNameWithSpaces = req.body.spaceNameWithSpaces;
-    //newBooking.emailSent = false;
+    newBooking.emailSent = false;
     console.log(newBooking);
     //console.log("Booking isoWeekNum: " + newBooking.isoWeekNum);
 
