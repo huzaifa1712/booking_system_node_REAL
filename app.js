@@ -428,7 +428,7 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
   if(!req.user.isAdmin){
     Space.getSpaceNames(function(err,spaces){
       res.render('account_page',{
-        user:req.user,
+        firstName:req.user.firstName,
         spaces:spaces
       });
 
@@ -446,7 +446,7 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
   //get route for your_bookings page.
   app.get('/your_bookings',isLoggedIn,(req,res)=>{
         res.render('your_bookings',{
-          user:req.user
+          firstName:req.user.firstName
         });
   });
 
@@ -454,7 +454,7 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
   app.get('/admin_page',isAdmin,(req,res)=>{
     Space.getSpaceNames(function(err,spaces){
       res.render('admin_page',{
-        user:req.user,
+        firstName:req.user.firstName,
         spaces:spaces
       });
     });
@@ -462,7 +462,7 @@ app.get('/account_page',isLoggedIn, (req,res)=>{
 
   app.get('/admin_settings',isAdmin,(req,res)=>{
     res.render('admin_settings',{
-      user:req.user
+      firstName:req.user.firstName
     })
   });
 
