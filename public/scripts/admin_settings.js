@@ -320,6 +320,7 @@ function getSelectedSettings(){
   });*/
 
   //convert the 24 hour times obtained into 24 hour.
+
   var finalTimes = [];
 
   for(var i = 0; i < selectedTimes.length; i++){
@@ -328,7 +329,6 @@ function getSelectedSettings(){
       end:moment(selectedTimes[i].end,"kk:mm").format("h:mma")
     }
 
-    console.log(timeObj);
 
     finalTimes.push(timeObj);
   }
@@ -483,30 +483,4 @@ $(document).ready(function(){
       alert("Please input an integer between 1 and 20");
     }
   });
-/*
-  $("#saveWeeksAhead").click(function(){
-    var weeksAheadVal = $("#weeksAhead").val();
-    if(!Number.isInteger(parseInt(weeksAheadVal)){
-      alert("Please input an integer value from 1-20 for weeksAhead");
-    }
-
-    else if (parseInt(weeksAheadVal) < 1 || parseInt(weeksAheadVal) >= 20){
-      alert("Please input an integer value from 1-20 for weeksAhead");
-    }
-
-    else{
-      $.ajax({
-        type:'GET',
-        url:'/update_weeksAhead/' + weeksAheadVal,
-        async:false,
-        success:function(response){
-
-        }
-      });
-
-      alert("Weeks ahead value saved!");
-      window.location.reload();
-    }
-
-  });*/
 });

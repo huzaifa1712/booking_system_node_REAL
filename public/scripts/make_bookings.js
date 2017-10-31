@@ -165,9 +165,6 @@ $(document).ready(function(){
         url:'/get_user',         //getting the user object so we can make a booking
         success:function(response){
           //response object is the user object
-          //Use moment to construct the date.
-          console.log("user: ");
-          console.log(response);
           $.ajax({
             type: 'POST',
             url:'/make_booking',
@@ -184,10 +181,7 @@ $(document).ready(function(){
 
             },
             success:function(response){
-              //do nothing
-              //alert("Booking saved!");
 
-              console.log(response);
             }
           });
           //Alert and reload page once booking made.

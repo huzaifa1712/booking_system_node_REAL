@@ -18,9 +18,12 @@ spaceSchema.virtual('returnTimes').get(function(){
   return returnArray;
 });
 
+
+
+
+
 //Static method that returns array of objects with id and space name for each space
-//document. Uses 'projection': the 'name' in quotes refers to the property we want
-//to get
+//document. Uses 'projection': the 'name' in quotes refers to the property we are retrieving.
 spaceSchema.statics.getSpaceNames = function getSpaceNames(cb){
   return this.model('Space').find({},'name',cb);
 };

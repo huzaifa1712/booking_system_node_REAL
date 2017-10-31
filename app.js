@@ -92,7 +92,7 @@ app.set('view engine','pug');
 //populate_bookings.js
 app.get('/getSettings/:spaceName',(req,res)=>{
   console.log("Visited getSettings");
-  console.log(req.params.spaceName);
+  console.log(req.params.spaceName + 'end');
 
   //Find all spaces with that name. Should be only one, so we are using findOne
   Space.findOne({name:req.params.spaceName},function(err,spaces){
@@ -127,13 +127,14 @@ app.get('/getSettings/:spaceName',(req,res)=>{
 
 //API ROUTES. ALL USED IN JQUERY
 
-//route that returns bookings for the user, using user's id.. Used in your_bookings page
+//route that returns bookings for the user, using user's id. Used in your_bookings page
 //to populate the table
 //Files: your_bookings.js
 app.get('/user_bookings',(req,res)=>{
   //request bookings with this user's id.
+  console.log(req.user);
   var query = {
-    user_id:req.user._id
+    email:req.user.email
   }
 
   Booking.find(query,function(err,bookings){
@@ -168,14 +169,14 @@ app.get('/delete_booking/:id',(req,res)=>{
 //Files: admin_cancel_bookings.js
 app.get('/cancel_booking/:id',(req,res)=>{
   var id = req.params.id;
-  console.log("Delete id: " + id);
+
   Booking.findById(id,function(err,booking){
     var email = Mail.constructDeleteEmailHTML(booking);
     var address = booking.email;
     var subject = "Booking cancelled"
 
     mail.sendMail(address,subject,email);
-    console.log("Deleted: " + booking);
+
     booking.remove();
     res.json({deleted:true});
   });
@@ -217,19 +218,6 @@ app.get('/bookings/:isoWeekNum/:spaceName',(req,res)=>{
 //this route takes the Booking information when user makes a booking and saves it
 //Files: make_bookings.js
 app.post('/make_booking', urlencodedParser, (req,res)=>{
-  //console.log('lol');
-  console.log(req.body);
-  console.log(req.body.timeString);
-  console.log(req.body.startTime);
-  console.log(req.body.endTime);
-  //console.log(req.body.day);
-  //console.log(req.body.time);
-  //console.log(req.body.user.email);
-  //req.flash('success','Booking made!');
-  //res.redirect('/account_page');
-
-  //check if req object empty
-
     var newBooking = new Booking();
     newBooking.user_id = req.body.id;
     newBooking.name = req.body.name;
@@ -241,21 +229,12 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
     newBooking.space = req.body.space;
     newBooking.spaceNameWithSpaces = req.body.spaceNameWithSpaces;
     newBooking.emailSent = false;
-    console.log(newBooking);
-    //console.log("Booking isoWeekNum: " + newBooking.isoWeekNum);
 
     newBooking.save((err)=>{
       if(err){
         throw err;
       }
-
-      else{
-        console.log("Booking saved");
-        //res.redirect('/');
-      }
     });
-
-
 });
 
 //a route that sends back a user JSON object which can be used when making bookings
@@ -317,17 +296,15 @@ app.get('/get_space/:id',(req,res)=>{
 //Files: admin_settings.js
 app.post('/update_space',urlencodedParser,(req,res)=>{
   var space = JSON.parse(req.body.data);
-  console.log(space.name);
 
   //find the space by its id, then set days,times and name based on data sent.
-  Space.findOneAndUpdate({_id:space.id},{$set:{days:space.days, times:space.times,name:space.name}},{new:true},function(err,space){
+  Space.findOneAndUpdate({_id:space.id},{$set:{days:space.days, times:space.times,name:space.name}},
+    {new:true},function(err,space){
+
     if(err){
       throw err;
     }
 
-    else{
-      console.log(space);
-    }
   });
 
   res.json();
@@ -407,9 +384,7 @@ app.get('/delete_space/:id',(req,res)=>{
 
 //Index page(landing page)
 app.get('/',(req,res)=>{
-  //USES SETTINGS
-  console.log("Visited Index");
-  //Find and pass in array of spaces with the name. Used to populate dropdown.
+  //Find and pass in array of spaces with the names. Used to populate dropdown.
   Space.getSpaceNames(function(err,spaces){
     if(err){
       throw err;

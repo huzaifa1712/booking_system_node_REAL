@@ -19,13 +19,13 @@ module.exports = class Mail{
   }
 
   sendMail(recipientString,subject,contentHTML){
-    //mailOptions sets the options for the e-mail we need to send. html prop can be
-    //valid HTML, e.g h1 tags.
+    //mailOptions sets the options for the e-mail we need to send. HTML property can be
+    //valid HTML
     const mailOptions = {
       from:this.user,
-      to: recipientString,//'zarinsrt@gmail.com, windowpane1712@gmail.com',
-      subject:subject,//'TEST',
-      html:contentHTML//'<p> Test <p>'
+      to: recipientString,
+      subject:subject,
+      html:contentHTML
     }
 
     //transporter.sendMail sends the mail.

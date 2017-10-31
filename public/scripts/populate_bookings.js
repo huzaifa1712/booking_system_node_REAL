@@ -64,7 +64,7 @@ function removeAllBookings(){
   };
 
 //gets the bookings based on week number, and selected space, then uses them to
-//fill the table with the bookings, while assigning the 'booked' class to any filled
+//fill the table with the bookings,while assigning the 'booked' HTML class to any filled
 //table cells
 function populateBookings(isoWeekNum){
   console.log("isoWeek from populate: " + isoWeekNum);
@@ -137,9 +137,6 @@ function populateBookings(isoWeekNum){
   });
 }
 
-//TODO: later change this so it asks a route for the start and end days of the week,
-//given the Space selected, so we can use that to find the following:
-
 //This sets the schedule header based on the week number
 function setScheduleHeader(pageWeekNum){
   var startOfWeek = moment().isoWeek(pageWeekNum).weekday(1).format("MMMM D");
@@ -148,8 +145,7 @@ function setScheduleHeader(pageWeekNum){
   $("#endOfWeek").text(endOfWeek);
 }
 
-//requests and gets the maxWeekNumber possible. ajax request set to async false
-//because otherwise it just returns 0
+//requests and gets the maxWeekNumber possible
 function getMaxWeekNum(){
   var maxWeekNum = 0;
   $.ajax({
@@ -157,7 +153,6 @@ function getMaxWeekNum(){
     url:'/maxWeekNum',
     async:false,
     success:function(response){
-      console.log("max week num: " + parseInt(response));
        maxWeekNum = parseInt(response);
     }
   });
@@ -173,9 +168,9 @@ function getSelectedSpace(){
 }
 
 //function that returns the settings for the table given the spaceName selected.
-//ajax request is using asnyc false so we can return the contents
 function getSettings(spaceName){
   //create variables to store the days and times we can assign later when we getSettings
+  console.log(spaceName + 'endtext');
   var days = [];
   var times = [];
   $.ajax({
@@ -197,8 +192,8 @@ function getSettings(spaceName){
     times:times
   }
 }
-//draws the table given the spaceName selected. Can be called multiple times
-//after destroy table.
+
+//draws the table given the spaceName selected. Can be called after destroyTable
 function drawTable(spaceName){
   //get the settings for the selected space
   var settings = getSettings(spaceName);
@@ -238,7 +233,6 @@ function drawTable(spaceName){
 
 //destroys the entire table so that it can be redrawn.
 //recursive loop that removes the children of table until there are no more
-
 function destroyTable(){
   //recursive loop that removes the children of table until there are no more
   var table = document.getElementById("bookings-table");
@@ -364,6 +358,7 @@ $(".dropdown-menu li a").click(function(){
 
   //destroy the table, then draw the table using the new selected space and populate.
   destroyTable();
+  console.log('get selected:' + getSelectedSpace() + 'end');
   drawTable(getSelectedSpace());
   populateBookings(pageWeekNum);
 });
