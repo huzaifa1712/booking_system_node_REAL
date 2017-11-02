@@ -8,9 +8,11 @@ let config = require('./config/database');
 var passport = require('passport');
 require('./config/passport.js')(passport)
 var fs = require('fs');
+var multer = require('multer'), upload = multer({dest:'uploads/'});
 var reminder = require('./reminder');
 let account = require('./config/email_user');
 var Mail = require('./mail');
+
 
 const mail = new Mail(account.user,account.pass);
 
@@ -65,6 +67,13 @@ app.set('view engine','pug');
 
   app.use(passport.initialize()); //passport middleware
   app.use(passport.session());
+
+  function excelUpload(req,res,next){
+    res.header("Access-Control-Allow-Origin","*");
+    res.header("Access-Control-Allow-Headers","Origin,X-Requested-With,Content-Type,Accept");
+    res.header("Access-Control-Allow-Methods","POST,GET,OPTIONS,DELETE,PUT");
+    next();
+  }
   var urlencodedParser = bodyParser.urlencoded({extended:false}); //bodyParser for POST
 
 //ROUTES
@@ -379,6 +388,12 @@ app.get('/delete_space/:id',(req,res)=>{
   res.json();
 });
 
+//Route that handles Excel file upload
+//File: admin_settings.js
+app.post('/uploadFile', excelUpload,upload.single('excelFile'),function(req,res){
+  console.log(req);
+  console.log(req.file);
+});
 
 //ROUTES FOR PAGES.
 

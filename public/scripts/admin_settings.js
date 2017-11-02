@@ -483,4 +483,31 @@ $(document).ready(function(){
       alert("Please input an integer between 1 and 20");
     }
   });
+
+  $("#excel-file").change(function(e){
+    //get the file object
+    var file = e.target.files[0];
+    console.log("FILE");
+    console.log(file);
+
+    if(!file.name.endsWith('.xlsx')){
+      alert('Please upload a valid excel file, with the extension .xlsx');
+    }
+
+    else{
+      var formData = new FormData();
+      formData.append('excelFile',file);
+
+      $.ajax({
+        type:'POST',
+        url:'http://localhost:3000/uploadFile',
+        data:formData,
+        contentType:false,
+        processData:false,
+        success:function(response){
+
+        }
+      });
+    }
+  });
 });

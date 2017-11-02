@@ -26,7 +26,11 @@ block content
         label.col-lg-4(style = "font-size:150%;") Number of weeks ahead:
         input(type = "number" min = "1" max = "20")#weeksAhead.form-control.col-lg-4.input-sm
         button(type = "button").col-lg-3#saveWeeksAhead.btn.btn-default.btn-info Save setting
-      div.row
+      form#excel-upload(action = "/fileUpload" method = "post")
+        div.form-group
+          label Upload excel file: 
+          input.form-control#excel-file(type = "file" name = "excel") 
+          input#submit-form(type = "submit" name = "submit" value = "Upload file")
       div#edit-space-modal.modal.fade(role = "dialog")
         div.modal-dialog
           div.modal-header
