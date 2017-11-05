@@ -15,10 +15,19 @@ var storage = multer.diskStorage({
     cb(null,path.join(__dirname,'uploads'))
   },
   filename:function(req,file,cb){
-    cb(null,file.fieldname + '.xlsx')
+      cb(null,file.fieldname + '.xlsx')
   }
 });
-var upload = multer({storage:storage});
+var upload = multer({
+  storage:storage,
+  fileFilter:function(req,file,callback){
+    var ext = path.extname(file.originalname);
+    if(ext !== '.xlsx'){
+      return callback(null)
+    }
+    callback(null,true)
+  }
+});
 //{dest:'uploads/'}
 var formidable = require('formidable');
 var reminder = require('./reminder');
