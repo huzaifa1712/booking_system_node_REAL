@@ -8,7 +8,18 @@ let config = require('./config/database');
 var passport = require('passport');
 require('./config/passport.js')(passport)
 var fs = require('fs');
-var multer = require('multer'), upload = multer({dest:'uploads/'});
+var multer = require('multer');
+//filename = excel.xlsx always.
+var storage = multer.diskStorage({
+  destination:function(req,file,cb){
+    cb(null,path.join(__dirname,'uploads'))
+  },
+  filename:function(req,file,cb){
+    cb(null,file.fieldname + '.xlsx')
+  }
+});
+var upload = multer({storage:storage});
+//{dest:'uploads/'}
 var formidable = require('formidable');
 var reminder = require('./reminder');
 let account = require('./config/email_user');
@@ -394,8 +405,8 @@ app.get('/delete_space/:id',(req,res)=>{
 app.post('/uploadFile', upload.single('excel'),function(req,res){
   console.log("FILE");
   console.log(req);
-  console.log(req.body.excel);
 
+  req.filename = "excel.xlsx"
   //Use message to pass error message.
   res.render('admin_settings',{
     firstName:req.user.firstName,
