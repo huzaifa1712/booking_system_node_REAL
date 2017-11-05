@@ -484,7 +484,55 @@ $(document).ready(function(){
     }
   });
 
-  $("#excel-file").change(function(e){
+
+
+  $("#excel-upload").submit(function(e){
+    var file = $("#upload-input").get(0).files;
+    var formData = new FormData($(this[0]));
+    formData.append('excel',file);
+
+
+    $.ajax({
+      type:'POST',
+      url:'/uploadFile',
+      data:formData,
+      contentType:false,
+      processData:false,
+      success:function(response){
+        alert('ok');
+      }
+    });
+  });
+/*
+  $('#upload-file').on('click',function(){
+    $('#upload-input').click();
+  });
+*/
+/*
+  $("#upload-input").on('change',function(){
+    var file = $(this).get(0).files;
+
+    if(file.length > 0){
+      console.log("File");
+      console.log(file);
+      console.log(file[0]);
+      var formData = new FormData();
+      formData.append('excel',file,file.name);
+
+      $.ajax({
+        url:'/uploadFile',
+        type:'POST',
+        data:formData,
+        processData:false,
+        contentType:false,
+        success:function(response){
+          console.log('upload sucess');
+        }
+      });
+
+    }
+  });*/
+  /*$("#excel-file").change(function(e){
     //get the file object
     var file = e.target.files[0];
     console.log("FILE");
@@ -509,5 +557,5 @@ $(document).ready(function(){
         }
       });
     }
-  });
+  });*/
 });

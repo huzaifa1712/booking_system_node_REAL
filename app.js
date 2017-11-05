@@ -9,6 +9,7 @@ var passport = require('passport');
 require('./config/passport.js')(passport)
 var fs = require('fs');
 var multer = require('multer'), upload = multer({dest:'uploads/'});
+var formidable = require('formidable');
 var reminder = require('./reminder');
 let account = require('./config/email_user');
 var Mail = require('./mail');
@@ -390,11 +391,22 @@ app.get('/delete_space/:id',(req,res)=>{
 
 //Route that handles Excel file upload
 //File: admin_settings.js
-app.post('/uploadFile', excelUpload,upload.single('excelFile'),function(req,res){
+app.post('/uploadFile', upload.single('excel'),function(req,res){
+  console.log("FILE");
   console.log(req);
-  console.log(req.file);
+  console.log(req.body.excel);
+
+  //Use message to pass error message.
+  res.render('admin_settings',{
+    firstName:req.user.firstName,
+    //message:'lol'
+  });
+
 });
 
+/*app.get('/uploadFile',(req,res)=>{
+  res.redirect('/admin_settings');
+});*/
 //ROUTES FOR PAGES.
 
 //Index page(landing page)

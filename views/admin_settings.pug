@@ -3,6 +3,10 @@ extends layout
 block content
     include header.pug
     link(href = "/css/admin_settings.css" rel = "stylesheet")
+    if message
+      div(class = "alert alert-dismissable alert-danger") 
+       a(href = "#" data-dismiss = "alert" aria-label = "close").close x
+       strong=message
     nav.navbar.navbar-default
       div.container-fluid
         ul.nav.navbar-nav
@@ -23,14 +27,15 @@ block content
       br
       br
       div.row
-        label.col-lg-4(style = "font-size:150%;") Number of weeks ahead:
+        label.col-lg-4(style = "color:#FFBE3F; font-size:150%;") Number of weeks ahead:
         input(type = "number" min = "1" max = "20")#weeksAhead.form-control.col-lg-4.input-sm
         button(type = "button").col-lg-3#saveWeeksAhead.btn.btn-default.btn-info Save setting
-      form#excel-upload(action = "/fileUpload" method = "post")
+      br
+      form#excel-upload(method = "POST" action = "/uploadFile" enctype = "multipart/form-data")
         div.form-group
-          label Upload excel file: 
-          input.form-control#excel-file(type = "file" name = "excel") 
-          input#submit-form(type = "submit" name = "submit" value = "Upload file")
+          h4(style = "color:#FFBE3F; font-size:150%;") Upload excel file with bookings: 
+          input.form-control#upload-input(type = "file" name = "excel") 
+          input#upload-file.btn(type = "submit" name = "submit" value = "Upload file")
       div#edit-space-modal.modal.fade(role = "dialog")
         div.modal-dialog
           div.modal-header
