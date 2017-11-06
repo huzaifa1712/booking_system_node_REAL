@@ -488,30 +488,39 @@ $(document).ready(function(){
 
   $("#excel-upload").submit(function(e){
     var file = $("#upload-input").get(0).files;
-    console.log(file);
+    console.log("Val")
+    console.log($("#upload-input").val());
 
-    //checks if excel file has extension .xlsx
-    if(!file[0].name.endsWith('.xlsx')){
-      alert('Please upload a valid excel file, with the extension .xlsx');
+    //check if file was selected
+    if($("#upload-input").val() == ''){
+      alert("Please select a file");
     }
 
     else{
-      var formData = new FormData($(this[0]));
-      formData.append('excel',file);
+      //checks if excel file has extension .xlsx
+      if(!file[0].name.endsWith('.xlsx')){
+        alert('Please upload a valid excel file, with the extension .xlsx');
+      }
+
+      else{
+        var formData = new FormData($(this[0]));
+        formData.append('excel',file);
 
 
-      $.ajax({
-        type:'POST',
-        url:'/uploadFile',
-        data:formData,
-        contentType:false,
-        processData:false,
-        success:function(response){
-          alert('ok');
-        }
-      });
+        $.ajax({
+          type:'POST',
+          url:'/uploadFile',
+          data:formData,
+          contentType:false,
+          processData:false,
+          success:function(response){
+            alert('ok');
+          }
+        });
 
+      }
     }
+
   });
 /*
   $('#upload-file').on('click',function(){

@@ -21,6 +21,7 @@ var storage = multer.diskStorage({
 var upload = multer({
   storage:storage,
   fileFilter:function(req,file,callback){
+    //if file extension not .xlsx, doesn't store
     var ext = path.extname(file.originalname);
     if(ext !== '.xlsx'){
       return callback(null)
@@ -29,7 +30,6 @@ var upload = multer({
   }
 });
 //{dest:'uploads/'}
-var formidable = require('formidable');
 var reminder = require('./reminder');
 let account = require('./config/email_user');
 var Mail = require('./mail');
@@ -415,7 +415,6 @@ app.post('/uploadFile', upload.single('excel'),function(req,res){
   console.log("FILE");
   console.log(req);
 
-  req.filename = "excel.xlsx"
   //Use message to pass error message.
   res.render('admin_settings',{
     firstName:req.user.firstName,
