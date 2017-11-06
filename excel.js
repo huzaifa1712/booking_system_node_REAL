@@ -4,6 +4,8 @@ var Booking = require('./models/booking');
 var mongoose = require('mongoose');
 var moment = require('moment');
 
+var reminderArray = ["none", "4h","12h","1d","1w"];
+
 //https://stackoverflow.com/questions/37733966/get-the-given-date-format-the-string-specifying-the-format-in-javascript-or-mo
 //Above link is for specifying multiple different possible time parser formats
 //https://stackoverflow.com/questions/30859901/parse-xlsx-with-node-and-create-json
@@ -57,6 +59,7 @@ function generateTimeFields(booking){
   var endTimeString = booking.date + "-" +  booking.endTime.replace(/\s+/g, '').toLowerCase();
 
   //create startTime and endTime Date objects
+  console.log(moment(startTimeString,"D-MMM-YY-hh:mma"));
   var startTime = moment(startTimeString, "D-MMM-YY-hh:mma").toDate();
   var endTime = moment(endTimeString, "D-MMM-YY-hh:mma").toDate();
 
@@ -68,16 +71,7 @@ function generateTimeFields(booking){
 
 }
 
-/*
-1. Each row must be complete - no blanks in each space. if there is a row with complete blanks, skip it.
-2. Email must end with @gapps.uwcsea.edu.sg
-3. If invalid date, catch the error and tell the admin. Format is in D-MMM-YY
-4. If invalid time, catch error and tell admin. Format is 12 hour, hh:mma
-5. Check that reminder option is one of the allowed. 'None' and blank are same.
-*/
-function validateBookingFields(booking){
 
-}
 
 //Create a booking from the array received from excel
 //Note: VARIABLE ACCESSIBILITY DEPENDS ON NAME OF HEADER IN THE ROW
@@ -111,7 +105,7 @@ mongoose.connect('mongodb://localhost/bookings');
 
 //checks if there are any blank fields for the row for that booking.
 //Returns false if no missing properties.
-function checkIfMissingProps(booking){
+function missingProps(booking){
   var missingProp = false;
   headers.forEach((header)=>{
     if(!booking.hasOwnProperty(header)){
@@ -122,9 +116,58 @@ function checkIfMissingProps(booking){
   return missingProp;
 }
 
+/*
+1. Each row must be complete - no blanks in each space. if there is a row with complete blanks, skip it.
+2. Email must end with @gapps.uwcsea.edu.sg
+3. If invalid date, catch the error and tell the admin. Format is in D-MMM-YY
+4. If invalid time, catch error and tell admin. Format is 12 hour, hh:mma
+5. Check that reminder option is one of the allowed. 'None' and blank are same.
+*/
+function validateBookingFields(booking){
+  var isErr = false;
+  var errorMsg = "ERROR:The following must be done:";
+
+  //1.Each row must not have blanks.
+  //check if the booking is missing props.
+  if(!missingProps(booking)){
+    errorMsg = errorMsg + "No fields for each booking are blank\n\n";
+    isErr = true;
+  }
+
+  else{
+    //2. Email must end with @gapps.uwcsea.edu.sg
+    if(!booking.email.endsWith('@gapps.uwcsea.edu.sg')){
+      errorMsg = errorMsg + "The e-mail for each booking is a UWCSEA email address.\n\n"
+      isErr = true;
+    }
+
+    //3 and 4
+    try{
+      var timeFields = generateTimeFields(booking);
+    }
+
+    catch(e){
+      var isErr = true;
+      var errorMsg = errorMsg + "The date is in the format D-MMM-YY e.g 7-Nov-17, and times are 12 hour and hh:mma, e.g 1:45pm\n\n"
+    }
+
+    //5.Check reminder options
+    var reminder = booking.reminder.toLowerCase().replace(/\s+/g, '');
+    if(reminderArray.indexOf(reminder) == -1){
+      isErr = true;
+      errorMsg = errorMsg + "The reminder option is either: " + reminderArray.join(',');
+    }
+  }
+}
 bookings.forEach((booking)=>{
-  console.log(checkIfMissingProps(booking));
+
 });
+
+var reminder = "0"
+var reminderArray = ["none", "4h","12h","1d","1w"];
+console.log(reminderArray.indexOf(reminder));
+
+
 /*
   user_id: don't set,
   name: set,
