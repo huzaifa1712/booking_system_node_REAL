@@ -419,16 +419,19 @@ app.post('/uploadFile', upload.single('excel'),function(req,res){
   var message = "";
 
   var excel = new Excel();
+  //if there is an error message, set the message variable.
   if(excel.readAndSaveBookings() != undefined){
     message = excel.readAndSaveBookings();
   }
 
+  //delete the excel file.
   fs.unlinkSync(path.join(__dirname,'uploads/excel.xlsx'),(err,data)=>{
     if(err){
       throw err;
     }
   });
-  //Use message to pass error message.
+
+  //render the page again with any error messages.
   res.render('admin_settings',{
     firstName:req.user.firstName,
     message:message

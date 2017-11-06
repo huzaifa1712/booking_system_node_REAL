@@ -486,10 +486,11 @@ $(document).ready(function(){
 
 
 
+  //what happens when form is submitted.
   $("#excel-upload").submit(function(e){
+    //get the file.
     var file = $("#upload-input").get(0).files;
-    console.log("Val")
-    console.log($("#upload-input").val());
+
 
     //check if file was selected
     if($("#upload-input").val() == ''){
@@ -503,6 +504,7 @@ $(document).ready(function(){
       }
 
       else{
+        //if ok, send file to route.
         var formData = new FormData($(this[0]));
         formData.append('excel',file);
 
@@ -514,7 +516,7 @@ $(document).ready(function(){
           contentType:false,
           processData:false,
           success:function(response){
-            alert('Bookings added!');
+
           }
         });
 
