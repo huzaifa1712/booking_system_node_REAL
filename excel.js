@@ -38,13 +38,13 @@ function createBooking(booking){
   var newBooking = new Booking();
 
   newBooking.name = booking.name;
-  newBooking.email = booking.email;
+  newBooking.email = booking.email.replace(/\s+/g, '');
   newBooking.time = timeFields.time;
   newBooking.date.startTime = timeFields.startTime;
   newBooking.date.endTime = timeFields.endTime;
   newBooking.space = booking.space.replace(/\s+/g, '');
   newBooking.spaceNameWithSpaces = booking.space + " ";
-  newBooking.reminder = booking.reminder;
+  newBooking.reminder = booking.reminder.replace(/\s+/g, '');
   newBooking.emailSent = false;
 
   newBooking.save(function(err){
