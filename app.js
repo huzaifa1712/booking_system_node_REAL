@@ -31,6 +31,8 @@ var upload = multer({
 });
 //{dest:'uploads/'}
 var reminder = require('./reminder');
+var excel = require('./excel');
+
 let account = require('./config/email_user');
 var Mail = require('./mail');
 
@@ -414,11 +416,16 @@ app.get('/delete_space/:id',(req,res)=>{
 app.post('/uploadFile', upload.single('excel'),function(req,res){
   console.log("FILE");
   console.log(req);
+  var message = "";
+
+  if(excel.readAndSaveBookings() != undefined){
+    message = readAndSaveBookings();
+  }
 
   //Use message to pass error message.
   res.render('admin_settings',{
     firstName:req.user.firstName,
-    //message:'lol'
+    message:message
   });
 
 });
