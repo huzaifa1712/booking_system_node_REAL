@@ -10,19 +10,51 @@ var moment = require('moment');
 
 var workbook = XLSX.readFile(path.join(__dirname,'uploads/excel.xlsx'));
 var sheet_name_list = workbook.SheetNames;
+
+//https://github.com/SheetJS/js-xlsx/issues/214 - For get_header_row
+function getHeaders(workbook) {
+    var headers = [];
+    var sheet = workbook.Sheets.Sheet1
+    var range = XLSX.utils.decode_range(sheet['!ref']);
+
+    var C, R = range.s.r; /* start in the first row */
+    /* walk every column in the range */
+    for(C = range.s.c; C <= range.e.c; ++C) {
+        var cell = sheet[XLSX.utils.encode_cell({c:C, r:R})] /* find the cell in the first row */
+
+        var hdr = "UNKNOWN " + C; // <-- replace with your desired default
+        if(cell && cell.t) hdr = XLSX.utils.format_cell(cell);
+
+        headers.push(hdr);
+    }
+    return headers;
+}
+
+//get the headers of the Excel file.
+var headers = getHeaders(workbook)
+
+//returns headers row without 'unknown'
+headers = headers.filter(function(header){
+  return !header.includes('UNKNOWN');
+});
+
+console.log(headers);
+//console.log(workbook);
 //this line of code gets an array where each element corresponds to one row of the
 //workbook
 var bookings = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
-console.log(bookings[0]);
+//console.log(bookings[0]);
 
+//generates the time fields, such as the time string and startTime and endTime date objects
+//Note: VARIABLE ACCESSIBILITY DEPENDS ON NAME OF HEADER IN THE ROW
 function generateTimeFields(booking){
   //replace spaces from Excel and construct time string e.g '12:45pm-1:15pm' make times lowecase so PM/pm and am/AM doesn't matter
   var time = booking.startTime.replace(/\s+/g, '').toLowerCase() + '-' + booking.endTime.replace(/\s+/g, '').toLowerCase();
   //get moment object from day String
 
   //create timestrings to create moments from - make times lowecase so PM/pm and am/AM doesn't matter
-  var startTimeString = booking.day + "-" +  booking.startTime.replace(/\s+/g, '').toLowerCase();
-  var endTimeString = booking.day + "-" +  booking.endTime.replace(/\s+/g, '').toLowerCase();
+  var startTimeString = booking.date + "-" +  booking.startTime.replace(/\s+/g, '').toLowerCase();
+  var endTimeString = booking.date + "-" +  booking.endTime.replace(/\s+/g, '').toLowerCase();
 
   //create startTime and endTime Date objects
   var startTime = moment(startTimeString, "D-MMM-YY-hh:mma").toDate();
@@ -39,12 +71,16 @@ function generateTimeFields(booking){
 /*
 1. Each row must be complete - no blanks in each space. if there is a row with complete blanks, skip it.
 2. Email must end with @gapps.uwcsea.edu.sg
-3. If invalid date, catch the error and tell the admin.
-4. Check that reminder option is one of the allowed. 'None' and blank are same.
+3. If invalid date, catch the error and tell the admin. Format is in D-MMM-YY
+4. If invalid time, catch error and tell admin. Format is 12 hour, hh:mma
+5. Check that reminder option is one of the allowed. 'None' and blank are same.
 */
 function validateBookingFields(booking){
 
 }
+
+//Create a booking from the array received from excel
+//Note: VARIABLE ACCESSIBILITY DEPENDS ON NAME OF HEADER IN THE ROW
 
 function createBooking(booking){
   var timeFields = generateTimeFields(booking);
@@ -73,8 +109,21 @@ function createBooking(booking){
 
 mongoose.connect('mongodb://localhost/bookings');
 
+//checks if there are any blank fields for the row for that booking.
+//Returns false if no missing properties.
+function checkIfMissingProps(booking){
+  var missingProp = false;
+  headers.forEach((header)=>{
+    if(!booking.hasOwnProperty(header)){
+      missingProp = true;
+    }
+  });
+
+  return missingProp;
+}
+
 bookings.forEach((booking)=>{
-  createBooking(booking);
+  console.log(checkIfMissingProps(booking));
 });
 /*
   user_id: don't set,
