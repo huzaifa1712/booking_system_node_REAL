@@ -420,9 +420,14 @@ app.post('/uploadFile', upload.single('excel'),function(req,res){
 
   var excel = new Excel();
   if(excel.readAndSaveBookings() != undefined){
-    message = readAndSaveBookings();
+    message = excel.readAndSaveBookings();
   }
 
+  fs.unlinkSync(path.join(__dirname,'uploads/excel.xlsx'),(err,data)=>{
+    if(err){
+      throw err;
+    }
+  });
   //Use message to pass error message.
   res.render('admin_settings',{
     firstName:req.user.firstName,

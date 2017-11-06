@@ -19,7 +19,7 @@ var sheet_name_list = workbook.SheetNames;*/
 
 //returns the headers without the unknowns.
 
-class Excel{
+module.exports = class Excel{
   constructor(){
     this.reminderArray = ["none", "4h","12h","1d","1w"];
     this.workbook = XLSX.readFile(path.join(__dirname,'uploads/excel.xlsx'));
@@ -155,7 +155,7 @@ class Excel{
       1:"No fields for each booking are blank\n\n",
       2:"The e-mail for each booking is a UWCSEA email address.\n\n",
       3:"The date is in the format D-MMM-YY e.g 7-Nov-17, and times are 12 hour and hh:mma, e.g 1:45pm\n\n",
-      4:"The reminder option is either of: " + reminderArray.join(',')
+      4:"The reminder option is either of: " + this.reminderArray.join(',')
     }
 
     //get only unique error codes.
@@ -197,7 +197,3 @@ class Excel{
     }
   }
 }
-
-mongoose.connect('mongodb://localhost/bookings');
-var excel = new Excel();
-excel.readAndSaveBookings();
