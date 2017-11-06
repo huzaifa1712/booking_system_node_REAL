@@ -171,11 +171,45 @@ function returnErrorMsg(errorCodes){
     4:"The reminder option is either of: " + reminderArray.join(',')
   }
 
+  //get only unique error codes.
+  errorCodes = errorCodes.filter(function(value,index,self){
+    return self.indexOf(value) === index;
+  });
+
+  //for each error code, add the error msg.
   errorCodes.forEach((errorCode)=>{
     errorMsg = errorMsg + errorMessages[errorCode];
   });
 
   return errorMsg;
+}
+
+function readAndSaveBookings(){
+  //is there an error OVERALL - this is what the var tracks(if there is atleast
+//one error)
+  var isErr = false;
+  //list of errorCodes if there are errors.
+  var errorCodes = [];
+
+  //loops through - if there is an error, push it into the array.
+  bookings.forEach((booking)=>{
+    if(validateBookingFields(booking).isErr){
+      errorCodes.push(validateBookingFields(booking).errorCode);
+      isErr = true;
+    }
+  });
+
+  //if there was at least one error, return the error message string.
+  if(isErr){
+    return returnErrorMsg(errorCodes);
+  }
+
+  //if there weren't any errors
+  else{
+    bookings.forEach((booking)=>{
+      createAndSaveBooking(booking);
+    });
+  }
 }
 
 
