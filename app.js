@@ -257,7 +257,7 @@ app.post('/make_booking', urlencodedParser, (req,res)=>{
     newBooking.date.endTime = req.body.endTime;
     newBooking.reminder = req.body.reminder;
     newBooking.space = req.body.space;
-    newBooking.spaceNameWithSpaces = req.body.spaceNameWithSpaces;
+    //newBooking.spaceNameWithSpaces = req.body.spaceNameWithSpaces;
     newBooking.emailSent = false;
 
     newBooking.save((err)=>{
