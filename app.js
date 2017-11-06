@@ -31,7 +31,7 @@ var upload = multer({
 });
 //{dest:'uploads/'}
 var reminder = require('./reminder');
-var excel = require('./excel');
+var Excel = require('./excel');
 
 let account = require('./config/email_user');
 var Mail = require('./mail');
@@ -418,6 +418,7 @@ app.post('/uploadFile', upload.single('excel'),function(req,res){
   console.log(req);
   var message = "";
 
+  var excel = new Excel();
   if(excel.readAndSaveBookings() != undefined){
     message = readAndSaveBookings();
   }
