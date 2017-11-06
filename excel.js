@@ -43,6 +43,7 @@ function createBooking(booking){
   newBooking.date.startTime = timeFields.startTime;
   newBooking.date.endTime = timeFields.endTime;
   newBooking.space = booking.space.replace(/\s+/g, '');
+  newBooking.spaceNameWithSpaces = booking.space + " ";
   newBooking.reminder = booking.reminder;
   newBooking.emailSent = false;
 
