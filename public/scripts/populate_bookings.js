@@ -98,20 +98,28 @@ function populateBookings(isoWeekNum){
             console.log("loop is running");
             //find day from the booking
             var dayFromBooking = moment(responseArr[i].date.startTime).format("dddd");
-
             dayFromBooking = dayFromBooking.replace(/\s+/g, '');
+
+            console.log('day from booking:' + dayFromBooking);
+
 
             //find time from booking.
             var timeFromBooking = responseArr[i].time;
             timeFromBooking = timeFromBooking.replace(/\s+/g, '');
 
+            console.log('time from booking:' + timeFromBooking);
+
+
             //find name from booking.
             var name = responseArr[i].name.split(" ")[0];
             name = name.replace(/\s+/g, '');
 
+            console.log("name: " + name);
+
             //find the weeknumber in which the booking takes place.
             var bookingIsoWeekNumber = moment(responseArr[i].date.startTime).isoWeek();
 
+            console.log(bookingIsoWeekNumber);
             //get the _id of the booking as it is in the database, so we can access it
             //when cancelling bookings from the admin side.
             var bookingId = responseArr[i]._id;
