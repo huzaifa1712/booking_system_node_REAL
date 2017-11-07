@@ -4,7 +4,7 @@ block content
     include header.pug
     link(href = "/css/admin_settings.css" rel = "stylesheet")
     if message
-      div(class = "alert alert-dismissable alert-danger") 
+      div(class = "alert alert-dismissable alert-"+type) 
        a(href = "#" data-dismiss = "alert" aria-label = "close").close x
        strong=message
     nav.navbar.navbar-default

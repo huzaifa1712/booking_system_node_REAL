@@ -416,12 +416,15 @@ app.get('/delete_space/:id',(req,res)=>{
 app.post('/uploadFile', upload.single('excel'),function(req,res){
   console.log("FILE");
   console.log(req);
-  var message = "";
+  //default message if things go okay
+  var message = "Bookings imported!";
+  var type = "success";
 
   var excel = new Excel();
   //if there is an error message, set the message variable.
   if(excel.readAndSaveBookings() != undefined){
     message = excel.readAndSaveBookings();
+    type = "danger"
   }
 
   //delete the excel file.
@@ -434,7 +437,8 @@ app.post('/uploadFile', upload.single('excel'),function(req,res){
   //render the page again with any error messages.
   res.render('admin_settings',{
     firstName:req.user.firstName,
-    message:message
+    message:message,
+    type:type
   });
 
 });
