@@ -1,5 +1,4 @@
-//File that populates the your_bookings page. Might define click events
-//to allow user to sort the bookings later.
+//File that populates the 'Your bookings' page.
 
 //returns user bookings as an array, using the GET route defined in app.js
 function getUserBookings(){
@@ -103,7 +102,7 @@ function populateTable(){
     if($(this).hasClass('date')){
       $(this).attr("data-toggle","modal");
       $(this).attr("data-target","#cancel-modal");
-      
+
       $(this).click(function(){
         $("#cancel-modal").data("bookingId", $(this).data("bookingId"));
         var bookingAndSpace = $(this).text() + " , " + $(this).parent().find("td:nth-child(2)").text();

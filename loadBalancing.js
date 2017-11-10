@@ -18,7 +18,7 @@ Booking.find(function(err,bookings){
   else{
     bookings = bookings.filter(function(booking){
       return booking.space == spaceName.replace(/\s+/g, '');
-
+      
     });
   }
 

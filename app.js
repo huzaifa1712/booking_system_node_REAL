@@ -280,6 +280,7 @@ app.get('/get_user', isLoggedIn,(req,res)=>{
 
 //returns the maximum week number. Used for pagination of the bookings table.
 //Files: populate_bookings.js
+//USES SETTING ID
 app.get('/maxWeekNum', (req,res)=>{
   Setting.findById("59f45f5943f5346a3e0d4a0d",(err,setting)=>{
     if(err){
@@ -344,6 +345,7 @@ app.post('/update_space',urlencodedParser,(req,res)=>{
 
 //Update weeksAhead setting.
 //File: admin_settings.js
+//USES SETTING ID
 app.get('/update_weeksAhead/:num',(req,res)=>{
   Setting.findOneAndUpdate({_id:"59f45f5943f5346a3e0d4a0d"},{$set:{weeksAhead:req.params.num}},{new:true},function(err,setting){
     if(err){
@@ -358,6 +360,8 @@ app.get('/update_weeksAhead/:num',(req,res)=>{
   });
 });
 
+//retrieve value for weeksAhead
+//USES SETTING ID
 app.get('/get_weeksAhead',(req,res)=>{
   Setting.findById("59f45f5943f5346a3e0d4a0d",(err,setting)=>{
     if(err){
