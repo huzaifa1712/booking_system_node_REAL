@@ -1,32 +1,21 @@
-var XLSX = require('xlsx');
 var path = require('path');
+
+var XLSX = require('xlsx');
 var Booking = require('./models/booking');
 var mongoose = require('mongoose');
 var moment = require('moment');
-/*
-var reminderArray = ["none", "4h","12h","1d","1w"];
-
-var workbook = XLSX.readFile(path.join(__dirname,'uploads/excel.xlsx'));
-var bookings = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
-var sheet_name_list = workbook.SheetNames;*/
-
-//https://stackoverflow.com/questions/37733966/get-the-given-date-format-the-string-specifying-the-format-in-javascript-or-mo
-//Above link is for specifying multiple different possible time parser formats
-//https://stackoverflow.com/questions/30859901/parse-xlsx-with-node-and-create-json
-
-
-//https://github.com/SheetJS/js-xlsx/issues/214 - For get_header_row
-
-//returns the headers without the unknowns.
-
+//Excel - Class that contains a method for reading the file and importing bookings.
+//Other methods in the class used within it to perform intermediary functions.
 module.exports = class Excel{
+  //class constructor method
   constructor(){
     this.reminderArray = ["none", "4h","12h","1d","1w"];
     this.workbook = XLSX.readFile(path.join(__dirname,'uploads/excel.xlsx'));
-    this.bookings = XLSX.utils.sheet_to_json(this.workbook.Sheets[this.workbook.SheetNames[0]]);
-    this.sheet_name_list = this.workbook.SheetNames;
+    this.firstSheetName = this.workbook.SheetNames[0];
+    this.bookings = XLSX.utils.sheet_to_json(this.workbook.Sheets[firstSheetName]);
   }
-
+  //function to return headers of the Excel sheet
+  //link for function: //https://github.com/SheetJS/js-xlsx/issues/214
   get headers() {
       var headers = [];
       var sheet = this.workbook.Sheets.Sheet1
@@ -49,6 +38,7 @@ module.exports = class Excel{
       });
       return headers;
   }
+  //function to return fields associated with time for a booking
   generateTimeFields(booking){
     //replace spaces from Excel and construct time string e.g '12:45pm-1:15pm' make times lowecase so PM/pm and am/AM doesn't matter
     var time = booking.startTime.replace(/\s+/g, '').toLowerCase() + '-' + booking.endTime.replace(/\s+/g, '').toLowerCase();
@@ -70,6 +60,7 @@ module.exports = class Excel{
     }
 
   }
+  //function to create and then save a booking from Excel sheet
   createAndSaveBooking(booking){
     var timeFields = this.generateTimeFields(booking);
 
@@ -92,6 +83,7 @@ module.exports = class Excel{
     });
 
   }
+  //function to check if a row is missing any properties(any blanks)
   missingProps(booking){
     var headers = this.headers;
 
@@ -104,6 +96,7 @@ module.exports = class Excel{
 
     return missingProp;
   }
+  //function to validate booking fields from Excel row
   validateBookingFields(booking){
     var isErr = false;
     var errorCode = 0;
@@ -149,6 +142,7 @@ module.exports = class Excel{
       errorCode:errorCode
     }
   }
+  //return a string with the error messages needed based on array of errorCodes
   returnErrorMsg(errorCodes){
     var errorMsg = "ERROR: Ensure the following are done:\n\n"
     var errorMessages = {
@@ -170,13 +164,14 @@ module.exports = class Excel{
 
     return errorMsg;
   }
+  //MAIN method to call in route - combines methods above
   readAndSaveBookings(){
-  //is there an error OVERALL - this is what the var tracks(if there is atleast one error
+    //tracks if there is at least one error.
     var isErr = false;
     //list of errorCodes if there are errors.
     var errorCodes = [];
 
-    //loops through - if there is an error, push it into the array.
+    //loops through booking rows in the sheet- if there is an error, push the error code into the array.
     this.bookings.forEach((booking)=>{
       if(this.validateBookingFields(booking).isErr){
         errorCodes.push(this.validateBookingFields(booking).errorCode);
@@ -184,12 +179,13 @@ module.exports = class Excel{
       }
     });
 
-    //if there was at least one error, return the error message string.
+    //if there was at least one error, return the error message string through error codes.
     if(isErr){
       return this.returnErrorMsg(errorCodes);
     }
 
-    //if there weren't any errors
+    //if there weren't any errors, just save each booking through createAndSaveBooking method
+    //returns undefined when called - if this is returned in route, there was no error.
     else{
       this.bookings.forEach((booking)=>{
         this.createAndSaveBooking(booking);
@@ -197,3 +193,19 @@ module.exports = class Excel{
     }
   }
 }
+
+/*
+var reminderArray = ["none", "4h","12h","1d","1w"];
+
+var workbook = XLSX.readFile(path.join(__dirname,'uploads/excel.xlsx'));
+var bookings = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+var sheet_name_list = workbook.SheetNames;*/
+
+//https://stackoverflow.com/questions/37733966/get-the-given-date-format-the-string-specifying-the-format-in-javascript-or-mo
+//Above link is for specifying multiple different possible time parser formats
+//https://stackoverflow.com/questions/30859901/parse-xlsx-with-node-and-create-json
+
+
+//https://github.com/SheetJS/js-xlsx/issues/214 - For get_header_row
+
+//returns the headers without the unknowns.

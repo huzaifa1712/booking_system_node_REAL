@@ -154,6 +154,8 @@ function openModal(){
       //set the header to the name, and the text area to the name.
       $("#spaceName").text($(this).text());
       $("#editName").val($(this).text());
+      $(".modal-title").text("Edit settings for this space");
+
 
       //setting the modal data to the spaceId
       var spaceId = $(this).data("spaceId");
@@ -500,7 +502,7 @@ $(document).ready(function(){
     else{
       //checks if excel file has extension .xlsx
       if(!file[0].name.endsWith('.xlsx')){
-        alert('Please upload a valid excel file, with the extension .xlsx');
+        //alert('Please upload a valid excel file, with the extension .xlsx');
       }
 
       else{

@@ -10,6 +10,7 @@ require('./config/passport.js')(passport)
 var fs = require('fs');
 var multer = require('multer');
 //filename = excel.xlsx always.
+
 var storage = multer.diskStorage({
   destination:function(req,file,cb){
     cb(null,path.join(__dirname,'uploads'))
@@ -29,7 +30,7 @@ var upload = multer({
     callback(null,true)
   }
 });
-//{dest:'uploads/'}
+
 var reminder = require('./reminder');
 var Excel = require('./excel');
 
@@ -155,8 +156,6 @@ app.get('/getSettings/:spaceName',(req,res)=>{
   });
 });
 
-
-
 //API ROUTES. ALL USED IN JQUERY
 
 //route that returns bookings for the user, using user's id. Used in your_bookings page
@@ -214,7 +213,7 @@ app.get('/cancel_booking/:id',(req,res)=>{
   });
 });
 
-//App to return a booking by ID. Used in populating the modal when admin cancels
+//Route to return a booking by ID. Used in populating the modal when admin cancels
 //booking.
 //Files: admin_cancel_bookings.js
 app.get('/bookingById/:id',(req,res)=>{
@@ -246,7 +245,6 @@ app.get('/bookings/:isoWeekNum/:spaceName',(req,res)=>{
     }
   });
 });
-
 //this route takes the Booking information when user makes a booking and saves it
 //Files: make_bookings.js
 app.post('/make_booking', urlencodedParser, (req,res)=>{
@@ -418,32 +416,43 @@ app.get('/delete_space/:id',(req,res)=>{
 //Route that handles Excel file upload
 //File: admin_settings.js
 app.post('/uploadFile', upload.single('excel'),function(req,res){
-  console.log("FILE");
-  console.log(req);
   //default message if things go okay
   var message = "Bookings imported!";
   var type = "success";
+  //if file was uploaded, then read
+  if(fs.existsSync(path.join(__dirname,'uploads/excel.xlsx'))){
+    var excel = new Excel();
+    //if there is an error message, set the message variable.
+    if(excel.readAndSaveBookings() != undefined){
+      message = excel.readAndSaveBookings();
+      type = "danger"
+    }
+    //delete the excel file after reading it
+    fs.unlinkSync(path.join(__dirname,'uploads/excel.xlsx'),(err,data)=>{
+      if(err){
+        throw err;
+      }
+    });
 
-  var excel = new Excel();
-  //if there is an error message, set the message variable.
-  if(excel.readAndSaveBookings() != undefined){
-    message = excel.readAndSaveBookings();
-    type = "danger"
+    //render the page again with any error messages.
+    res.render('admin_settings',{
+      firstName:req.user.firstName,
+      message:message,
+      type:type
+    });
   }
 
-  //delete the excel file.
-  fs.unlinkSync(path.join(__dirname,'uploads/excel.xlsx'),(err,data)=>{
-    if(err){
-      throw err;
-    }
-  });
+  else{
+    type = "danger";
+    message = "ERROR: Please upload a valid excel file with the extension .xlsx";
 
-  //render the page again with any error messages.
-  res.render('admin_settings',{
-    firstName:req.user.firstName,
-    message:message,
-    type:type
-  });
+    res.render('admin_settings',{
+      firstName:req.user.firstName,
+      message:message,
+      type:type
+    });
+  }
+
 
 });
 
