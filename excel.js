@@ -12,10 +12,10 @@ module.exports = class Excel{
     this.reminderArray = ["none", "4h","12h","1d","1w"];
     this.workbook = XLSX.readFile(path.join(__dirname,'uploads/excel.xlsx'));
     this.firstSheetName = this.workbook.SheetNames[0];
-    this.bookings = XLSX.utils.sheet_to_json(this.workbook.Sheets[firstSheetName]);
+    this.bookings = XLSX.utils.sheet_to_json(this.workbook.Sheets[this.firstSheetName]);
   }
   //function to return headers of the Excel sheet
-  //link for function: //https://github.com/SheetJS/js-xlsx/issues/214
+
   get headers() {
       var headers = [];
       var sheet = this.workbook.Sheets.Sheet1
@@ -32,7 +32,7 @@ module.exports = class Excel{
           headers.push(hdr);
       }
 
-      //returns headers row without 'unknown'
+      //returns headers row without 'unknown' - ADDED BY ME
       headers = headers.filter(function(header){
         return !header.includes('UNKNOWN');
       });
