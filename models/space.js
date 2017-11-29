@@ -9,6 +9,7 @@ var spaceSchema = mongoose.Schema({
   }]
 });
 
+//returns an array of the times used to populate the schedule
 spaceSchema.virtual('returnTimes').get(function(){
   var returnArray = [];
   for(var i = 0; i < this.times.length; i++){

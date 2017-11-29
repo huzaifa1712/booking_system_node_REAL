@@ -1,6 +1,6 @@
 
 
-//takes the row and column of a td and outputs the booking fields needed e.g day, time
+//takes the row and column of a table cell  and outputs the booking fields needed e.g day, time
 function getBookingFields(rowIndex,columnIndex){
   var tableCell = $('#bookings-table tr').eq(rowIndex + 1).find('td').eq(columnIndex);
 
@@ -61,33 +61,8 @@ function makeBookings(){
         console.log("Row Index: " + rowIndex);
         console.log("Column Index: " + columnIndex);
 
-        //var day =  $(this).closest('table').find('th').eq(this.cellIndex).text().replace(/\s+/g, '');
-        //console.log("Dayetc " +  day);
-      //  var bookingFields = getBookingFields(rowIndex,columnIndex);
-        //console.log(bookingFields);
-
 
       });
-
-        //sends booking through AJAX
-        //only submit and make booking if Submit button is clicked
-
-
-/*
-        $.ajax({
-          type:'POST',
-          url:'/make_booking',
-          data: {
-            day: day,
-            time:time,
-            name:name
-          },
-
-          success:function(response){
-            //do nothing
-          }
-        })*/
-
 
     }
   });

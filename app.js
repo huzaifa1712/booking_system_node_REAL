@@ -9,8 +9,9 @@ var passport = require('passport');
 require('./config/passport.js')(passport)
 var fs = require('fs');
 var multer = require('multer');
-//filename = excel.xlsx always.
 
+//Excel file is stored in the uploads folder, and renamed to excel.xlsx
+//because the file.fieldname is 'excel'
 var storage = multer.diskStorage({
   destination:function(req,file,cb){
     cb(null,path.join(__dirname,'uploads'))
@@ -19,6 +20,8 @@ var storage = multer.diskStorage({
       cb(null,file.fieldname + '.xlsx')
   }
 });
+
+//checks if the file extension is xlsx. If not, it doesn't save the file.
 var upload = multer({
   storage:storage,
   fileFilter:function(req,file,callback){

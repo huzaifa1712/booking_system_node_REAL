@@ -133,6 +133,7 @@ function populateAddSpace(){
     $(this).remove();
   });
 
+  $("#editName").text("");
   //populates the time elements. Puts 4 in there for a start.
   for(var i = 0; i < 3; i++){
     var div = $('<div class = "row time-group">');
