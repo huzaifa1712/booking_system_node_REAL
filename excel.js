@@ -111,11 +111,12 @@ module.exports = class Excel{
 
     else{
       //2. Email must end with @gapps.uwcsea.edu.sg
+      /*
       if(!booking.email.endsWith('@gapps.uwcsea.edu.sg')){
         //errorMsg = errorMsg + "The e-mail for each booking is a UWCSEA email address.\n\n"
         errorCode = 2;
         isErr = true;
-      }
+      }*/
 
       //3 and 4 - doesn't really work
       try{
