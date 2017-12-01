@@ -1,3 +1,5 @@
+//The reminder class - the loop that checks bookings and sees if it is time to send the reminder.
+//Created 23 Oct 2017
 
 //make a function that outputs if a booking is now or not, based on the startDate given
 var moment = require('moment');

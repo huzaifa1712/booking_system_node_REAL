@@ -1,3 +1,6 @@
+//The Mail class - has the method for sending e-mail, and another one for constructing a cancel email
+//Created 23 Oct 2017
+
 var nodemailer = require('nodemailer');
 let account = require('./config/email_user');
 var moment = require('moment');

@@ -1,3 +1,6 @@
+//This is the Excel class - has the methods for reading the bookings, error checking, and saving.
+//Created 5 Nov 2017
+
 var path = require('path');
 
 var XLSX = require('xlsx');
