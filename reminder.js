@@ -59,8 +59,6 @@ function sendReminderEmail(bookingObject){
   MailObj.sendMail(emailAddress,subjectString,emailString);
 }
 
-//console.log(shouldSendReminder(momentToSendAt));
-
 //this is the main function. Loops through all the bookings and checks whether
 //an email should be sent. If yes, sends the email.
 module.exports.checkBookingsAndSendEmails = function(){

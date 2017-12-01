@@ -96,12 +96,11 @@ app.set('view engine','pug');
     next();
   });
 
-  //app.use(expressValidator()); //validator middleware
 
   app.use(passport.initialize()); //passport middleware
   app.use(passport.session());
 
-  
+
   var urlencodedParser = bodyParser.urlencoded({extended:false}); //bodyParser for POST
 
 //ROUTES
@@ -460,9 +459,6 @@ app.post('/uploadFile', upload.single('excel'),function(req,res){
 
 });
 
-/*app.get('/uploadFile',(req,res)=>{
-  res.redirect('/admin_settings');
-});*/
 //ROUTES FOR PAGES.
 
 //Index page(landing page)
