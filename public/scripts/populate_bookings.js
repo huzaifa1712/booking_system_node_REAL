@@ -40,42 +40,25 @@ function populateBookings(isoWeekNum){
           //find day corresponding to this table cell.
           var dayFromTable = $(this).closest('table').find('th').eq(this.cellIndex).text(); //finds the td's header(day)
           dayFromTable = dayFromTable.replace(/\s+/g, ''); //takes out any spaces
-
           //find time corresponding to table cell
           var timeFromTable = $(this).parent().find("td").first().text(); //finds the td's time(first td of its row)
           timeFromTable = timeFromTable.replace(/\s+/g, ''); //takes out any spaces
-
           //loop through the bookings array sent as response
           for(var i = 0; i < responseArr.length; i++){
-            console.log("loop is running");
             //find day from the booking
             var dayFromBooking = moment(responseArr[i].date.startTime).format("dddd");
             dayFromBooking = dayFromBooking.replace(/\s+/g, '');
-
-            console.log('day from booking:' + dayFromBooking);
-
-
             //find time from booking.
             var timeFromBooking = responseArr[i].time;
             timeFromBooking = timeFromBooking.replace(/\s+/g, '');
-
-            console.log('time from booking:' + timeFromBooking);
-
-
             //find name from booking.
             var name = responseArr[i].name.split(" ")[0];
             name = name.replace(/\s+/g, '');
-
-            console.log("name: " + name);
-
             //find the weeknumber in which the booking takes place.
             var bookingIsoWeekNumber = moment(responseArr[i].date.startTime).isoWeek();
-
-            console.log(bookingIsoWeekNumber);
             //get the _id of the booking as it is in the database, so we can access it
             //when cancelling bookings from the admin side.
             var bookingId = responseArr[i]._id;
-
             //if day and time of the object match day and time of the cell, print the name in the cell
             if(dayFromTable == dayFromBooking && timeFromBooking == timeFromTable && bookingIsoWeekNumber == isoWeekNum){
               //sets the text of the table cell to the name of the user who booked.

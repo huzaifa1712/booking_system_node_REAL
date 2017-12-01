@@ -1,15 +1,18 @@
+//The file that handles gmail login through PassportJS library(passport-google-oauth).
+//Created 7 Sep 2017
+
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 var User = require('../models/user');
-//var Booking = require('../models/booking');
 var configAuth = require('./auth');
 
 module.exports = function(passport){
-
+  //this allows us to access the user object from app.js, which is very useful.
   passport.serializeUser((user,done)=>{
     done(null,user.id); //only user id is serialized to the session
   });
 
+  //this removes the user object from the session
   passport.deserializeUser((id,done)=>{
     User.findById(id,(err,user)=>{
       done(err,user);
@@ -39,48 +42,8 @@ module.exports = function(passport){
             return done(null,user);
           }
 
-          else if(profile.emails[0].value == "ideashubbookingsystem@gmail.com"){
-            var newUser = new User();
-            newUser.google_id = profile.id;
-            newUser.token = accessToken;
-            newUser.name = profile.displayName;
-            console.log(profile.emails[0].value);
-            newUser.email = profile.emails[0].value;
-            newUser.isAdmin = true;
-
-            newUser.save((err)=>{
-              if(err){
-                throw err;
-              }
-
-              else{
-                return done(null, newUser);
-              }
-            });
-          }
-
-          else if(profile.emails[0].value == 'userstudent8126@gmail.com'){
-            var newUser = new User();
-            newUser.google_id = profile.id;
-            newUser.token = accessToken;
-            newUser.name = profile.displayName;
-            console.log(profile.emails[0].value);
-            newUser.email = profile.emails[0].value;
-            newUser.isAdmin = false;
-
-            console.log(newUser.firstName);
-            newUser.save((err)=>{
-              if(err){
-                throw err;
-              }
-
-              else{
-                return done(null,newUser);
-              }
-            });
-          }
           //if the email used is not a school email, return a message. Redirects them to index and displays the message.
-          else if(!(profile.emails[0].value.endsWith('@gapps.uwcsea.edu.sg'))){
+          else if(!(profile.emails[0].value.endsWith('@gapps.<school name>.edu.<country code>'))){
             return done(null,false,req.flash('danger','Please use a school gmail account to login'));
           }
 
@@ -92,11 +55,9 @@ module.exports = function(passport){
             newUser.google_id = profile.id;
             newUser.token = accessToken;
             newUser.name = profile.displayName;
-            console.log(profile.emails[0].value);
             newUser.email = profile.emails[0].value;
             newUser.isAdmin = false;
 
-            console.log(newUser.firstName);
             newUser.save((err)=>{
               if(err){
                 throw err;

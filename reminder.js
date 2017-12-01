@@ -29,7 +29,6 @@ function momentToSend(startDate,reminderInMinutes){
 //reminder in minutes
 function shouldSendReminder(startDate,reminderInMinutes){
   var momentToSendAt = momentToSend(startDate,reminderInMinutes);
-  //console.log("Moment to send: " + momentToSendAt.format("E-hh:mma-DD-MM-WW-YYYY"));
   var bookingIsNow = false;
 
   //checks by minute so it has 60 seconds to check.
@@ -82,15 +81,10 @@ module.exports.checkBookingsAndSendEmails = function(){
               if(err){
               throw err;
             }
-
-            else{
-              console.log(booking);
-            }
           });
+          //send the e-mail
           sendReminderEmail(bookings[i]);
-          console.log('email sent');
         }
-        //var email = bookings[i].user.email;
       }
     }
   });

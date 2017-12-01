@@ -1,3 +1,5 @@
+//The space Schema, along with a couple of methods added on later.
+//Created 7 Sep 2017
 var mongoose = require('mongoose');
 
 var spaceSchema = mongoose.Schema({
@@ -18,9 +20,6 @@ spaceSchema.virtual('returnTimes').get(function(){
 
   return returnArray;
 });
-
-
-
 
 
 //Static method that returns array of objects with id and space name for each space

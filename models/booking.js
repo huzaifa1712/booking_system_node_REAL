@@ -1,3 +1,6 @@
+//The booking schema and class.
+//Created 10 Oct 2017
+
 var mongoose = require('mongoose');
 var moment = require('moment');
 
@@ -10,7 +13,9 @@ var bookingSchema = mongoose.Schema({
     startTime:Date,
     endTime:Date
   },
+  //the space name with spaces replaced
   space:String,
+  //the space name without spaces replaced
   spaceNameWithSpaces:String,
   reminder:String,
   emailSent:Boolean
@@ -46,6 +51,7 @@ class Booking{
     }
   }
 }
+//put the class onto the schema so those methods are accessible.
 bookingSchema.loadClass(Booking);
 
 module.exports = mongoose.model('Booking',bookingSchema);

@@ -28,11 +28,13 @@ function getSpace(id){
   return space;
 }
 
-//populates the spaces table with names of spaces, and assigns the space ID as data.
+//populates the spaces table with names of spaces, and assigns the space ID as data used when deleting.
 function populateSpacesTable(){
   var tBody = $('tbody');
+  //get the array of spaces.
   var spaces = getSpaces();
 
+  //For each space in the array, create a new row with the space name, append the id.
   for(var i = 0; i < spaces.length; i++){
     var tr = $("<tr>");
 
@@ -46,16 +48,12 @@ function populateSpacesTable(){
 
 //populates the modal with times and days selections.
 function populateModal(id){
+  //get the space we are populating for using the id passed in.
   var space = getSpace(id);
-
-  console.log(space.times);
   var timesFromSpace = space.times;
+  //the array for storing 24hour version of the times.
   var times24h = [];
-  /*
-  var times = space.times.map(function(time){
-    //return moment(time,"hh:mma").format("kk:mm");
-    return {moment(time.start,"hh:mma").format("kk:mm"),moment(time.end,"hh:mma").format("kk:mm")};
-  });*/
+
 
   //make a new array with the result of the 24 hour time version of the
   //times in the space object.
@@ -111,10 +109,7 @@ function populateModal(id){
     $('<input id = "end" type = "time" value = "' + times24h[i].end + '">').appendTo(div);
     div.appendTo(modalBody);
   }
-  /*
-  for(var i = 0; i < times.length; i++){
-    $('<input type = "time" value = "' + times[i] + '">').appendTo(modalBody);
-  }*/
+
 }
 
 //populate for add space modal.
@@ -133,10 +128,13 @@ function populateAddSpace(){
     $(this).remove();
   });
 
+  //sets the name textbox to blank.
   $("#editName").text("");
+
   //populates the time elements. Puts 4 in there for a start.
   for(var i = 0; i < 3; i++){
     var div = $('<div class = "row time-group">');
+    //start is the start time, end is the end time, the middle span is just for the word 'to'
     $('<input id = "start" type = "time" value = "">').appendTo(div);
     $('<span class = "middle"> to </span>').appendTo(div);
     $('<input id = "end" type = "time" value = "">').appendTo(div);
@@ -144,8 +142,9 @@ function populateAddSpace(){
   }
 
 }
+
 //goes through the table cells and assigns them a click event that opens the modal.
-//Also sets spaceName.
+//Also sets spaceName when opening the modal, sets the data of the modal to spaceId(used when deleting)
 function openModal(){
   $("#spaces-table td").each(function(){
     $(this).attr("data-toggle","modal");
