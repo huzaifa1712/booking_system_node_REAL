@@ -1,3 +1,8 @@
+//The main file from which everything is based on - we run this file when launching the server. All routes
+//are defined here.
+
+//Created 7 Sep 2017
+
 let express = require('express');
 let path = require('path');
 let mongoose = require('mongoose');
@@ -40,7 +45,7 @@ var Excel = require('./excel');
 let account = require('./config/email_user');
 var Mail = require('./mail');
 
-
+//Creating the mail variable for sending e-mails
 const mail = new Mail(account.user,account.pass);
 
 //check bookings and send reminder emails when required every one second.
@@ -48,6 +53,7 @@ setInterval(function(){
   reminder.checkBookingsAndSendEmails();
 
 },1000);
+
 //Models
 var Booking = require('./models/booking');
 var Setting = require('./models/settingsModel');
@@ -95,12 +101,7 @@ app.set('view engine','pug');
   app.use(passport.initialize()); //passport middleware
   app.use(passport.session());
 
-  function excelUpload(req,res,next){
-    res.header("Access-Control-Allow-Origin","*");
-    res.header("Access-Control-Allow-Headers","Origin,X-Requested-With,Content-Type,Accept");
-    res.header("Access-Control-Allow-Methods","POST,GET,OPTIONS,DELETE,PUT");
-    next();
-  }
+  
   var urlencodedParser = bodyParser.urlencoded({extended:false}); //bodyParser for POST
 
 //ROUTES

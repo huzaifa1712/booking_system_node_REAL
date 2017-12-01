@@ -1,7 +1,9 @@
-//Thisfile: assigns the table cells that have bookings the click events needed to
+//This file: assigns the table cells that have bookings the click events needed to
 //cancel/delete the booking. Inside this click event, ajax request made
 //with the bookingId for that cell, which will go to a route that deletes the booking
 //and sends the e-mail.
+
+//Created 25 Oct 2017
 
 //takes the bookingId and sets the fields of the cancel-modal appropriately
 function setBookingFields(id){

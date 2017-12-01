@@ -1,4 +1,5 @@
-
+//File that defines methods for making bookings. Assigns click events to the table cells for opening the modal too.
+//Created 11 Sep 2017
 
 //takes the row and column of a table cell  and outputs the booking fields needed e.g day, time
 function getBookingFields(rowIndex,columnIndex){
@@ -17,7 +18,6 @@ function getBookingFields(rowIndex,columnIndex){
   //year - TODO: make it so that the year stored changes with pagination too
   var year = $("#bookings-table").data("year");
 
-  //var name = $(this).text().replace(/\s+/g, '');
   //start and end times as Date objects
   var startTime = Time.startAndEndTimes(day,times,isoWeek,year).startDate;
   var endTime = Time.startAndEndTimes(day,times,isoWeek,year).endDate;
@@ -56,11 +56,6 @@ function makeBookings(){
         $("#booking-modal").data("rowIndex", rowIndex);
         $("#booking-modal").data("colIndex", columnIndex);
 
-        //to select a td given the rowIndex and columnIndex:
-        //$('#bookings-table tr').eq(rowIndex + 1).find('td').eq(columnIndex).css('background-color','red');
-        console.log("Row Index: " + rowIndex);
-        console.log("Column Index: " + columnIndex);
-
 
       });
 
@@ -70,18 +65,11 @@ function makeBookings(){
 }
 
 $(document).ready(function(){
-  console.log("Make bookings.js")
-  console.log($("#bookings-table").data("weekNumber"))
-  console.log($("#bookings-table").data("year"));
-  //$(this).data('attr') == 'filled') - to identify elements with bookings
-
   //because in populate this button clears any booked cells, so they don't have the click
   //event assigned.
   $("#next-week").click(function(){
     makeBookings();
 
-      //populateBookings(pageWeekNum);
-      //window.location.reload();
   });
 
   //because in populate this button clears any booked cells, so they don't have the click
@@ -89,8 +77,6 @@ $(document).ready(function(){
   $("#prev-week").click(function(){
     makeBookings();
 
-      //populateBookings(pageWeekNum);
-      //window.location.reload();
   });
 
 //when changing spaces, the entire table is destroyed so a new table can be made,
@@ -157,6 +143,5 @@ $(document).ready(function(){
 
   //Upon page load, assign click events to non-booked cells.
   makeBookings();
-
 
 });

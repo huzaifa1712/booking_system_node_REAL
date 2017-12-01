@@ -1,6 +1,10 @@
+//returns the startTime and endTime as Date objects to be used when
+//making a booking (make_bookings.js)
+
+//Created 20 Oct 2017
+
  class Time{
-   //returns the startTime and endTime as Date objects to be used when
-   //making a booking (make_bookings.js)
+
     static startAndEndTimes(day,times,isoWeekNum,year){
     //create a moment set to the day we need
     var isoWeekDay = moment(day,"dddd").isoWeekday();

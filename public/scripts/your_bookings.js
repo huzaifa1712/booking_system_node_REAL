@@ -1,4 +1,5 @@
-//File that populates the 'Your bookings' page.
+//File that defines methods for the 'Your bookings' page. Populating bookings, defining cancel, etc
+//Created 24 Oct 2017
 
 //returns user bookings as an array, using the GET route defined in app.js
 function getUserBookings(){

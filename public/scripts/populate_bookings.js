@@ -1,4 +1,6 @@
-//file for populating the bookings schedule.
+//File for populating the bookings schedule.
+//Created 8 Sep 2017
+
 //removes all bookings from table. Used for when going to the next or previous week
 function removeAllBookings(){
   //Below selector selects all table cells NOT in the first column.
@@ -7,8 +9,7 @@ function removeAllBookings(){
   $("#bookings-table td:not(:first-child)").each(function(){
     if($(this).hasClass('booked')){
       $(this).removeClass('booked');
-      //makeBookings();
-      //console.log(removed);
+
     }
     $(this).html(' ');
   });
@@ -305,16 +306,13 @@ $(".dropdown-menu li a").click(function(){
   drawTable(getSelectedSpace());
   populateBookings(pageWeekNum);
 });
-  //$(".dropdown-toggle").dropdown("toggle");
 
-  //Sets the dropdown button the value of the first element upon loading
 
-//var spaceName = $(".dropdown-menu li a").parents(".dropdown").find('.btn').text();
-console.log("Selected space");
-console.log(getSelectedSpace());
 
+//Sets the dropdown button the value of the first element upon loading
 setDropdownButton();
 var spaceName = getSelectedSpace();
+//draw table based on selected space name
 drawTable(spaceName);
 
 loadPage(pageWeekNum, maxWeekNum);
@@ -325,9 +323,6 @@ setInterval(function(){
   console.log("running");
   populateBookings(pageWeekNum);
 },1000);
-console.log(getSelectedSpace());
-//var selectedVal = $(".dropdown-menu li a").parents(".dropdown").find('.btn').text();
-//console.log("Outside:" + selectedVal.replace(/\s+/g, ''));
-//populateBookings(pageWeekNum);
+
 
 });

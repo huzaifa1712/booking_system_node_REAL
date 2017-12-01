@@ -1,3 +1,8 @@
+//This file is the jQuery for everything on the settings page. Populating the space modals,
+//the table of spaces, handling editing of settings, handling adding and deletion of spaces, etc.
+
+//Created 26 Oct 2017
+
 //get ARRAY of spaces through AJAX request.
 function getSpaces(){
   var spaces = [];
@@ -314,12 +319,9 @@ function getSelectedSettings(){
   });
 
   console.log(selectedTimes);
+  
   //this returns an array with the 12 hour time values + meridien(am/pm). This is the
   //final version we need to set the Space settings.
-  /*
-   selectedTimes = selectedTimes.map(function(time){
-    return moment(time,"kk:mm").format("h:mma");
-  });*/
 
   //convert the 24 hour times obtained into 24 hour.
 
@@ -465,6 +467,7 @@ $(document).ready(function(){
 
   });
 
+  //For the weeksAhead setting - defines what happens when I click save. Error checking.
   $("#saveWeeksAhead").click(function(){
     var weeksAhead = parseInt($("#weeksAhead").val());
     //if an integer and > 1 and < 20
@@ -488,7 +491,7 @@ $(document).ready(function(){
 
 
 
-  //what happens when form is submitted.
+  //what happens when form is submitted. Get file, check extension on front end, then submit with AJAX if ok.
   $("#excel-upload").submit(function(e){
     //get the file.
     var file = $("#upload-input").get(0).files;
@@ -526,59 +529,4 @@ $(document).ready(function(){
     }
 
   });
-/*
-  $('#upload-file').on('click',function(){
-    $('#upload-input').click();
-  });
-*/
-/*
-  $("#upload-input").on('change',function(){
-    var file = $(this).get(0).files;
-
-    if(file.length > 0){
-      console.log("File");
-      console.log(file);
-      console.log(file[0]);
-      var formData = new FormData();
-      formData.append('excel',file,file.name);
-
-      $.ajax({
-        url:'/uploadFile',
-        type:'POST',
-        data:formData,
-        processData:false,
-        contentType:false,
-        success:function(response){
-          console.log('upload sucess');
-        }
-      });
-
-    }
-  });*/
-  /*$("#excel-file").change(function(e){
-    //get the file object
-    var file = e.target.files[0];
-    console.log("FILE");
-    console.log(file);
-
-    if(!file.name.endsWith('.xlsx')){
-      alert('Please upload a valid excel file, with the extension .xlsx');
-    }
-
-    else{
-      var formData = new FormData();
-      formData.append('excelFile',file);
-
-      $.ajax({
-        type:'POST',
-        url:'http://localhost:3000/uploadFile',
-        data:formData,
-        contentType:false,
-        processData:false,
-        success:function(response){
-
-        }
-      });
-    }
-  });*/
 });

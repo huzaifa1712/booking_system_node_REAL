@@ -3,6 +3,10 @@ Blue - #49748A
 Red - #B6282D
 Yellow - #FFBE3F
 Grey - #6F7C7D
+
+The main style sheet. Used in all pages
+
+Created 7 Sep 2017
 */
 .jumbotron{
   background-color: #49748A;
