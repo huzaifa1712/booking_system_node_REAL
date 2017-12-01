@@ -69,7 +69,3 @@ module.exports = class Mail{
 }
 //There is no way to check if the email was successfully received.
 //However, if there is an error we can send a mail to the admin.
-
-/*
-const mail = new Mail(account.user,account.pass);
-mail.sendMail('windowe1712@gm3ail.com','TEST2','<h1> Hi </h1>');*/

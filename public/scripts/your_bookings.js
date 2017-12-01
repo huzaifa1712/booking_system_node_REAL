@@ -109,8 +109,6 @@ function populateTable(){
         var bookingAndSpace = $(this).text() + " , " + $(this).parent().find("td:nth-child(2)").text();
         $("#booking").text(bookingAndSpace);
 
-        //console.log("ID booking: " + $(this).data("bookingId"));
-        //console.log(typeof $(this).data("bookingId"));
 
       });
     }

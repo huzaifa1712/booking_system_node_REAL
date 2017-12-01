@@ -11,10 +11,8 @@ let account = require('./config/email_user');
 
 
 var MailObj = new Mail(account.user,account.pass);
-//MailObj.sendMail('windowpane1712@gmail.com','TESTMAIL','<h1> Mail </h1>');
 mongoose.connect('mongodb://localhost/bookings');
 
-//console.log("Monent of booking: " + moment(times.startDate).format("E-hh:mma-DD-MM-WW-YYYY"));
 
 //Takes the startDate of the booking and reminder in minutes, returns
 //the moment object at which we need to send the e-mail for this
@@ -91,63 +89,3 @@ module.exports.checkBookingsAndSendEmails = function(){
     }
   });
 }
-
-
-
-/*
-Booking.findOneAndUpdate({_id:bookings[i].id},{$set:{emailSent:false}},{new:true},function(err,booking){
-    if(err){
-    throw err;
-  }
-
-  else{
-    console.log(booking);
-  }
-});
-    var query = {
-      "id":mongoose.Schema.Types.ObjectId("59ed9b529d050aaf4da52a2e")
-    }
-
-    var update = {
-      "emailSent":false
-    }
-
-
-    Booking.update(query,update,{multi:true},function(err,numAffected){
-      if(err){
-        throw err;
-      }
-
-      else{
-        console.log(numAffected);
-      }
-    });*/
-
-
-/*
-var idString = "59ed9b569d050aaf4da52a2f" ;
-console.log(idString);
-var query = {
-  "id":mongoose.Schema.Types.ObjectId("59ed9b569d050aaf4da52a2f")
-}
-
-var update = {
-  "emailSent":true
-}
-
-Booking.update(query,update,function(err,numAffected){
-  if(err){
-    throw err;
-  }
-
-  else{
-    console.log(numAffected);
-  }
-});*/
-/*
-setInterval(function(){
-  console.log(moment(times.startDate).format("E-hh:mma-DD-MM-WW-YYYY"));
-  console.log(momentToSendAt.format("E-hh:mma-DD-MM-WW-YYYY"));
-  console.log(sendReminder(momentToSendAt));
-
-},1000);*/

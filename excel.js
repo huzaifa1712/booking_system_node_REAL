@@ -114,12 +114,12 @@ module.exports = class Excel{
 
     else{
       //2. Email must end with @gapps.uwcsea.edu.sg
-      /*
+
       if(!booking.email.endsWith('@gapps.uwcsea.edu.sg')){
         //errorMsg = errorMsg + "The e-mail for each booking is a UWCSEA email address.\n\n"
         errorCode = 2;
         isErr = true;
-      }*/
+      }
 
       //3 and 4 - doesn't really work
       try{
@@ -198,12 +198,7 @@ module.exports = class Excel{
   }
 }
 
-/*
-var reminderArray = ["none", "4h","12h","1d","1w"];
 
-var workbook = XLSX.readFile(path.join(__dirname,'uploads/excel.xlsx'));
-var bookings = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
-var sheet_name_list = workbook.SheetNames;*/
 
 //https://stackoverflow.com/questions/37733966/get-the-given-date-format-the-string-specifying-the-format-in-javascript-or-mo
 //Above link is for specifying multiple different possible time parser formats

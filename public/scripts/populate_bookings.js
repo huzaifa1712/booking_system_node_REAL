@@ -273,9 +273,7 @@ $("#prev-week").click(function(){
     $("#bookings-table").data("weekNumber", pageWeekNum);
     console.log("prevWeek pageWeekNum: " + pageWeekNum);
     loadPage(pageWeekNum, maxWeekNum);
-    //populateBookings(pageWeekNum);
 
-    //window.location.reload();
 
   }
 
@@ -289,8 +287,6 @@ $("#next-week").click(function(){
     $("#bookings-table").data("weekNumber", pageWeekNum);
     console.log("nextWeek pageWeekNum: " + pageWeekNum);
     loadPage(pageWeekNum,maxWeekNum);
-    //populateBookings(pageWeekNum);
-    //window.location.reload();
   }
 });
 
