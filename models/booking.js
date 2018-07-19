@@ -1,4 +1,4 @@
-//The booking schema and class.
+//The booking schema and class
 //Created 10 Oct 2017
 
 var mongoose = require('mongoose');

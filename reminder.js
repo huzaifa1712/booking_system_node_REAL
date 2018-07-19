@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 var Booking = require('./models/booking');
 var Mail = require('./mail');
 let account = require('./config/email_user');
-
+ 
 
 var MailObj = new Mail(account.user,account.pass);
 mongoose.connect('mongodb://localhost/bookings');

@@ -5,7 +5,7 @@ var nodemailer = require('nodemailer');
 let account = require('./config/email_user');
 var moment = require('moment');
 //Class for sending e-mail
-module.exports = class Mail{
+module.exports = class Mail{ 
   //constructor to instantiate Mail object
   constructor(user,pass){
     this.user = user;

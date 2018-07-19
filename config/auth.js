@@ -1,4 +1,4 @@
-//To store the details for the Google Client that handles login.
+//To store the details for the Google Client that handles login
 //Created 7 Sep 2017
 module.exports = {
   'googleAuth':{
